@@ -1,0 +1,24 @@
+.semaforo{
+    width: 100px;
+    height: 300px;
+    background-color: #000;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+}
+
+
+.luz{
+    width: 70px;
+    height: 70px;
+    background-color: #eeddff;
+    border-radius: 50%;
+    transition: background-color;
+}
+.vermelha{background-color: #f00;}
+.laranja{background-color: #f60;}
+.amarela{background-color: #ff0;}
+.verde{background-color: #0f0;}
