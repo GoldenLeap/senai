@@ -4,11 +4,13 @@ function mudarLuz() {
   const luzVermelha = document.getElementById("vermelha");
   const luzLaranja = document.getElementById("laranja");
   const luzAmarela = document.getElementById("amarela");
+  const luzRoxa = document.getElementById("roxa");
   const luzVerde = document.getElementById("verde");
 
   luzVermelha.classList.remove("vermelha");
   luzLaranja.classList.remove("laranja");
   luzAmarela.classList.remove("amarela");
+  luzRoxa.classList.remove("roxa");
   luzVerde.classList.remove("verde");
 
   if (estado === 0) {
@@ -18,6 +20,9 @@ function mudarLuz() {
   } else if (estado === 2) {
     luzAmarela.classList.add("amarela");
   } else if (estado === 3) {
+    luzRoxa.classList.add("roxa");
+  }
+    else if (estado === 4) {
     luzVerde.classList.add("verde");
   }
   else{
