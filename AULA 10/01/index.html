@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Moedas</title>
+</head>
+<body>
+    <label>Valor em reais: R$</label><input id="valor" value="0"><br>
+    <label>Cotação Dólar: </label>5,81<br>
+    <label>Cotação Euro: </label>6,35<br>
+    <label>Moeda a ser convertida (1 - Euro, 2 - Dolar):</label><input type="number" min="1" max="2" id="moeda" value="1">
+    <br><button onclick="converterValor()">Converter</button>
+    <div id="resultadoConversao"></div>
+    <script src="./script.js"></script>
+</body>
+</html>

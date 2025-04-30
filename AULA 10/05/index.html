@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mecânica de Carros</title>
+</head>
+<body>
+    <label for="modeloCarro">Modelo do carro:</label>
+    <select id="modeloCarro" onchange="exibir()">
+        <option value="Honda Civic">Honda Civic</option>
+        <option value="Corolla">Corolla</option>
+        <option value="Onix">Onix</option>
+        <option value="Camaro">Camaro</option>
+    </select>
+    <div style="display: flex; flex-direction: row; flex: 0; gap: 50px; padding-top: 20px;">
+        <div id="resultado"></div>
+        <div>
+            <div id="servicos">
+            </div> 
+            <div id="valorTotal"></div> 
+        </div>
+  
+
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

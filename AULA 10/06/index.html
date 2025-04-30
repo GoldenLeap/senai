@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja de Roupas</title>
+</head>
+<body>
+    <label for="tipo">Tipo de Roupa</label>
+    <select id="tipo">
+        <option value="1">Camisa</option>
+        <option value="2">Calça</option>
+        <option value="3">Vestido</option>
+    </select><br>
+    <label for="quantidade">Quantidade:</label>
+    <input type="number" id="quantidade" min="1"><br>
+    <button onclick="calcular()">Calcular</button><br>
+    Preço total: <span id="total"></span><br>
+    Preço com desconto(Compras acima de R$100,00): <span id="desconto"></span> 
+    
+    <script src="./script.js"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Área</title>
+    <style>
+        .hidden{
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <select onchange="atualizar()" id="opcao">
+        <option value="1">Circulo</option>
+        <option value="2">Triangulo</option>
+        <option value="3">Quadrado</option>
+    </select>
+    <div id="circulo" class="hidden">
+        <label for="raio" >Raio:</label>
+        <input id="raio">
+    </div>
+    <div id="quad" class="hidden">
+        <label for="comprimento">Comprimento(cm)</label>
+        <input id="comprimento">
+    </div>
+    <div id="triangulo" class="hidden">
+        <label for="base">Base(cm)</label>
+        <input id="base">
+        <label for="altura">Altura(cm)</label>
+        <input id="altura">
+    </div>
+    <button onclick="calcularArea()">Calcular Área</button>
+    <div id="resultadoArea"></div>
+    <script src="./script.js"></script>
+</body>
+</html>
