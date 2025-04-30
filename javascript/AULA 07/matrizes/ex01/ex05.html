@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrizes 5 - Exemplo</title>
+</head>
+<body>
+    <input id="matrizPares" placeholder="Digite 16 numeros separados por virgula (4x4)"></Input>
+    <button onclick="contarParesMatriz()">Contar Pares</button>
+    <p id="resultadoParesMatriz"></p>
+    <script>    
+        function contarParesMatriz(){
+            const vetor = document.getElementById("matrizPares").value.split(",").map(Number);
+            const matriz = [];
+            let paresMatriz = [];
+            for(let i =0; i<4; i++){
+                matriz[i] = vetor.slice(i*4, (i+1)*4)
+            }
+            let pares =0;
+            for(let i =0; i<4; i++){
+                for(let j=0; j<4; j++){
+                    if(matriz[i][j] % 2===0){
+                        pares++;
+                        paresMatriz.push(matriz[i][j]);
+                    }
+                }
+            }
+            document.getElementById("resultadoParesMatriz").innerHTML = `Qnt Pares: ${pares}<br>Pares: ${paresMatriz}`;
+        }
+            
+    </script>
+</body>
+</html>

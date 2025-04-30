@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Reserva de Produtos</title>
+</head>
+<body>
+    <div >
+        <h2>Reserva de Produto</h2>
+        <div>
+            <label for="nome">Nome do Cliente:</label><br>
+            <input type="text" id="nome" required><br>
+
+            <label for="produto">Produto:</label><br>
+            <select id="produto" required>
+                <option value="">Selecione o produto</option>
+                <option value="Produto A">Produto A</option>
+                <option value="Produto B">Produto B</option>
+                <option value="Produto C">Produto C</option>
+            </select><br>
+
+            <label for="quantidade">Quantidade:</label><br>
+            <input type="number" id="quantidade" required min="1"><br>
+
+            <label for="endereco">Endereço de Entrega:</label><br>
+            <input type="text" id="endereco" required>
+            <br>
+            <button onclick="reservarEntrega()">Reservar Entrega</button>
+        </div>
+
+        <div>
+            <p id="resultado"></p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

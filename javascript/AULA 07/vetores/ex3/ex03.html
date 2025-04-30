@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo 3 - Vetor</title>
+</head>
+<body>
+    <input type="text" name="" id="vetorInversao" placeholder="Digite os numeros separados por virgula">
+    <button onclick="inverterVetor()">Inverter Vetor</button>
+    <p id="resultadoInversao"></p>
+    <script>
+        function inverterVetor(){
+            const vetor = document.getElementById("vetorInversao").value.split(",").map(Number);
+            document.getElementById("resultadoInversao").innerHTML = `Vetor invertido: ${vetor.reverse()}`;
+        }
+    </script>
+</body>
+</html>
