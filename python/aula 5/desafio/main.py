@@ -15,7 +15,7 @@ while True:
         
         result = input(f"{n}X{num}: ")
         if result != str(n*num):
-            print("Resultado incorreto")
+            print(f"Resultado incorreto, o resultado é {n * num}")
             erros += 1
         else:
             print("Resultado correto")
