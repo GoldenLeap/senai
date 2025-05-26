@@ -1,4 +1,6 @@
 # Exemplo de metodos para lista
+letra = ["a", "b", "c"]
+
 lista = [4,5,3,5]
 print(lista) # [4,5,3,5]
 lista.append(2)
@@ -22,3 +24,8 @@ del lista[2:5]
 print(lista)# [5, 5]
 lista.clear()
 print(lista) # []
+
+# len pega o tamanho da lista
+print(f"Tamanho da lista: {len(letra)}")
+# index procura pelo valor e retorna o indice desse valor, caso não exista da um erro
+print(f"Indice da letra b: {letra.index('b')}")
