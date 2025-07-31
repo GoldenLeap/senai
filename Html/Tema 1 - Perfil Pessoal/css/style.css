@@ -1,0 +1,102 @@
+/* Aqui vão os estilos básicos para um layout simples */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
+  color: #333;
+}
+header {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 2rem 0;
+}
+header p{
+  font-size: 20px;
+}
+header h1 {
+  margin: 0;
+}
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+.profile-section {
+  display: flex;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.profile-photo{
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 50%;
+  align-self: center;
+ /*margin-left: auto;*/
+}
+.bio,
+.hobbies,
+.contact {
+  flex: 1;
+  min-width: 250px;
+}
+.socialContainer{
+    display:flex;
+    flex-direction: row;
+    gap: 60px;
+    justify-content: start;
+    margin: 0x 0px;
+}
+.social{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+.social img{
+    max-width: 32px;
+    transition: transform 200ms;
+}
+.social img:hover{
+    transform: scale(1.25);
+}
+.hobbies ul {
+  list-style: none;
+  padding: 0;
+}
+.hobbies li {
+  background-color: #ddd;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px;
+}
+.contact a {
+  color: #333;
+  text-decoration: none;
+  font-weight: bold;
+}
+.contact a:hover {
+  color: #007bff;
+}
+footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: #333;
+  color: white;
+}
+
+.btn {
+  background-color: #ddd;
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background-color: #b9b9b9; 
+}
