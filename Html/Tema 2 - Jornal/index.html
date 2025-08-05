@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Notícias</title>
+    <style>
+        /* Estilo básico só para visualizar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .nav ul {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .latestNewsSlide {
+            background-color: #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .news {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .recentNews, .popularNews, .newsSec2 {
+            flex: 1;
+            min-width: 280px;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .recentNews ul {
+            list-style: disc;
+            margin-left: 20px;
+        }
+
+        .recentNews li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Logo -->
+        <div class="logo">📰 Meu Portal de Notícias</div>
+
+        <!-- Navegação -->
+        <div class="nav">
+            <ul>
+                <li><a href="#">Início</a></li>
+                <li><a href="#">Notícias</a></li>
+                <li><a href="#">Esportes</a></li>
+                <li><a href="#">Contato</a></li>
+            </ul>
+        </div>
+
+        <!-- Slide de Últimas Notícias -->
+        <div class="latestNewsSlide">
+            <h2>Últimas Notícias em Destaque</h2>
+        </div>
+
+        <!-- Seção de Notícias -->
+        <div class="news">
+
+            <!-- Notícias Recentes -->
+            <div class="recentNews">
+                <h3>Notícias Recentes</h3>
+                <ul>
+                    <li>Nova medida econômica é anunciada pelo governo.</li>
+                    <li>Chuvas intensas causam alagamentos na região sul.</li>
+                    <li>Campeonato brasileiro tem nova liderança.</li>
+                    <li>Pesquisa revela aumento no uso de energia solar.</li>
+                </ul>
+            </div>
+
+            <!-- Notícia em Destaque -->
+            <div class="featuredNews">
+            </div>
+
+            <!-- Segunda Seção de Notícias -->
+            <div class="newsSec2">
+                <h3>Outras Notícias</h3>
+                <p>Espaço para reportagens especiais, entrevistas, ou colunas de opinião.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
