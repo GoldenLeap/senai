@@ -1,0 +1,252 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+h2,
+h3 {
+  color: #003366;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Logo */
+.logo {
+  font-size: 2.5em;
+  font-weight: bold;
+  padding: 20px 0;
+  color: #1a1a1a;
+  text-align: center;
+}
+
+/* Navegação */
+.nav ul {
+  display: flex;
+  list-style: none;
+  background-color: #003366;
+  padding: 10px;
+  border-radius: 5px;
+  justify-content: center;
+}
+
+.nav ul li {
+  margin: 0 15px;
+}
+
+.nav ul li a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav ul li a:hover {
+  color: #ffcc00;
+  transform: scale(1.1); /* Efeito de zoom */
+}
+
+/* Slide de notícias */
+.latestNewsContainer {
+  background-color: #e0e0e0;
+  padding: 15px;
+  margin: 20px 0;
+  border-left: 5px solid #003366;
+}
+.latestNewsSlide {
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+  flex: auto;
+}
+.newsCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.latestNewsContainer h2 {
+  color: #003366;
+}
+
+/* Seções de notícias */
+.news {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.otherNews p{
+    margin-top: 10px;
+  color: #666;
+  text-align: center;
+}
+.recentNews,
+.newsSec2, .otherNews {
+  flex: 1;
+  min-width: 300px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.recentNews h3,
+.newsSec2 h3 {
+  margin-bottom: 10px;
+  color: #003366;
+}
+
+.recentNews ul {
+  list-style-type: none;
+}
+
+.recentNews ul a {
+  text-decoration: none;
+  color: #333;
+}
+
+.recentNews ul a li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.3s ease;
+}
+
+.recentNews ul a li:hover {
+  background-color: #f0f0f0;
+}
+
+.newsSec2 p {
+  margin-top: 10px;
+  color: #666;
+  text-align: center;
+}
+
+/* Estilos para o grid de notícias */
+.newsGrid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(280px, 1fr)
+  ); /* Cria um grid responsivo */
+  gap: 20px;
+}
+
+.newsItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.newsItem a {
+  text-decoration: none;
+  color: #333;
+  font-size: 1.1em;
+}
+
+.newsItem a:hover {
+  color: #003366;
+  text-decoration: underline;
+  transform: scale(1.05); /* Efeito de zoom */
+}
+
+/* Link para "Veja mais" */
+.newsSec2 p a {
+  text-decoration: none;
+  color: #003366;
+  font-weight: bold;
+  font-size: 1.1em;
+  transition: color 0.3s ease;
+}
+
+.newsSec2 p a:hover {
+  color: #ffcc00; /* Cor de destaque */
+}
+a:hover{
+    color: #ffcc00;
+}
+a{
+    color: #003366;
+    text-decoration: none;
+    text-align: center;
+    align-self: center;
+}
+/* Responsividade */
+@media (max-width: 768px) {
+  .nav ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .news {
+    flex-direction: column;
+  }
+
+  .logo {
+    text-align: center;
+  }
+
+  .newsGrid {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(250px, 1fr)
+    ); /* Ajuste para telas menores */
+  }
+
+  .newsSec2 h3 {
+    font-size: 1.4em;
+  }
+
+  .newsItem {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+  }
+}
+
+.featuredNews {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+.card {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+.card img {
+  transition: all 200ms;
+  border-radius: 5px;
+}
+.card img:hover {
+  transform: scale(1.01);
+}
