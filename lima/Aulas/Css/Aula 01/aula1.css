@@ -1,0 +1,27 @@
+/* Formatação de parágrafo */
+ body{
+    background-image: url("../..//Html/Aula\ 01/manoel.jpg");
+}
+
+p{
+    color: #0000ff;
+    text-shadow: 2px 1px #210248;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20px;
+    font-weight: 700;
+    margin-left: 10px;
+    text-align: center;
+}
+
+h1, h6{
+    color: #ff6edb;
+    font-weight: 900;
+    font-family: 'Comic Sans MS', 'Papyrus', 'Arial'; 
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+h2{
+    color: #11ffbf;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
