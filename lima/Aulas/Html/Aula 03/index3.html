@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imagens Dinamicas</title>
+</head>
+<body>
+    <h1>Imagem Dinamica</h1>
+    <picture>
+        <source media="(max-width: 400px)" srcset="imagem2p.png" type="image/png">
+        <img src="imagem2p.png" alt="imagem2">
+
+        <source media="(max-width: 800px)" srcset="imagem2m.png" type="image/png">
+        <img src="imagem2m.png" alt="imagem2">
+
+        <source srcset="imagem2g.png" type="image/png">
+        <img src="imagem2g.png" alt="imagem2">
+    </picture>
+
+</body>
+</html>
