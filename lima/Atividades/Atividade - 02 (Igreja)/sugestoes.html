@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulário de Sugestões - Igreja Santo Antônio</title>
+    <link rel="stylesheet" href="./style/formulario.css" />
+    <link rel="shortcut icon" href="icons/form.ico" type="image/x-icon" />
+  </head>
+  <body>
+    <h1>Formulário de Sugestões e Comentários</h1>
+    <img src="imgs/logo.png" />
+
+    <form onsubmit="return false" aria-label="Formulario de sugestões">
+      <!-- Nome -->
+      <div class="form-gp">
+        <label for="nome">Nome Completo</label>
+        <input
+          type="text"
+          id="nome"
+          name="nome"
+          required
+          aria-required="true"
+          autocomplete="on"
+        />
+      </div>
+
+      <!-- Email -->
+      <div class="form-gp">
+        <label for="email">Email de contato (opcional)</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          autocomplete="on"
+          aria-describedby="emailHelp"
+          onkeydown="checkEmail()"
+        />
+        <p class="hidden">Insira um email Válido</p>
+      </div>
+
+      <!-- Categoria da sugestão -->
+      <div class="form-gp">
+        <label for="categoria">Categoria da Sugestão</label>
+        <select id="categoria" name="categoria" required aria-required="true">
+          <option value="sugestao">Sugestão</option>
+          <option value="comentario">Comentário</option>
+          <option value="agradecimento">Agradecimento</option>
+          <option value="reclamacao">Reclamação</option>
+          <option value="outro">Outro</option>
+        </select>
+      </div>
+
+      <!-- Mensagem -->
+      <div class="form-gp">
+        <label for="mensagem">Sua mensagem</label>
+        <textarea
+          id="mensagem"
+          name="mensagem"
+          rows="5"
+          required
+          aria-required="true"
+        ></textarea>
+      </div>
+
+      <!-- Privacidade -->
+      <div class="form-gp">
+        <label for="privacidade">
+          <input
+            type="checkbox"
+            id="privacidade"
+            name="privacidade"
+            required
+            aria-required="true"
+          />
+          Autorizo o uso da minha sugestão para compartilhamento em eventos ou
+          materiais da Igreja.
+        </label>
+      </div>
+
+      <button type="submit" onclick="saubmit()" aria-live="assertive">Enviar minha Sugestão</button>
+    </form>
+
+    <div id="feedback" class="hidden">
+      <p>Sua sugestão foi enviada com sucesso! Agradecemos seu feedback.</p>
+    </div>
+  </body>
+</html>
