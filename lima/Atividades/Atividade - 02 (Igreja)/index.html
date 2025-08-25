@@ -15,10 +15,10 @@
             ><img class="logo" src="./imgs/logo.png" alt="logo da igreja"
           /></a>
           <ul class="links">
-            <li><a href="#">Missas</a></li>
-            <li><a href="#">Eventos</a></li>
-            <li><a href="#">Sobre</a></li>
-            <li><a href="#">Sugestões</a></li>
+            <li><a href="#missas">Missas</a></li>
+            <li><a href="#eventos">Eventos</a></li>
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="./sugestoes.html" target="_blank">Sugestões</a></li>
             <li><a href="#">Doe</a></li>
           </ul>
         </div>
@@ -35,9 +35,9 @@
             laborum maiores consequatur ex!
           </p>
         </div>
-        <button>Junte-se a nós</button>
+        <button onclick="window.location.hash = '#eventos' ">Junte-se a nós</button>
       </section>
-      <section class="missas">
+      <section id="missas" class="missas">
         <h2>Horário das Missas</h2>
         <div class="gridMissas">
           <div class="card">
@@ -62,7 +62,7 @@
           </div>
         </div>
       </section>
-      <section class="eventos">
+      <section class="eventos" id="eventos">
         <h2>Próximos Eventos</h2>
         <div class="gridEventos">
           <!-- Evento 1: Missa de Natal -->
@@ -134,9 +134,12 @@
             <p><strong>Data:</strong> 12-14 de setembro</p>
           </div>
         </div>
+        <div class="eventos-cta">
+          <a href="matricula.html" class="btn-matricula">Matricule-se</a>
+        </div>
       </section>
 
-      <section class="sobre">
+      <section id="sobre" class="sobre">
         <div class="sobre-texto">
           <h1>Sobre a Igreja</h1>
           <p>
@@ -150,7 +153,7 @@
           <img src="imgs/sobre/igreja.jpg" alt="Igreja Santo Antônio" />
         </div>
       </section>
-
+      
       <footer>
         <div class="footer-content">
           <div class="footer-logo">

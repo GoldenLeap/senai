@@ -1,6 +1,7 @@
 html{
     box-sizing: border-box;
     color: #222;
+    scroll-behavior: smooth;
 
 
 }
@@ -365,4 +366,28 @@ footer {
     .sobre p {
         font-size: 1rem;
     }
+}
+.eventos-cta {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.btn-matricula {
+  background: linear-gradient(90deg, #D64B86 0%, #FF7CA8 100%);
+  border: none;
+  border-radius: 24px;
+  padding: 14px 32px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(214, 75, 134, 0.15);
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  display: inline-block;
+}
+
+.btn-matricula:hover {
+  background: linear-gradient(90deg, #D02F72 0%, #FF5C99 100%);
+  transform: scale(1.04);
+  box-shadow: 0 4px 16px rgba(214, 75, 134, 0.25);
 }
