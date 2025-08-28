@@ -1,0 +1,258 @@
+/* ==================== Variáveis ==================== */
+:root {
+  --color-primary: #003366;
+  --color-accent: #ffcc00;
+  --color-bg: #f4f4f4;
+  --color-light: #f9f9f9;
+  --color-text: #333;
+  --color-muted: #666;
+
+  --radius: 5px;
+  --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  --spacing-sm: 10px;
+  --spacing-md: 15px;
+  --spacing-lg: 20px;
+  --max-width: 1200px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ==================== Base ==================== */
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+h2, h3 {
+  color: var(--color-primary);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover,
+a:focus {
+  color: var(--color-accent);
+  text-decoration: underline;
+  outline: none;
+}
+
+/* ==================== Container ==================== */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  width: 90%;
+  max-width: var(--max-width);
+  margin: auto;
+  padding: var(--spacing-lg);
+}
+
+/* ==================== Logo ==================== */
+.logo {
+  font-size: 2.5rem;
+  font-weight: bold;
+  padding: var(--spacing-lg) 0;
+  color: #1a1a1a;
+  text-align: center;
+}
+
+/* ==================== Navegação ==================== */
+.nav ul {
+  display: flex;
+  list-style: none;
+  background-color: var(--color-primary);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius);
+  justify-content: center;
+  gap: var(--spacing-md);
+}
+
+.nav ul li a {
+  color: #fff;
+  font-weight: bold;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav ul li a:hover {
+  color: var(--color-accent);
+  transform: scale(1.1);
+}
+
+/* ==================== Slide de Notícias ==================== */
+.latestNewsContainer {
+  background-color: #e0e0e0;
+  padding: var(--spacing-md);
+  margin: var(--spacing-lg) 0;
+  border-left: 5px solid var(--color-primary);
+}
+
+.latestNewsSlide {
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+  flex: auto;
+}
+
+.newsCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-light);
+  padding: var(--spacing-md);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.latestNewsContainer h2 {
+  color: var(--color-primary);
+}
+
+/* ==================== Seções de Notícias ==================== */
+.news {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg);
+}
+
+.recentNews,
+.newsSec2,
+.otherNews {
+  flex: 1;
+  min-width: 300px;
+  background-color: #fff;
+  padding: var(--spacing-lg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.3s ease;
+}
+
+.recentNews h3,
+.newsSec2 h3 {
+  margin-bottom: var(--spacing-sm);
+}
+
+.recentNews ul {
+  list-style-type: none;
+}
+
+.recentNews ul a li {
+  padding: var(--spacing-sm);
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.3s ease;
+}
+
+.recentNews ul a li:hover {
+  background-color: #f0f0f0;
+}
+
+.newsSec2 p,
+.otherNews p {
+  margin-top: var(--spacing-sm);
+  color: var(--color-muted);
+  text-align: center;
+}
+
+/* ==================== Grid de Notícias ==================== */
+.newsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.newsItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--color-light);
+  padding: var(--spacing-md);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  gap: var(--spacing-md);
+}
+
+.newsItem a {
+  font-size: 1.1em;
+}
+
+.newsItem a:hover {
+  transform: scale(1.05);
+}
+
+.newsSec2 p a {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.featuredNews {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-lg);
+  background-color: #fff;
+  border-radius: var(--radius);
+}
+
+/* ==================== Cards ==================== */
+.card,
+.newsCard {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.card img,
+.newsCard img {
+  border-radius: var(--radius);
+  transition: all 0.2s ease;
+  width: 150px;
+  
+}
+
+.card img:hover,
+.newsCard img:hover {
+  cursor: pointer;
+  transform: scale(1.01);
+}
+
+.newsItem img {
+  max-width: 200px;
+  border-radius: var(--radius);
+}
+
+/* ==================== Responsividade ==================== */
+@media (max-width: 768px) {
+  .nav ul {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .news {
+    flex-direction: column;
+  }
+
+  .newsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+
+  .newsItem {
+    padding: var(--spacing-sm);
+    width: 100%;
+  }
+
+  .newsSec2 h3 {
+    font-size: 1.4em;
+  }
+}
