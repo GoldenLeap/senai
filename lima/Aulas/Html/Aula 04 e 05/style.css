@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+@font-face{
+    font-family: 'Manhattan Darling';
+    src: url("./fonts/Manhattan Darling Typeface.ttf") format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+h2{
+    color: #8a2be2;
+    font-size: 1.9em;
+    font: italic bold 1em Arial,sans-serif,Helvetica;
+}
+p{
+    font-size: 10px;
+}
+
+body{
+    background: #b322c3;
+    background: linear-gradient(145deg,rgba(179, 34, 195, 1) 0%, rgba(212, 55, 144, 1) 100%);   
+    font-family: 'Manhattan Darling', sans-serif;
+    font-size: 1rem;
+    font-style: italic;
+    font-weight: bold;
+}
