@@ -14,11 +14,11 @@ cards.forEach(card => {
     const staticSrc = img.getAttribute("data-static");
     const gifSrc = img.getAttribute("data-gif");
 
-    card.addEventListener("mouseover", () => {
+    card.addEventListener("mouseenter", () => {
         img.src = gifSrc;
     });
 
-    card.addEventListener("mouseout", () => {
+    card.addEventListener("mouseleave", () => {
         img.src = staticSrc;
     });
 });
