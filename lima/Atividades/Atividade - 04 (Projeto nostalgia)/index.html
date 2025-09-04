@@ -12,62 +12,67 @@
 </head>
 <body>
     <section class="hero">
-        <h1>Nostalgia Animada</h1>
-        <p>Reviva os melhores desenhos dos anos 80 e 90! Uma viagem no tempo através das animações que marcaram gerações.</p>
+        <h1 class="blink">Nostalgia Animada: Desenhos dos Anos 80 e 90</h1>
+        <p>Relembre os clássicos que marcaram gerações!</p>
     </section>
     <div class="container">
         <section class="desenhos">
             <div class="grid-desenhos" id="desenhos">
-                <div class="card">
+                <div  data-video="https://www.youtube.com/embed/Nds9oPVLATc?si=UOH_CYIXwBRCb-am" tabindex="0" class="card">
                     <img class="img-cdz" data-gif="./imgs/cdz.gif" src="./imgs/cavaleiros-do-zodiaco.jpg" data-static="./imgs/cavaleiros-do-zodiaco.jpg" alt="Cavaleiros do Zodíaco">
                     <h3>Cavaleiros do Zodíaco (1986)</h3>
                     <p>Uma série épica de ação e aventura com heróis lutando pelo bem da humanidade.</p>
                 </div>
-                <div class="card">
-                    <img  data-gif="./imgs/pinky-cerebro.gif" data-static="./imgs/pinky-cerebro.jpg" src="./imgs/pinky-cerebro.jpg" alt="Pinky e o Cérebro">
+                <div data-video="https://www.youtube.com/embed/rjp4LtSn5Jw?si=q1LkrDQk5QnFa64x" tabindex="0" class="card">
+                    <img data-gif="./imgs/pinky-cerebro.gif" data-static="./imgs/pinky-cerebro.jpg" src="./imgs/pinky-cerebro.jpg" alt="Pinky e o Cérebro">
                     <h3>Pinky e o Cérebro (1995)</h3>
                     <p>As peripécias de dois ratos que tentam dominar o mundo de uma maneira hilária.</p>
                 </div>
-                <div class="card">
+                <div  data-video="https://www.youtube.com/embed/UV7tBo-Qua8?si=F8DybN7kj0WDGqzZ" tabindex="0" class="card">
                     <img data-gif="./imgs/dbz.gif" data-static="./imgs/dragon-ball-z.jpg" src="./imgs/dragon-ball-z.jpg" alt="Dragon Ball Z">
                     <h3>Dragon Ball Z (1989)</h3>
                     <p>A famosa saga de Goku e seus amigos, enfrentando inimigos poderosos e épicas batalhas.</p>
                 </div>
-                <div class="card">
+                <div data-video="https://www.youtube.com/embed/XyDjtIbsUDU?si=Ox3FItcrTQa6K8pr" tabindex="0" class="card">
                     <img data-gif="./imgs/spiderman.gif" data-static="./imgs/homem-aranha.jpg" src="./imgs/homem-aranha.jpg" alt="Homem-Aranha">
                     <h3>Homem-Aranha (1994)</h3>
                     <p>A aventura do super-herói aracnídeo em sua luta contra os vilões de Nova York.</p>
                 </div>
-                <div class="card">
+                <div data-video="https://www.youtube.com/embed/_46a4va40Ns?si=3h-RwXv_2x-bggVP" tabindex="0" class="card">
                     <img data-gif="./imgs/johnny-bravo.gif" data-static="./imgs/johnny-bravo.jpg" src="./imgs/johnny-bravo.jpg" alt="Johnny Bravo">
                     <h3>Johnny Bravo (1997)</h3>
                     <p>Comédia sobre um homem musculoso e desajeitado em suas tentativas de conquistar as mulheres.</p>
                 </div>
-                <div class="card">
+                <div data-video="https://www.youtube.com/embed/mE8E3nT2U70?si=VB9kpd1r8aYoURFY" tabindex="0" class="card">
                     <img data-gif="./imgs/pokemon.gif" data-static="./imgs/pokemon.png" src="./imgs/pokemon.png" alt="Pokémon">
                     <h3>Pokémon (1997)</h3>
                     <p>A jornada de Ash Ketchum e seus amigos para se tornar um mestre Pokémon.</p>
                 </div>
-                <div class="card">
+                <div data-video="https://www.youtube.com/embed/Ya3Q9OLk25g?si=ltqgUOqa71UPGZVZ"  tabindex="0" class="card">
                     <img data-gif="./imgs/laboratorio-dexter.gif" data-static="./imgs/laboratorio-dexter.png" src="./imgs/laboratorio-dexter.png" alt="O Laboratório de Dexter">
                     <h3>O Laboratorio de Dexter (1996)</h3>
                     <p>Dexter é um menino gênio que construiu um laboratório secreto atrás do armário do seu quarto.</p>
                 </div>
-                <div class="card">
+                <div data-video="https://www.youtube.com/embed/5dYUC93m0QU?si=fEtv8Kd17d-kflje" tabindex="0" class="card">
                     <img data-gif="./imgs/he-man.gif" data-static="./imgs/he-man.jpg" src="./imgs/he-man.jpg" alt="He-Man e os Defensores do Universo">
                     <h3>He-Man e os Defensores do Universo (1983)</h3>
                     <p>O homem mais poderoso do universo, He-Man, vai contra as forças do mal de Esqueleto para salvar o planeta Eternia e proteger os segredos do Castelo de Grayskull.</p>
                 </div>
             </div>
         </section>
-    </div>
-
+        </div>
     <footer>
-        <p>&copy; 2025 Gabriel Bernardi</p>
         <div class="creditos">
+            <p>&copy; 2025 Gabriel Bernardi</p>
             <a href="https://www.flaticon.com/br/icones-gratis/televisao" title="televisão ícones">Televisão ícones criados por Freepik - Flaticon</a>
         </div>
     </footer>
+    <div class="modal" id="videoModal" role="dialog" aria-label="Modal com vídeo do desenho">
+    <div class="modal-content">
+        <button class="close-btn" aria-label="Fechar modal">X</button>
+        <iframe src="" title="Vídeo do desenho animado"></iframe>
+    </div>
+
     <script src="./js/script.js"></script>
 </body>
 </html>

@@ -9,6 +9,7 @@ body {
   padding: 0px;
   margin: 0px;
 }
+
 *,
 *::before,
 *::after {
@@ -33,7 +34,9 @@ body {
 }
 
 img {
-  width: 150px;
+  width: 100%;
+  max-width: 150px;
+  aspect-ratio: 3/4;
   object-fit: cover;
   height: 200px;
   border-radius: 20px;
@@ -47,8 +50,8 @@ img {
   margin-top: 20px;
 }
 .card {
-  background: rgba(255, 255, 255, 0.05); 
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  border: 3px solid rgba(255, 255, 255, 0.2);
   border-radius: 16px;
   padding: 20px;
   text-align: center;
@@ -56,6 +59,7 @@ img {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   border: 3px solid #0000;
   border-radius: 12px;
+  cursor: pointer;
 }
 
 .card h3 {
@@ -64,68 +68,132 @@ img {
   margin-bottom: 10px;
 }
 .card p {
-  font-size: 0.8rem;
-  color: #bbbaba;
+  font-size: 0.9rem;
+  color: #e0e0e0;
   line-height: 1.6;
   margin-bottom: 10px;
 }
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 10px #00ffff;
   background: linear-gradient(#1b4f8f, #1b4f8f) padding-box,
-  linear-gradient(var(--angle), #1b4f8f, #cffd01) border-box;
+    linear-gradient(var(--angle), #ff69b4, #00ffff, #cffd01) border-box;
   animation: 2s rotate linear infinite;
 }
-
+.card:focus {
+  outline: 2px solid #ff69b4;
+  outline-offset: 2px;
+}
 footer {
-  font-size: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 100%;
   background-color: #222;
-  color: #fff;
+  color: #e0e0e0;
   padding: 20px 10%;
   font-size: 0.9rem;
 }
 footer a {
-  font-size: 5px;
+  font-size: 0.8rem;
   color: #faed27;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
+footer a:hover {
+  color: #00ffff;
+  text-decoration: underline;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-in;
+}
+.modal-content {
+  background: #222;
+  border: 3px solid #ff69b4;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 600px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 0 15px #00ffff;
+}
+.modal-content iframe {
+  width: 100%;
+  height: 315px;
+  border: none;
+  border-radius: 8px;
+}
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ff69b4;
+  color: #000;
+  font-family: "Press Start 2P", system-ui;
+  font-size: 0.8rem;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.close-btn:hover {
+  background: #00ffff;
+}
+
 .creditos {
   display: flex;
   flex-flow: column wrap;
 }
-
 @keyframes rotate {
   to {
     --angle: 360deg;
   }
 }
-
 @property --angle {
   syntax: "<angle>";
   initial-value: 0deg;
   inherits: false;
 }
-@media (max-width: 1024px) {
-  .grid-desenhos {
-    grid-template-columns: repeat(3, 1fr); /* 3 cards em telas menores */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
-
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .grid-desenhos {
-    grid-template-columns: 1fr; /* 1 card por linha em telas muito pequenas */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
-
+  .hero {
+    padding: 20px 2rem;
+  }
+}
+@media (max-width: 768px) {
+  .hero {
+    padding: 20px 1rem;
+  }
   .hero h1 {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
-
   .hero p {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+  }
+  .modal-content iframe {
+    height: 200px;
   }
 }
