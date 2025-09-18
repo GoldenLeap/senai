@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vitrine 2025 - Carrinho</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./carrinho.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <div class="logo">
+          <h1><a href="./index.html">Vitrine 2025</a></h1>
+        </div>
+        <nav class="nav-bar">
+          <a href="#">Home</a>
+          <a href="#">Produtos</a>
+          <a href="#">Sobre</a>
+          <a href="#">Contato</a>
+          <a href="./carrinho.html" class="cart-icon">
+            <img src="./icons/cart.svg" alt="Carrinho"/>
+            <p></p>
+          </a>
+          <button id="dark-mode-toggle">🌙</button>
+        </nav>
+      </header>
+      <main>
+        <h1>Carrinho</h1>
+        <div id="listaCompras">
+          <p>Vazio...</p>
+        </div>
+        <button class="btn-continuar" onclick="checkout()">Continuar</button>
+        <div id="carrinho"></div>
+      </main>
+      <footer>
+        <div class="footer-links">
+          <a href="#">Política de Privacidade</a>
+          <a href="#">Termos de Serviço</a>
+          <a href="#">Ajuda</a>
+        </div>
+        <div class="social-media">
+          <a href="#">Facebook</a>
+          <a href="#">Instagram</a>
+          <a href="#">Twitter</a>
+        </div>
+        <div class="newsletter">
+          <p>Assine nossa newsletter:</p>
+          <input type="email" placeholder="Seu email" />
+          <button>Inscrever-se</button>
+        </div>
+        <p class="credits">© 2025 Vitrine. Todos os direitos reservados.</p>
+      </footer>
+    </div>
+
+    <script src="./script.js"></script>
+    <script src="./carrinho.js"></script>
+  </body>
+</html>
