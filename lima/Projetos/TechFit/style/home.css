@@ -1,0 +1,27 @@
+      .card ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .card li::before {
+        content: "  \2713";
+        display: inline-block;
+        margin-left: -1.3em;
+        width: 1.3em;
+      }
+      
+      .card-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+      
+      .card-subtitle {
+        font-size: 1rem;
+        color: #6c757d;
+      }
+      
+      .card-body h2 {
+        display: inline;
+        font-weight: bold;
+        font-size: 2rem;
+      }
