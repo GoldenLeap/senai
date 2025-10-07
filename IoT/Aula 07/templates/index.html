@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de LED</title>
+    <link rel="stylesheet" href="./style/style.css">
+</head>
+<body>
+    <h1 style="text-align: center;">Controle de LEDs com Arduino via WEB</h1>
+    <div class="container">
+
+        <div class="card">
+            <h1>LED 1 (Verde)</h1>
+            <div class="led"></div>
+            <div class="btns">
+                <a onclick="ligar(0)" class="btn on">
+                    Ligar
+                </a >
+                <a onclick="desligar(0)" class="btn off">
+                    Desligar
+                </a>
+            </div>
+        </div>
+        <div class="card">
+            <h1>LED 2 (Vermelho)</h1>
+            <div class="led"></div>
+            <div class="btns">
+                <a onclick="ligar(1)"class="btn on">
+                    Ligar
+                </a>
+                <a onclick="desligar(1)" class="btn off">
+                    Desligar
+                </a>
+            </div>
+        </div>
+    </div>
+    <script src="./js/led.js"></script>
+</body>
+</html>
