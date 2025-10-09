@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TechFit - Painel do Aluno</title>
+    <link rel="shortcut icon" href="../assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="../assets/css/profile.css" />
+    <link rel="stylesheet" href="../assets/css/utility.css" />
+    <script src="../assets/js/script.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        <div class="welcome">
+          <img src="../assets/images/avatar.png" alt="Foto de perfil do usuário" width="40" class="pfp" />
+          <div>
+            <p>Olá, <span id="username">Usuário</span></p>
+            <small>Aluno TechFit</small>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="#" class="sidebar-item " aria-label="Dashboard principal">
+            <span class="icon">📊</span> Dashboard
+          </a>
+          <a href="#" class="sidebar-item" aria-label="Agendamento de aulas">
+            <span class="icon">📅</span> Agendamento de Aulas
+          </a>
+          <a href="#" class="sidebar-item" aria-label="Frequência de treinos">
+            <span class="icon">📈</span> Frequência
+          </a>
+          <a href="#" class="sidebar-item" aria-label="Relatórios">
+            <span class="icon">📋</span> Relatórios
+          </a>
+          <hr />
+          <a href="#" class="sidebar-item active" aria-label="Configurações">
+            <span class="icon">⚙️</span> Configurações
+          </a>
+        </nav>
+      </div>
+
+      <!-- Dashboard -->
+       <main class="main-content">
+          <header></header>
+       </main>
+
+
+      <!-- Configurações -->
+      <main id="config" class="hidden main-content">
+        <header class="page-header">
+          <h1>Configurações do Perfil</h1>
+          <p>Gerencie suas informações pessoais aqui.</p>
+        </header>
+
+        <section class="config">
+          <div class="opt">
+            <div class="opt-label">
+              <span class="icon">👤</span>
+              <p>Mudar nome de usuário</p>
+            </div>
+            <button class="btn-edit" aria-label="Editar nome de usuário">Editar</button>
+          </div>
+          <div class="opt">
+            <div class="opt-label">
+              <span class="icon">🔒</span>
+              <p>Mudar senha</p>
+            </div>
+            <button class="btn-edit" aria-label="Editar senha">Editar</button>
+          </div>
+          <div class="opt">
+            <div class="opt-label">
+              <span class="icon">📧</span>
+              <p>Mudar e-mail</p>
+            </div>
+            <button class="btn-edit" aria-label="Editar e-mail">Editar</button>
+          </div>
+          <div class="opt">
+            <div class="opt-label">
+              <span class="icon">📱</span>
+              <p>Mudar telefone</p>
+            </div>
+            <button class="btn-edit" aria-label="Editar telefone">Editar</button>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

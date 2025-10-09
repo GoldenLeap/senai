@@ -15,6 +15,11 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1.5rem;
 }
 
+.sidebar-list{
+  font-size: 1rem;
+  
+}
+
 .card li {
   position: relative;
   padding-left: 1.8em;
