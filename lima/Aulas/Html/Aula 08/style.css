@@ -1,0 +1,58 @@
+div.quadrado{
+    display: inline-block;
+    margin: 5px;
+    width: 300px;
+    height: 300px;
+    background-color: lightcyan;
+    border: 2px solid black;
+    border-radius : 20px;
+}
+
+div#q1{
+    background-color: aqua;
+}
+div#q2{
+    background-image:linear-gradient(to left, hsl(240, 100%, 50%), hsl(300, 100%, 25%));
+    background-image:radial-gradient(circle, hsl(240, 100%, 50%), hsl(300, 100%, 25%));
+}
+div#q3{
+    background-image: url("./jelly.jpg");
+    background-repeat: no-repeat;
+    background-repeat: repeat;
+    background-repeat: repeat-x;
+    background-repeat: repeat-y;
+    background-repeat: round;
+
+
+    background-size: cover;
+    background-size: contain;
+    background-size: 100px;
+    background-position: 30%;
+    background-attachment: fixed;
+    background-attachment: scroll;
+
+}
+body{
+    background-color: black;
+    background-image: url("./shrek.webp");
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: auto;
+    background-attachment: fixed;
+    background: black url('shrek.webp') center center no-repeat fixed ;
+}
+
+div#dentro{
+    height: 200px;
+    width: 300px;
+    background-color: #fff;
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    transform: translate(-50%, -50%);
+}
+div#fora{
+    height: 10vh;
+    background-color: #f00;
+    position: relative;
+}
