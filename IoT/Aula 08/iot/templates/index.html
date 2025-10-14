@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de LED</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style/style.css')}}">
+</head>
+<body>
+    <h1 style="text-align: center;">Controle de LEDs com Arduino via WEB</h1>
+    <div class="container">
+
+        <div class="card">
+            <h1>LED 1 (Verde)</h1>
+            <div class="led"></div>
+            <div class="btns">
+                <button onclick="control(1, 'on')" class="btn on">
+                    Ligar
+                </button>
+                <button onclick="control(1, 'off')" class="btn off">
+                    Desligar
+                </button>
+            </div>
+        </div>
+        <div class="card">
+            <h1>LED 2 (Vermelho)</h1>
+            <div class="led"></div>
+            <div class="btns">
+                <button onclick="control(2, 'on')"class="btn on">
+                    Ligar
+                </button>
+                <button onclick="control(2, 'off')" class="btn off">
+                    Desligar
+                </button>
+            </div>
+        </div>
+        <div class="card">
+            <h1>Buzz</h1>
+            <div class="led"></div>
+            <div class="btns">
+                <button onclick="beep()"class="btn on">
+                    Ligar
+                </button>
+            </div>
+        </div>
+
+        
+    </div>
+    <script src="{{ url_for('static', filename='js/led.js')}}"></script>
+</body>
+</html>
