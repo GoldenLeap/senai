@@ -5,9 +5,6 @@ require_once __DIR__ . "/../partials/head.php"
 ?>
 
 <body>
-    <header>
-        <?php require_once __DIR__ . "/../partials/nav.php"; ?>
-    </header>
 
     <main>
         <?= $conteudo ?>

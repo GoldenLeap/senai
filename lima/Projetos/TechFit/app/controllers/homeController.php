@@ -10,7 +10,7 @@
                 <script src="./assets/js/script.js" defer></script>
     HTML
         ];
-        render('homeView', $data);
+        render('homeView', 'Página Inicial', $data);
 
     }
 

@@ -1,7 +1,3 @@
-<?php
-session_start();
-$logado = isset($_SESSION['user_id']);
-?>
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary rounded">
   <div class="container-fluid">
@@ -28,7 +24,7 @@ $logado = isset($_SESSION['user_id']);
     <div class="collapse navbar-collapse d-lg-flex" id="navLinks">
       <ul class="navbar-nav col-lg-6 justify-content-lg-center gap-3">
         <li class="nav-item">
-          <a href="#" class="nav-link active" aria-current="page">Inicio</a>
+          <a href="/" class="nav-link active" aria-current="page">Inicio</a>
         </li>
         <li class="nav-item">
           <a href="#" class="nav-link">Sobre</a>
@@ -41,7 +37,7 @@ $logado = isset($_SESSION['user_id']);
         </li>
       </ul>
 
-      <?php if (!$logado): ?>
+      <?php if (!isset($logado)): ?>
       <div
         id="login"
         class="d-lg-flex col-lg-3 gap-3 m-0 p-2 justify-content-lg-end">
