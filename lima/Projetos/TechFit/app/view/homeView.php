@@ -1,7 +1,6 @@
 
 <header>
-    <?php require_once(__dir__. "/partials/nav.php");?>
-
+    <?php require (__dir__. "/partials/nav.php");?>
 </header>
 <!-- Hero Section -->
 <section id="hero" class="container col-xxl-8 px-4 py-5">

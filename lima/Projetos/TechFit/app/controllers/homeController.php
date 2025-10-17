@@ -2,6 +2,7 @@
     function homeController(){
         $data = [
             'titulo' => 'Página Inicial',
+            'tipo' => 'Aluno',
             'headExtras' => <<<HTML
                 <link rel="stylesheet" href="./assets/css/home.css" />
                 <link rel="stylesheet" href="./assets/css/utility.css" />

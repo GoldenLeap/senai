@@ -21,7 +21,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse d-lg-flex" id="navLinks">
+    <div class=" navbar-collapse d-lg-flex" id="navLinks">
       <ul class="navbar-nav col-lg-6 justify-content-lg-center gap-3">
         <li class="nav-item">
           <a href="/" class="nav-link active" aria-current="page">Inicio</a>
