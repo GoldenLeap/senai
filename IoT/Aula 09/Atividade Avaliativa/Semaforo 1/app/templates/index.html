@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Semáforo</title>
+  <style>
+    .semaforo{
+        display: flex;
+        flex-flow: column nowrap;
+        border: 2px solid black;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        width: fit-content;
+        padding: 20px;
+        background-image: linear-gradient(#857676, #815c5c);
+    }
+    .luz{
+        border: 2px solid #000;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #333;
+        box-shadow: inset 0 0 6px rgba(0,0,0,0.6);
+        transition: background-color 0.2s, box-shadow 0.2s;
+    }
+    .green{ background-color: green; box-shadow: 0 0 12px green; }
+    .yellow{ background-color: yellow; box-shadow: 0 0 12px yellow; }
+    .red{ background-color: red; box-shadow: 0 0 12px red; }
+  </style>
+</head>
+<body>
+  <div class="semaforo">
+      <div id="luz-g" class="luz"></div>
+      <div id="luz-y" class="luz"></div>
+      <div id="luz-r" class="luz"></div>
+  </div>
+
+  <script>
+    async function atualiza() {
+      try {
+        const res = await fetch('/data');
+        if (!res.ok) return;
+        const json = await res.json();
+        document.getElementById('luz-r').className = 'luz' + (json.r ? ' red' : '');
+        document.getElementById('luz-y').className = 'luz' + (json.y ? ' yellow' : '');
+        document.getElementById('luz-g').className = 'luz' + (json.g ? ' green' : '');
+      } catch (e) {
+        console.error('Erro ao atualizar:', e);
+      }
+    }
+    setInterval(atualiza, 50);
+
+    atualiza();
+  </script>
+</body>
+</html>
