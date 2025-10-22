@@ -1,5 +1,7 @@
 <?php
     function homeController(){
+        session_start();
+        $user_id = '1';
         $data = [
             'titulo' => 'Página Inicial',
             'tipo' => 'Aluno',
