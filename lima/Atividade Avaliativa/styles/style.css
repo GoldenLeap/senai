@@ -1,0 +1,224 @@
+@font-face {
+  font-family: "Letters";
+  src: url("../web/Letters-Lavish.woff2") format("woff2"),
+    url("../web/Letters-Lavish.woff") format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Letters-Torn";
+  src: url("../web/Letters-Torn.woff2") format("woff2"),
+    url("../web/Letters-Torn.woff") format("woff");
+  font-display: swap;
+}
+
+:root {
+  --main-color: #5a5fe6;
+  --text-color: #1f2328;
+  --text-color-light: #fff;
+  --bg-color: #64dddd;
+  --grad-col: linear-gradient(90deg, var(--main-color) 0%, #ffffff 100%);
+  --border-color: rgba(0, 0, 0, 0.12);
+  --surface: #ffffff;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.08);
+  --shadow-inset: inset 0 -8px 20px rgba(0, 0, 0, 0.12);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --container-max: 1100px;
+  --space-1: 0.5rem;
+  --space-2: 0.75rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Ubuntu, system-ui, -apple-system, "Segoe UI", Roboto, Arial,
+    sans-serif;
+  color: var(--text-color);
+  background: var(--bg-color);
+  line-height: 1.6;
+}
+p {
+  text-align: justify;
+}
+img,
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.container {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  min-height: 100svh;
+  padding-inline: var(--space-3);
+}
+
+main {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: var(--space-5);
+  width: 100%;
+  max-width: var(--container-max);
+  margin: var(--space-5) auto;
+  padding: var(--space-3);
+  background: transparent;
+}
+
+header {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-around;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 10rem;
+  padding: var(--space-5) var(--space-3);
+  background-color: var(--main-color);
+  color: var(--text-color-light);
+  box-shadow: var(--shadow-inset);
+  text-align: center;
+}
+
+header h1 {
+  font-family: "Letters", inherit;
+  font-size: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+}
+
+header p {
+  max-width: 65ch;
+  margin-inline: auto;
+  opacity: 0.95;
+}
+
+.navbar,
+nav {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: var(--space-2);
+  color: var(--text-color-light);
+}
+
+nav a,
+.navbar a,
+.nav-link {
+  color: var(--text-color-light);
+  text-decoration: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+  outline-offset: 2px;
+}
+nav a:hover,
+.navbar a:hover,
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+nav a:focus-visible,
+.navbar a:focus-visible,
+.nav-link:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+}
+
+.card {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.title {
+  background-image: var(--grad-col);
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 0;
+  font-weight: 800;
+  font-size: clamp(1.125rem, 1rem + 0.8vw, 1.75rem);
+}
+
+.info {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  background: var(--surface);
+  margin: 20px;
+  overflow: hidden;
+}
+.info-content {
+  padding: 10px;
+}
+
+.title-info {
+  font-family: "Letters";
+  padding: 10px;
+  border-radius: 10px 10px 0 0;
+  background-color: var(--main-color);
+  color: var(--text-color-light);
+  font-weight: 700;
+}
+
+.lists {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+  align-items: start;
+  padding: var(--space-4);
+}
+
+.lists ul {
+  margin: 0;
+  padding-left: 1.6rem;
+  list-style-type: "✓  ";
+}
+
+.lists li {
+  padding-left: 0.25rem;
+}
+
+.embed {
+  width: 100%;
+  display: flex;
+  background-color: var(--bg-color);
+  align-self: center;
+  padding: 10px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.embed iframe {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  align-self: center;
+  display: block;
+  width: 50%;
+  aspect-ratio: 16/9;
+  border: 0;
+  margin: auto;
+}
+
+footer {
+  background-color: var(--main-color);
+  color: var(--text-color-light);
+  text-align: center;
+  padding: var(--space-4);
+  margin-top: 20px;
+}
