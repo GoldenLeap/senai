@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monitoramento de Temperatura</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body class="bg-[#0c0c0c]">
+    <nav
+      class="flex w-screen bg-[#2f2f2f] h-10 align-center justify-center gap-20 text-[#fff]"
+    >
+      <a href="./" class="flex self-center">Monitorar Temperatura</a>
+      <a href="./historico.html" class="flex self-center">
+        Historico de temperatura
+      </a>
+    </nav>
+    <main class="text-[#fff] flex flex-col align-center justify-center">
+        <table class="border-separate border-[#cfcfcf]">
+            <thead>
+                <tr>
+                    <th scope="col">Sensor</th>
+                    <th scope="col">Temperatura</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Sensor 1</th>
+                    <th>0.0</th>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+  </body>
+</html>
