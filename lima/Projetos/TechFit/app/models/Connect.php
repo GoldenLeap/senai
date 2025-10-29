@@ -5,7 +5,6 @@ class Connect {
 
     public static function conectar() {
         if (self::$pdo === null) {
-            echo $_SERVER['DOCUMENT_ROOT'];
             // Verifica se o arquivo .env existe
             $envFile = __DIR__ . "/../config/.env";
             if (!file_exists($envFile)) {

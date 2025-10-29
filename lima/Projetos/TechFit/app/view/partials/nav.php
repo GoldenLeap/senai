@@ -52,7 +52,7 @@
 
           <ul class="dropdown-menu text-small">
             <li>
-              <a href="/profile.php" class="dropdown-item">Perfil</a>
+              <a href="/profile.php?page=''" class="dropdown-item">Perfil</a>
             </li>
             <li>
               <a href="#" class="dropdown-item">Configurações</a>

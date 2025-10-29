@@ -9,7 +9,7 @@
                     <a href="/profile.php?page=agenda" class="hover:bg-[#cfcfcf] rounded px-2 py-1">📅 Minha Agenda</a>
                     <a href="/profile.php?page=avaliacao" class="hover:bg-[#cfcfcf] rounded px-2 py-1">📊 Avaliação Física</a>
                     <a href="/profile.php?page=frequencia" class="hover:bg-[#cfcfcf] rounded px-2 py-1">📈 Frequência</a>
-                    <a href="/comunicados" class="hover:bg-[#cfcfcf] rounded px-2 py-1">📢 Comunicados</a>
+                    <a href="/c.envomunicados" class="hover:bg-[#cfcfcf] rounded px-2 py-1">📢 Comunicados</a>
                 <?php elseif (strtolower($tipo) == 'funcionario'): ?>
                     <a href="/admin/painel" class="hover:bg-[#cfcfcf] rounded px-2 py-1">📋 Painel Administrativo</a>
                     <a href="/admin/relatorios" class="hover:bg-[#cfcfcf] rounded px-2 py-1">📑 Relatórios</a>

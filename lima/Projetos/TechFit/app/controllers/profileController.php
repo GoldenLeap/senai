@@ -1,17 +1,17 @@
 <?php
 function profileController()
 {
-
+    
     if (!isset($_SESSION["user_id"])) {
 
         /*header('Location: /login.php');
         exit();*/
     }
     $usuario = verificarUsuario();
-    $currPage = $_GET['page'];
+    $currPage = $_GET['page'] ?? '';
 
     $data = [
-        'user_pfp' => "https://static.vecteezy.com/system/resources/previews/036/594/092/non_2x/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg",
+        'user_pfp' =>  $usuario['user_avatar'],
         'user_name' => $usuario['user_name'],
         'user_tipo' => $usuario['user_tipo'],
         'headExtras' => <<<HTML
@@ -31,14 +31,16 @@ function verificarUsuario()
     }
 
     $db = Connect::conectar();
-    $stmt = $db->prepare("SELECT nome_aluno  FROM Alunos WHERE id_usuario = :id_usuario");
+    //$stmt = $db->prepare("SELECT tipo, pfp FROM usuario WHERE id_usuario = :id_usuario");
+    $stmt = $db->prepare("SELECT nome_aluno FROM Alunos WHERE id_usuario = :id_usuario");
     $stmt->bindParam(":id_usuario", $_SESSION['user_id']);
     $stmt->execute();
     $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
     return [
         'user_name' => $usuario['nome_aluno'] ?? 'Cleitin',
-        'user_tipo' => $usuario['tipo'] ?? 'Aluno'
+        'user_tipo' => $usuario['tipo'] ?? 'Aluno',
+
     ];
 }
 
