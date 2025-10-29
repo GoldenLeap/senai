@@ -1,8 +1,12 @@
 <?php
 require_once '../app/helpers/viewHelper.php';
+require_once '../app/models/Connect.php';
 session_start();
 //$logado = isset($_SESSION['user_id']);
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$_SESSION['user_id'] = 1;
+$_SESSION['user_name'] = 'João Silva';
+$_SESSION['user_tipo'] = 'Aluno';
 
 switch ($uri) {
   case '/':
@@ -17,5 +21,4 @@ switch ($uri) {
     http_response_code(404);
     echo "Página não encontrada";
     break;
-
 }

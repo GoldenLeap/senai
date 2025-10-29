@@ -1,4 +1,3 @@
-
 <nav class="navbar navbar-expand-lg bg-body-tertiary rounded">
   <div class="container-fluid">
     <a href="#" class="navbar-brand col-lg-3 me-0">
@@ -21,7 +20,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class=" navbar-collapse d-lg-flex" id="navLinks">
+    <div class="navbar-collapse d-lg-flex" id="navLinks">
       <ul class="navbar-nav col-lg-6 justify-content-lg-center gap-3">
         <li class="nav-item">
           <a href="/" class="nav-link active" aria-current="page">Inicio</a>
@@ -37,31 +36,32 @@
         </li>
       </ul>
 
-      <?php if (!isset($logado)): ?>
-      <div
-        id="login"
-        class="d-lg-flex col-lg-3 gap-3 m-0 p-2 justify-content-lg-end">
-        <a href="/login.php" class="btn btn-outline-dark">Entrar</a>
-        <a href="/register.php" class="btn btn-dark">Cadastrar-se</a>
-      </div>
+      <!-- Verificação de login do usuário -->
+      <?php if (!isset($_SESSION["user_id"])): ?>
+        <div id="login" class="d-lg-flex col-lg-3 gap-3 m-0 p-2 justify-content-lg-end">
+          <a href="/login.php" class="btn btn-outline-dark">Entrar</a>
+          <a href="/register.php" class="btn btn-dark">Cadastrar-se</a>
+        </div>
       <?php else: ?>
-      <!-- Usuário logado -->
-      <div id="user" class="dropdown text-end">
-        <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="./assets/images/avatar.png" alt="Profile picture" width="32" height="32" class="rounded-circle">
-        </a>
-        <ul class="dropdown-menu text-small">
-          <li>
-            <a href="./aluno/profile.php" class="dropdown-item">Perfil</a>
-          </li>
-          <li>
-            <a href="#" class="dropdown-item">Configurações</a>
-          </li>
-          <li>
-            <a href="/logout.php" class="dropdown-item">Sair</a>
-          </li>
-        </ul>
-      </div>
+        <!-- Usuário logado -->
+        <div id="user" class="dropdown text-end">
+      <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="./assets/images/avatar.png" alt="Profile picture" width="32" height="32" class="rounded-circle me-2">
+        <span >Bem-vindo, <?php echo $_SESSION["user_name"]; ?></span>
+      </a>
+
+          <ul class="dropdown-menu text-small">
+            <li>
+              <a href="/profile.php" class="dropdown-item">Perfil</a>
+            </li>
+            <li>
+              <a href="#" class="dropdown-item">Configurações</a>
+            </li>
+            <li>
+              <a href="/logout.php" class="dropdown-item">Sair</a>
+            </li>
+          </ul>
+        </div>
       <?php endif; ?>
     </div>
   </div>
