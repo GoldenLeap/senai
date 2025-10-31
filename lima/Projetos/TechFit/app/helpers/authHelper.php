@@ -3,6 +3,27 @@
     header('Location: /');
 }
 
+function validate_user(){
+    if(!isset($_SESSION['user_id'])){
+        header('location: /');
+        exit;
+    }
+    $db = Connect::conectar();
+    $stmt = $db->prepare("SELECT tipo FROM Usuarios WHERE id_usuario = :id_usuario");
+    $stmt->execute([":id_usuario"=>$_SESSION['user_id']]);
+    $usuario = $stmt->fetch();
+    if(!$usuario){
+        header('location: /');
+        exit;
+    }
+    $tipo = $usuario['tipo'];
+    if(strtolower($tipo) !== 'funcionario'){
+        header('location: /');
+        exit;
+    }
+    $db = null;
+}
+
 function verificarUsuario()
 {
     if (!isset($_SESSION['user_id'])) {

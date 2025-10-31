@@ -92,12 +92,6 @@
         return $res;
     }
 
-    /**
-     * Retorna mapa de stats (inscritos e se o aluno está agendado) para várias aulas de uma vez.
-     * @param array $aulaIds
-     * @param int|null $id_aluno
-     * @return array map[id_aula] => ['inscritos'=>int,'agendado'=>bool]
-     */
     public static function getStatsForAulas(array $aulaIds, $id_aluno = null): array
     {
         if (empty($aulaIds)) return [];
@@ -134,4 +128,11 @@
         }
         return $map;
     }
+
+
+    public static function addAula(PDO $pdo, $dia_aula, $quantidade_pessoas, $id_funcionario, $id_modalidade, $id_filial){
+        $stmt = "INSERT INTO Aulas(dia_aula, quantidade_pessoas, id_funcionario, id_modalidade, id_filial)
+        VALUES (:dia_aula, :qnt_pessoas, :id_func, :id_mod, :id_fil)";
+    }
+
 }

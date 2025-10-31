@@ -1,0 +1,2 @@
+<?php
+validate_user();
