@@ -1,4 +1,12 @@
 <?php
+  function autoload($models){
+    include __DIR__ . '/../app/models/'. $models. ".php";
+  }
+  spl_autoload_register('autoload');
+?>
+
+
+<?php
 require_once '../app/helpers/viewHelper.php';
 require_once '../app/models/Connect.php';
 session_start();
