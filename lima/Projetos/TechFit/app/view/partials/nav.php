@@ -46,7 +46,7 @@
         <!-- Usuário logado -->
         <div id="user" class="dropdown text-end">
       <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="./assets/images/avatar.png" alt="Profile picture" width="32" height="32" class="rounded-circle me-2">
+        <img src="<?=$_SESSION['user_avatar']?>" alt="Profile picture" width="32" height="32" class="rounded-circle me-2">
         <span >Bem-vindo, <?php echo $_SESSION["user_name"]; ?></span>
       </a>
 
