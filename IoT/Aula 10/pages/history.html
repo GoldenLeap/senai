@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico de Temperaturas</title>
+    <link rel="stylesheet" href="../styles/history.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Histórico de Temperaturas</h1>
+        <div class="temp-summary">
+            <div class="temp-card">
+                <p>Menor temperatura:</p>
+                <div class="temp-value">
+                    <strong id="minTemp">?</strong>
+                    <span>°C</span>
+                </div>
+                <p id="timeMin" class="time-stamp">--:--</p>
+            </div>
+            <div class="temp-card">
+                <p>Maior temperatura:</p>
+                <div class="temp-value">
+                    <strong id="maxTemp">?</strong>
+                    <span>°C</span>
+                </div>
+                <p id="timeMax" class="time-stamp">--:--</p>
+            </div>
+        </div>
+        <div class="history-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Temperatura</th>
+                        <th>Horário</th>
+                    </tr>
+                </thead>
+                <tbody id="historyBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="../scripts/history.js"></script>
+</body>
+</html>
