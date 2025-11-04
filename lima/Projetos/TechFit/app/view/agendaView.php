@@ -22,17 +22,16 @@
                 <div class="bg-gray-100 p-4 rounded-lg shadow-sm">
                     <p class="font-medium text-xl mb-2"><?= date('l, d/m/Y', strtotime($aula['dia_aula'])) ?></p>
                     <div class="mb-2">
-                        <span class="block text-gray-600"><?= date('H:i', strtotime($aula['horario_inicio'])) ?> - <?= date('H:i', strtotime($aula['horario_fim'])) ?></span>
+                        <span class="block text-gray-600"><?= date('H:i', strtotime('13:00')) ?> - <?= '16:00' ?></span>
                         
                         <?php
                         // Verificar se o aluno já está agendado
-                        $agendado = false; // Aqui você faria uma consulta para ver se o aluno já tem um agendamento
-                        $capacidade = $aula['quantidade_pessoas']; // Obter a capacidade
-                        $inscritos = 5; // Aqui você faria uma consulta para contar o número de inscritos na aula
-                        
-                        // Substitua as variáveis acima com os dados reais do banco
+                        $agendado = Aulas::checkAgendado($_SESSION['user_id'], $aula['id_aula']);
+                        $capacidade = $aula['quantidade_pessoas'];
+                        $inscritos = Aulas::GetInscritos($aula['id_aula']);
+                        Aulas::checkAgendado($_SESSION['user_id'], $aula['id_aula']);
                         ?>
-
+                        <p>Vagas:  <strong><?=$inscritos.'/'.$capacidade?></strong></p>
                         <?php if ($agendado): ?>
                             <button class="mt-2 w-full bg-gray-500 text-white py-2 rounded-md" disabled>Já Agendado</button>
                         <?php elseif ($inscritos < $capacidade): ?>
