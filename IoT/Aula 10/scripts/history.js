@@ -1,7 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     let temperatures = [];
     const loadData = () => {
-        
+        fetch('/get_data').then(    resp => resp.json
+        ).then(data=>{
+            temperatures = data;
+        })
        temperatures = JSON.parse();
     };
 
