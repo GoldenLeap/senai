@@ -1,35 +1,61 @@
-<?php Class Aulas{
+<?php
 
+class Aulas {
+    private static ?PDO $pdo = null;
 
     /**
-     * Retorna o numero de alunos inscritos em aula x
-     * @param int $id_aula
-     * @return int
+     * Inicializa a conexão com o banco de dados
      */
-    public static function GetInscritos($id_aula): int{
-        $db = Connect::conectar();
-        $stmt = 'SELECT COUNT(*) as total
-        FROM Aulas_Aluno WHERE id_aula = :id_aula';
-        $stmt  = $db->prepare($stmt);
-        $stmt->bindParam(':id_aula', $id_aula);
+    private static function getPDO(): PDO {
+        if (self::$pdo === null) {
+            self::$pdo = Connect::conectar();
+        }
+        return self::$pdo;
+    }
+
+    /**
+     * Retorna o número de alunos inscritos em uma aula específica
+     * @param int $id_aula ID da aula
+     * @return int Número de alunos inscritos
+     */
+    public static function getInscritos(int $id_aula): int {
+        $pdo = self::getPDO();
+        $sql = 'SELECT COUNT(*) FROM Aulas_Aluno WHERE id_aula = :id_aula';
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':id_aula', $id_aula, PDO::PARAM_INT);
         $stmt->execute();
-        $db = null;
-        return (int) $stmt->fetchColumn() ?? 0;
+        
+        return (int) $stmt->fetchColumn();
     }
-    public static function checkAgendado($id_aluno, $id_aula){
-        $db = Connect::conectar();
+
+    public static function getAulas(){
+        $pdo = self::getPDO();
+        $sql = "SELECT * FROM Aulas;";
+        $sql = $pdo->prepare($sql);
+        $sql->execute();
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public static function checkAgendado(int $id_aluno, int $id_aula): bool {
+        $pdo = self::getPDO();
         $sql = "SELECT COUNT(*) FROM Aulas_Aluno WHERE id_aula = :id_aula AND id_aluno = :id_aluno";
-        $stmt = $db->prepare($sql);
-        $stmt->execute([
-            ':id_aula' => $id_aula,
-            ':id_aluno' => $id_aluno
-        ]);
-        $count = (int) $stmt->fetchColumn();
-        $db = null;
-        return $count > 0;
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':id_aula', $id_aula, PDO::PARAM_INT);
+        $stmt->bindValue(':id_aluno', $id_aluno, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return (bool) $stmt->fetchColumn();
     }
-    public static function getAulasByAluno(PDO $pdo, int $id_aluno,  $id_modalidade = null): array
-    {
+
+    /**
+     * Retorna as aulas de um aluno com filtro opcional por modalidade
+     * @param int $id_aluno ID do aluno
+     * @param string|null $id_modalidade ID da modalidade ou 'todas'
+     * @return array Lista de aulas do aluno
+     */
+    public static function getAulasByAluno(int $id_aluno, ?string $id_modalidade = null): array {
+        $pdo = self::getPDO();
         $sql = "
             SELECT
                 A.id_aula,
@@ -45,7 +71,7 @@
               AND Ag.status = 'agendado'
         ";
 
-        if ($id_modalidade !== null || $id_modalidade !== 'todas') {
+        if ($id_modalidade !== null && $id_modalidade !== 'todas') {
             $sql .= " AND A.id_modalidade = :id_modalidade";
         }
 
@@ -53,11 +79,12 @@
 
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':id_aluno', $id_aluno, PDO::PARAM_INT);
-        if ($id_modalidade !== null || $id_modalidade !== 'todas') {
+        
+        if ($id_modalidade !== null && $id_modalidade !== 'todas') {
             $stmt->bindValue(':id_modalidade', $id_modalidade, PDO::PARAM_INT);
         }
+        
         $stmt->execute();
-
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
