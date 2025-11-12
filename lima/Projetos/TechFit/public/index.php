@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-// Autoload simples
 spl_autoload_register(function ($model) {
     $path = __DIR__ . '/../app/models/' . $model . '.php';
     if (file_exists($path)) {
@@ -13,9 +12,6 @@ require_once __DIR__ . '/../app/helpers/viewHelper.php';
 require_once __DIR__ . '/../app/helpers/authHelper.php'; 
 
 session_start();
-
-// Teste de user (simulando login)
-// Esta é a única lógica de sessão necessária aqui.
 $_SESSION['user_id'] = 3;
 
 $uri = rtrim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
@@ -24,6 +20,7 @@ $routes = [
     ''          => '../app/controllers/homeController.php',
     '/profile'  => '../app/controllers/profileController.php',
     '/logout'   => '../app/controllers/logoutController.php', 
+    '/aulas' => '../app/controllers/aulasController.php'
 ];
 
 if (array_key_exists($uri, $routes)) {

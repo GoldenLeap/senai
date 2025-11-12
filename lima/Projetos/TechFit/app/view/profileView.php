@@ -1,12 +1,6 @@
-<!--
-Esta é a Visão "Layout" ou "Principal" do Perfil.
-Ela não contém mais a lógica de qual página mostrar,
-apenas "inclui" a sub-visão correta que o controlador decidiu.
--->
 <div class="flex">
     <aside class="flex flex-col justify-between h-screen bg-[#efefef] w-64 p-4 shadow-lg">
         <div>
-            <!-- Info do Usuário -->
             <div class="flex flex-col items-center">
                 <img src="<?= htmlspecialchars($user_pfp) ?>" alt="Foto de Perfil"
                      class="size-40 ring-2 ring-white rounded-full mb-2 border-4 border-gray-300">
@@ -14,7 +8,7 @@ apenas "inclui" a sub-visão correta que o controlador decidiu.
                 <p class="text-gray-600"><?= htmlspecialchars($user_tipo) ?></p>
             </div>
 
-            <!-- Links de Navegação -->
+<!-- Links -->
             <nav class="mt-6 flex flex-col space-y-3">
                 <?php if (strtolower($user_tipo) === 'aluno'): ?>
                     <a href="/profile?page=agenda" class="p-2 rounded-md flex items-center gap-2
@@ -54,22 +48,18 @@ apenas "inclui" a sub-visão correta que o controlador decidiu.
 
     <main class="flex-1 p-8 bg-gray-50">
         <?php
-        // $subView é uma variável definida no profileController (ex: 'agendaView.php')
         if (isset($subView)) {
             $subViewPath = __DIR__ . '/' . $subView;
             
-            // Verifica se é um placeholder (para não precisar criar arquivos vazios)
             if ($subView === 'partials/placeholderView.php' && isset($message)) {
                 echo "<div class='max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md'>";
                 echo "<h2 class='text-2xl font-bold mb-4'>" . htmlspecialchars(ucfirst($currPage ?: 'Início')) . "</h2>";
                 echo "<p>" . htmlspecialchars($message) . "</p>";
                 echo "</div>";
             } 
-            // Inclui a sub-visão real (ex: agendaView.php)
             elseif (file_exists($subViewPath)) {
                 require $subViewPath;
             } 
-            // Fallback
             else {
                 echo "<p>Erro: A visão '$subView' não foi encontrada.</p>";
             }

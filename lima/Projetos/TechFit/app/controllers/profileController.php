@@ -3,7 +3,8 @@
 require_once __DIR__ . '/../models/Usuario.php';
 require_once __DIR__ . '/../models/Aulas.php';
 require_once __DIR__ . '/../models/Modalidades.php';
-
+require_once __DIR__ . '/../models/Alunos.php';
+require_once __DIR__ . '/agendaController.php';
 function profileController(): void
 {
     if (!isset($_SESSION['user_id'])) {
@@ -20,7 +21,7 @@ function profileController(): void
     }
 
     $currPage = $_GET['page'] ?? '';
-
+    $act = $_POST['action'] ?? '';
     $data = [
         'user_pfp'   => $usuario['user_avatar'],
         'user_name'  => $usuario['user_name'],
@@ -56,6 +57,15 @@ function profileController(): void
             break;
     }
 
+    switch ($act){
+        case 'cancelar':
+            $ag_id = $_POST['agendamento_id'];
+           
+            $aluno = Aluno::getAlunoByUserID($_SESSION["user_id"]);
+            $id_aluno = $aluno["id_aluno"];
+            cancelarAgendamento($ag_id, $id_aluno);
+    }
+
     $data = array_merge($data, $pageData);
 
     render('profileView', 'Perfil', $data);
@@ -68,8 +78,10 @@ function profileController(): void
  * @param int $id_aluno
  * @return array
  */
-function loadAgendaData(int $id_aluno): array
+function loadAgendaData(int $id_usuario): array
 {
+    $aluno = Aluno::getAlunoByUserID($id_usuario);
+    $id_aluno = $aluno["id_aluno"];
     $modalidadeSelecionada = $_GET['modalidade'] ?? 'todas';
 
     $modalidadesAluno = Modalidades::getModalidadesAgendadasByAluno($id_aluno);

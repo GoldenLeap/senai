@@ -13,9 +13,7 @@ class Modalidades
     }
 
     /**
-     * Busca as modalidades ÚNICAS para as quais um aluno tem aulas AGENDADAS.
-     * Esta função substitui a antiga getModalidadesByAluno, que usava a
-     * tabela Aulas_Aluno (agora obsoleta) e trazia dados duplicados.
+     * Busca as modalidades para as quais um aluno tem aulas AGENDADAS.
      *
      * @param int $id ID do aluno
      * @return array Lista de modalidades (id e nome)
@@ -83,6 +81,6 @@ class Modalidades
         $stmt->execute();
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result ?: null; // Retorna o array ou null se não encontrar
+        return $result ?: null;
     }
 }

@@ -5,28 +5,25 @@
     <!-- Filtro de Modalidades -->
     <div class="mb-6">
         <label for="modalidade" class="font-semibold text-gray-700 block mb-2">Filtrar por Modalidade:</label>
-        <select id="modalidade" 
-                class="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" 
+        <select id="modalidade"
+                class="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 onchange="updateModalidade(this)">
-            
-            <option value="todas" <?php echo $modalidadeSelecionada == 'todas' ? 'selected' : '' ?>>
+
+            <option value="todas"                                  <?php echo $modalidadeSelecionada == 'todas' ? 'selected' : '' ?>>
                 Todas as Modalidades
             </option>
-            
+
             <?php foreach ($modalidadesAluno as $modalidade): ?>
-                <option value="<?php echo $modalidade['id_modalidade'] ?>" <?php echo $modalidadeSelecionada == $modalidade['id_modalidade'] ? 'selected' : '' ?>>
+                <option value="<?php echo $modalidade['id_modalidade'] ?>"<?php echo $modalidadeSelecionada == $modalidade['id_modalidade'] ? 'selected' : '' ?>>
                     <?php echo htmlspecialchars($modalidade['nome_modalidade']) ?>
                 </option>
             <?php endforeach; ?>
         </select>
     </div>
-
-    <!-- Lista de Aulas Agendadas -->
     <div>
         <h3 class="text-xl font-semibold mb-4 text-gray-800">Minhas Aulas Agendadas</h3>
-        
+
         <?php if (empty($aulasAluno)): ?>
-            <!-- Mensagem de "Nenhuma Aula" -->
             <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center">
                 <p class="text-gray-600">
                     Você não tem aulas agendadas
@@ -49,17 +46,16 @@
                         <h4 class="font-bold text-lg text-blue-700">
                             <?php echo htmlspecialchars($aula['nome_modalidade']) ?>
                         </h4>
-                        <div class="mt-2 text-sm text-gray-700 space-y-1">
-                            <p><strong>Professor:</strong> <?php echo htmlspecialchars($aula['professor']) ?></p>
-                            <p><strong>Local:</strong> <?php echo htmlspecialchars($aula['nome_filial']) ?></p>
-                            <p><strong>Data:</strong> <?php echo date('d/m/Y', strtotime($aula['dia_aula'])) ?></p>
+                        <div class="mt-2 text-sm text-gray-700 space-y-1">                            <p><strong>Local:</strong>                                                                                                                                 <?php echo htmlspecialchars($aula['nome_filial']) ?></p>
+                            <p><strong>Data:</strong>                                                      <?php echo date('d/m/Y', strtotime($aula['dia_aula'])) ?></p>
                         </div>
                         <div class="mt-3 pt-3 border-t border-gray-100">
-                            <!-- Este link é um exemplo, a funcionalidade de cancelar precisaria ser criada -->
-                            <a href="/profile?page=agenda&action=cancelar&agendamento_id=<?php echo $aula['id_aula'] // Você precisará do ID do agendamento aqui ?>" 
-                               class="text-red-600 hover:text-red-800 text-sm font-medium">
-                                Cancelar Agendamento
-                            </a>
+                        <form action="/profile?page=agenda" method="POST" style="display:inline;">
+                            <input type="hidden" name="action" value="cancelar">
+                            <input type="hidden" name="agendamento_id" value="<?php echo $aula['id_aula']; ?>">
+                            <button type="submit" class="btn-cancelar">Cancelar</button>
+                        </form>
+
                         </div>
                     </div>
                 <?php endforeach; ?>
