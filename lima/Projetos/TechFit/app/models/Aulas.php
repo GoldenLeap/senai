@@ -20,7 +20,7 @@ class Aulas {
      */
     public static function getInscritos(int $id_aula): int {
         $pdo = self::getPDO();
-        $sql = 'SELECT COUNT(*) FROM Aulas_Aluno WHERE id_aula = :id_aula';
+        $sql = 'SELECT COUNT(*) FROM Agendamento WHERE id_aula = :id_aula';
         
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':id_aula', $id_aula, PDO::PARAM_INT);
@@ -29,11 +29,15 @@ class Aulas {
         return (int) $stmt->fetchColumn();
     }
 
-    public static function getAulas(){
+    public static function getAulas(?string $modalidade = null){
         $pdo = self::getPDO();
         $sql = "SELECT * FROM Aulas;";
+        if ($modalidade !== null){
+            $sql .= "WHERE id_modalidade = :id_modalidade";
+        }
         $sql = $pdo->prepare($sql);
-        $sql->execute();
+        
+        $sql->execute($modalidade !== null ? $modalidade: null);
         return $sql->fetchAll(PDO::FETCH_ASSOC);
     }
     public static function checkAgendado(int $id_aluno, int $id_aula): bool {
@@ -61,6 +65,8 @@ class Aulas {
                 A.id_aula,
                 A.dia_aula,
                 A.quantidade_pessoas,
+                A.nome_aula,
+                A.descricao,
                 M.nome_modalidade,
                 F.nome_filial
             FROM Aulas A
@@ -74,7 +80,6 @@ class Aulas {
         if ($id_modalidade !== null && $id_modalidade !== 'todas') {
             $sql .= " AND A.id_modalidade = :id_modalidade";
         }
-
         $sql .= " ORDER BY A.dia_aula";
 
         $stmt = $pdo->prepare($sql);

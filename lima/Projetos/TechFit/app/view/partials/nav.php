@@ -14,9 +14,9 @@
     <div class=" navbar-collapse d-lg-flex" id="navLinks">
       <ul class="navbar-nav col-lg-6 justify-content-lg-center gap-3">
         <li><a href="/" class="nav-link <?= $_SERVER['REQUEST_URI'] === '/' ? 'active' : '' ?>">Início</a></li>
-        <li><a href="#sobre" class="nav-link">Sobre</a></li>
-        <li><a href="#planos" class="nav-link">Planos</a></li>
-        <li><a href="#aulas" class="nav-link">Aulas</a></li>
+        <li><a href="sobre" class="nav-link">Sobre</a></li>
+        <li><a href="planos" class="nav-link">Planos</a></li>
+        <li><a href="aulas" class="nav-link">Aulas</a></li>
       </ul>
 
       <?php if (!isset($_SESSION['user_id'])): ?>
@@ -27,7 +27,7 @@
       <?php else: ?>
         <div class="dropdown text-end col-lg-3 d-flex justify-content-end align-items-center">
           <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
-            <img src="<?= htmlspecialchars($_SESSION['user_avatar'] ?? '/assets/images/upload/pfp/profile.png') ?>"
+            <img src="<?= htmlspecialchars($_SESSION['user_avatar'] ?? 'images/upload/pfp/avatar.png') ?>"
                  alt="Foto" width="32" height="32" class="rounded-circle me-2">
             <span>Olá, <?= htmlspecialchars($_SESSION['user_name'] ?? 'Usuário') ?></span>
           </a>

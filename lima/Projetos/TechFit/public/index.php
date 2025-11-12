@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+
 
 spl_autoload_register(function ($model) {
     $path = __DIR__ . '/../app/models/' . $model . '.php';
@@ -12,7 +12,13 @@ require_once __DIR__ . '/../app/helpers/viewHelper.php';
 require_once __DIR__ . '/../app/helpers/authHelper.php'; 
 
 session_start();
+
 $_SESSION['user_id'] = 3;
+$user = Usuario::getUsuarioCompleto($_SESSION['user_id']);
+$_SESSION['user_avatar'] = $user["user_avatar"];
+$_SESSION['user_name'] = $user["user_name"];
+$_SESSION['user_tipo'] = $user["user_tipo"];
+
 
 $uri = rtrim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 

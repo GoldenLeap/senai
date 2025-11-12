@@ -9,7 +9,8 @@
                 class="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 onchange="updateModalidade(this)">
 
-            <option value="todas"                                  <?php echo $modalidadeSelecionada == 'todas' ? 'selected' : '' ?>>
+            <option value="todas"
+            <?=$modalidadeSelecionada == 'todas' ? 'selected' : '' ?>>
                 Todas as Modalidades
             </option>
 
@@ -43,11 +44,16 @@
             <div class="space-y-4">
                 <?php foreach ($aulasAluno as $aula): ?>
                     <div class="border rounded-lg p-4 shadow-sm bg-white transition hover:shadow-md">
-                        <h4 class="font-bold text-lg text-blue-700">
+                    <h3 class="text-xl text-blue-900 font-bold"><?=$aula['nome_aula']?></h3>    
+                        <p class="font-bold italic text-lg text-blue-700">
                             <?php echo htmlspecialchars($aula['nome_modalidade']) ?>
-                        </h4>
-                        <div class="mt-2 text-sm text-gray-700 space-y-1">                            <p><strong>Local:</strong>                                                                                                                                 <?php echo htmlspecialchars($aula['nome_filial']) ?></p>
-                            <p><strong>Data:</strong>                                                      <?php echo date('d/m/Y', strtotime($aula['dia_aula'])) ?></p>
+                        </p>
+                        <div class="mt-2 text-sm text-gray-700 space-y-1">                            
+                            <p><strong>Local:</strong>                                                                                                                                 <?php echo htmlspecialchars($aula['nome_filial']) ?></p>
+                            <p><strong>Data:</strong>                                                     
+                            <?php echo date('d/m/Y', strtotime($aula['dia_aula'])) ?>
+                        </p>
+                            <p><strong>Sobre a aula:</strong><?=$aula["descricao"]?></p>
                         </div>
                         <div class="mt-3 pt-3 border-t border-gray-100">
                         <form action="/profile?page=agenda" method="POST" style="display:inline;">

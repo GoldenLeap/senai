@@ -39,7 +39,7 @@
                <?= ($currPage === 'configuracao') ? 'bg-blue-600 text-white' : 'hover:bg-[#cfcfcf]' ?>">
                 <span>⚙️</span><span>Configurações</span>
             </a>
-            <a href="/logout" class="p-2 rounded-md flex items-center gap-2 text-red-600 hover:bg-red-100">
+            <a href="/logout" class="p-2 rounded-md bg-blue flex items-center gap-2 text-red-600 hover:bg-red-100">
                 <span>🚪</span><span>Sair</span>
             </a>
         </div>

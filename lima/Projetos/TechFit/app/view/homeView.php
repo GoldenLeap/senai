@@ -2,7 +2,6 @@
 <header>
     <?php require (__dir__. "/partials/nav.php");?>
 </header>
-<!-- Hero Section -->
 <section id="hero" class="container col-xxl-8 px-4 py-5">
     <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
         <div class="col-lg-6">
@@ -35,7 +34,6 @@
     </div>
 </section>
 
-<!-- Planos Section -->
 <section class="container marketing py-5">
     <h1 class="text-center pb-4">Planos</h1>
     <div class="row">
