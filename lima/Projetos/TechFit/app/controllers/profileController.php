@@ -1,99 +1,84 @@
 <?php
-function profileController()
+
+require_once __DIR__ . '/../models/Usuario.php';
+require_once __DIR__ . '/../models/Aulas.php';
+require_once __DIR__ . '/../models/Modalidades.php';
+
+function profileController(): void
 {
-
-    if (! isset($_SESSION["user_id"])) {
-
-        /*header('Location: /login.php');
-        exit();*/
+    if (!isset($_SESSION['user_id'])) {
+        header('Location: /login.php');
+        exit;
     }
-    $usuario  = verificarUsuario();
+
+    $usuario = Usuario::getUsuarioCompleto($_SESSION['user_id']);
+    if (!$usuario) {
+        // Usuário não encontrado
+        session_destroy();
+        header('Location: /');
+        exit;
+    }
+
     $currPage = $_GET['page'] ?? '';
 
     $data = [
         'user_pfp'   => $usuario['user_avatar'],
         'user_name'  => $usuario['user_name'],
-        'user_tipo'  => $usuario['user_tipo'],
+        'user_tipo'  => ucfirst($usuario['user_tipo']),
         'headExtras' => <<<HTML
-    <link rel="stylesheet" href="./assets/css/profile.css" />
-    <link rel="stylesheet" href="./assets/css/utility.css"/>
-HTML
+            <link rel="stylesheet" href="./assets/css/profile.css" />
+            <link rel="stylesheet" href="./assets/css/utility.css"/>
+        HTML,
+        'currPage' => $currPage 
     ];
-    $data['page'] = carregarConteudoPagina($currPage);
+
+    // Preparando os dados para a sub-visão.
+    switch ($currPage) {
+        case 'agenda':
+            $data['subView'] = 'agendaView.php';
+            $pageData = loadAgendaData($_SESSION['user_id']);
+            break;
+
+        case 'avaliacao':
+            $pageData = ['message' => '📊 Avaliação física em desenvolvimento.'];
+            break;
+        case 'frequencia':
+            $pageData = ['message' => '📈 Frequência em desenvolvimento.'];
+            break;
+
+        case 'configuracao':
+            $pageData = ['message' => '⚙️ Configurações em desenvolvimento.'];
+            break;
+
+        default:
+            $data['subView'] = 'partials/placeholderView.php';
+            $pageData = ['message' => 'Bem-vindo à sua página de perfil!'];
+            break;
+    }
+
+    $data = array_merge($data, $pageData);
+
     render('profileView', 'Perfil', $data);
 }
 
-function verificarUsuario()
+/**
+ * Função privada para buscar os dados da agenda.
+ * 
+ *
+ * @param int $id_aluno
+ * @return array
+ */
+function loadAgendaData(int $id_aluno): array
 {
-    if (! isset($_SESSION['user_id'])) {
-        header('Location: /login.php');
-        exit;
-    }
-
-    $db   = Connect::conectar();
-    $stmt = $db->prepare("SELECT id_usuario email, tipo, avatar FROM Usuarios WHERE id_usuario = :id_usuario");
-    $stmt->bindParam(":id_usuario", $_SESSION['user_id']);
-    $stmt->execute();
-    $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
-    if (! $usuario) {
-        header('location: /');
-        exit;
-    }
-    $userTipo = $usuario['tipo'];
-    $userNome = 'User';
-
-    switch ($userTipo) {
-        case 'aluno':
-            $stmt = $db->prepare("SELECT nome_aluno AS nome FROM Alunos WHERE id_usuario = :id_usuario");
-            break;
-        case 'funcionario':
-            $stmt = $db->prepare('SELECT nome_funcionario  AS nome FROM Funcionarios WHERE id_usuario = :id_usuario');
-            break;
-        default:
-            $stmt = null;
-            break;
-    }
-    if ($stmt) {
-        $stmt->bindParam(':id_usuario', $_SESSION['user_id']);
-        $stmt->execute();
-        $dadosUsuario = $stmt->fetch(PDO::FETCH_ASSOC);
-        $userNome     = $dadosUsuario['nome'] ?? $userNome;
-    }
-    return [
-        'user_name'   => $userNome,
-        'user_tipo'   => ucfirst($userTipo),
-        'user_avatar' => $usuario['avatar'] ?? __DIR__ . '/images/upload/pfp/avatar.png ',
-    ];
-}
-
-function carregarConteudoPagina($page, $tipo = null)
-{
-    $conteudo = '';
-    switch ($page) {
-        case 'agenda':
-            $conteudo = carregarAgenda();
-            break;
-        case 'avaliacao':
-            // Exibir avaliações físicas
-            break;
-        case 'configuracao':
-            $conteudo = carregarConfig();
-        default:
-            $conteudo = "<p>Bem-vindo à sua página de perfil!</p>";
-            break;
-    }
-    return $conteudo;
-}
-
-function carregarAgenda()
-{
-    $db = Connect::conectar();
-
     $modalidadeSelecionada = $_GET['modalidade'] ?? 'todas';
-    $modalidadesAluno      = Modalidades::getModalidadesByAluno($_SESSION['user_id']);
 
-    $aulasAluno = Aulas::getAulasByAluno($_SESSION['user_id'], $modalidadeSelecionada);
-    ob_start();
-    include __DIR__ . '/../view/agendaView.php';
-    return ob_get_clean();
+    $modalidadesAluno = Modalidades::getModalidadesAgendadasByAluno($id_aluno);
+    
+    $aulasAluno = Aulas::getAulasByAluno($id_aluno, $modalidadeSelecionada);
+
+    return [
+        'modalidadeSelecionada' => $modalidadeSelecionada,
+        'modalidadesAluno' => $modalidadesAluno,
+        'aulasAluno' => $aulasAluno,
+    ];
 }

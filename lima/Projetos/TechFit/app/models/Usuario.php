@@ -13,6 +13,50 @@ class Usuario {
         return self::$pdo;
     }
 
+     public static function getUsuarioCompleto(int $id_usuario): ?array
+    {
+        $pdo = self::getPDO();
+
+        $sql = "SELECT id_usuario, email, tipo, avatar FROM Usuarios WHERE id_usuario = :id_usuario";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':id_usuario', $id_usuario, PDO::PARAM_INT);
+        $stmt->execute();
+        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$usuario) return null;
+
+        $nome = 'Usuário';
+        switch ($usuario['tipo']) {
+            case 'aluno':
+                $sqlNome = "SELECT nome_aluno AS nome FROM Alunos WHERE id_usuario = :id_usuario";
+                break;
+            case 'funcionario':
+                $sqlNome = "SELECT nome_funcionario AS nome FROM Funcionarios WHERE id_usuario = :id_usuario";
+                break;
+            default:
+                $sqlNome = null;
+        }
+
+        if ($sqlNome) {
+            $stmt = $pdo->prepare($sqlNome);
+            $stmt->bindValue(':id_usuario', $id_usuario, PDO::PARAM_INT);
+            $stmt->execute();
+            $dados = $stmt->fetch(PDO::FETCH_ASSOC);
+            $nome = $dados['nome'] ?? $nome;
+        }
+
+        $avatarPath = $usuario['avatar'] ?: '/assets/images/upload/pfp/avatar.png';
+
+        return [
+            'user_id'     => $usuario['id_usuario'],
+            'user_email'  => $usuario['email'],
+            'user_tipo'   => $usuario['tipo'],
+            'user_name'   => $nome,
+            'user_avatar' => $avatarPath
+        ];
+    }
+
+
     /**
      * Altera a senha do usuário
      * @param int $id ID do usuário

@@ -4,9 +4,6 @@ class Modalidades
 {
     private static ?PDO $pdo = null;
 
-    /**
-     * Inicializa a conexão com o banco de dados
-     */
     private static function getPDO(): PDO
     {
         if (self::$pdo === null) {
@@ -14,20 +11,31 @@ class Modalidades
         }
         return self::$pdo;
     }
-    public static function getModalidadesByAluno($id)
+
+    /**
+     * Busca as modalidades ÚNICAS para as quais um aluno tem aulas AGENDADAS.
+     * Esta função substitui a antiga getModalidadesByAluno, que usava a
+     * tabela Aulas_Aluno (agora obsoleta) e trazia dados duplicados.
+     *
+     * @param int $id ID do aluno
+     * @return array Lista de modalidades (id e nome)
+     */
+    public static function getModalidadesAgendadasByAluno(int $id): array
     {
         $pdo = self::getPDO();
 
-        $sql = "SELECT
-                    M.nome_modalidade,
-                    A.id_modalidade,
-                    AA.id_aula
+        // Esta query busca as modalidades ÚNICAS (DISTINCT)
+        // baseando-se nos agendamentos ATIVOS do aluno.
+        $sql = "SELECT DISTINCT
+                    M.id_modalidade,
+                    M.nome_modalidade
                 FROM
-                    Aulas_Aluno AS AA
-                INNER JOIN Aulas AS A ON AA.id_aula = A.id_aula
+                    Agendamento AS Ag
+                INNER JOIN Aulas AS A ON Ag.id_aula = A.id_aula
                 INNER JOIN Modalidades AS M ON A.id_modalidade = M.id_modalidade
                 WHERE
-                    AA.id_aluno = :id_aluno";
+                    Ag.id_aluno = :id_aluno
+                    AND Ag.status = 'agendado'";
 
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':id_aluno', $id, PDO::PARAM_INT);
@@ -36,6 +44,10 @@ class Modalidades
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Busca TODAS as modalidades oferecidas pela academia.
+     * @return array
+     */
     public static function getModalidades(): array
     {
         $pdo = self::getPDO();
@@ -51,21 +63,26 @@ class Modalidades
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
+    /**
+     * Busca uma modalidade específica pelo ID.
+     * @param int $id_modalidade
+     * @return ?array
+     */
     public static function getModalidadeById(int $id_modalidade): ?array
     {
         $pdo = self::getPDO();
         $sql = "SELECT
                     id_modalidade,
-                    nome_modalidade
+                    nome_modalidade,
+                    descricao
                 FROM Modalidades
                 WHERE id_modalidade = :id_modalidade";
 
         $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':id_modalidade', $id_modalidade, PDO::PARAM_INT);
+        $stmt->bindParam(':id_modalidade', $id_modalidade, PDO::PARAM_INT);
         $stmt->execute();
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result ?: null;
+        return $result ?: null; // Retorna o array ou null se não encontrar
     }
 }

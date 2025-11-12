@@ -1,30 +1,43 @@
 <?php
-  function autoload($models){
-    include __DIR__ . '/../app/models/'. $models. ".php";
-  }
-  spl_autoload_register('autoload');
-?>
+declare(strict_types=1);
 
+// Autoload simples
+spl_autoload_register(function ($model) {
+    $path = __DIR__ . '/../app/models/' . $model . '.php';
+    if (file_exists($path)) {
+        require_once $path;
+    }
+});
 
-<?php
-require_once '../app/helpers/viewHelper.php';
-session_start();  
-//$logado = isset($_SESSION['user_id']);
-$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$_SESSION['user_id'] = 1;
+require_once __DIR__ . '/../app/helpers/viewHelper.php';
+require_once __DIR__ . '/../app/helpers/authHelper.php'; 
 
+session_start();
 
-switch ($uri) {
-  case '/':
-    require_once '../app/controllers/homeController.php';
-    homeController();
-    break;
-  case '/profile.php':
-    require_once '../app/controllers/profileController.php';
-    profileController();
-    break;
-  default:
+// Teste de user (simulando login)
+// Esta é a única lógica de sessão necessária aqui.
+$_SESSION['user_id'] = 3;
+
+$uri = rtrim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+
+$routes = [
+    ''          => '../app/controllers/homeController.php',
+    '/profile'  => '../app/controllers/profileController.php',
+    '/logout'   => '../app/controllers/logoutController.php', 
+];
+
+if (array_key_exists($uri, $routes)) {
+    require_once $routes[$uri];
+
+    $controller = basename($routes[$uri], '.php');
+    $function   = $controller;
+    if (function_exists($function)) {
+        $function();
+    } else {
+        http_response_code(500);
+        echo "Erro interno: função do controller não encontrada.";
+    }
+} else {
     http_response_code(404);
-    echo "Página não encontrada";
-    break;
+    echo "Página não encontrada.";
 }
