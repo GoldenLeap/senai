@@ -1,16 +1,9 @@
 <?php
 
 
-spl_autoload_register(function ($model) {
-    $path = __DIR__ . '/../app/models/' . $model . '.php';
-    if (file_exists($path)) {
-        require_once $path;
-    }
-});
-
 require_once __DIR__ . '/../app/helpers/viewHelper.php';
 require_once __DIR__ . '/../app/helpers/authHelper.php'; 
-
+require_once __DIR__ . '/../app/helpers/loadModels.php';
 session_start();
 
 $_SESSION['user_id'] = 3;
@@ -26,7 +19,8 @@ $routes = [
     ''          => '../app/controllers/homeController.php',
     '/profile'  => '../app/controllers/profileController.php',
     '/logout'   => '../app/controllers/logoutController.php', 
-    '/aulas' => '../app/controllers/aulasController.php'
+    '/aulas' => '../app/controllers/aulasController.php',
+    '/comunicados' => '../app/controllers/comunicadoController.php',
 ];
 
 if (array_key_exists($uri, $routes)) {
