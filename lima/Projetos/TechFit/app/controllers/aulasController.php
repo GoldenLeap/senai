@@ -2,11 +2,13 @@
 
     function aulasController()
     {
-        $modalidade = $_GET["modalidade"] ?? '';
-        $aulas = Aulas::getAulas($modalidade);
+        $modalidadeSelecionada = $_GET["modalidade"] ?? '';
+        $aulas = Aulas::getAulas($modalidadeSelecionada);
         $data = [
+            "modalidadeSelecionada" => $modalidadeSelecionada,
             "titulo" => "Aulas",
             "aulas" => $aulas,
+            "modalidades" => Modalidades::getModalidades(),
         ];
         render("aulasView", $data["titulo"], $data);
     
