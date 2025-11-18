@@ -43,7 +43,7 @@
                         <p class="text-sm text-gray-700"><strong>Data:</strong>                                                                                                                                                                                                                                              <?php echo date('d/m/Y', strtotime($aula["dia_aula"])) ?></p>
                     </div>
 
-                    <form action="agendar" method="post" class="mt-4">
+                    <form action="aulas/agendar" method="post" class="mt-4">
                         <input type="hidden" name="id_aula" value="<?php echo $aula['id_aula'] ?>">
                         <button type="submit"
                             class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg shadow-sm transition duration-200">

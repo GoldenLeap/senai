@@ -26,5 +26,20 @@ class Aviso
 
         return $values;
     }
+    public static function createAviso(string $titulo, string $tipo, string $conteudo): bool
+    {
+        $pdo = self::getPDO();
+
+        $sql = "INSERT INTO Avisos (titulo, tipo, conteudo, data_criacao, expira)
+            VALUES (?, ?, ?, CURRENT_DATE, ?)";
+
+        $stmt = $pdo->prepare($sql);
+
+        $expira = ($tipo !== 'AvisoSeguranca')
+            ? date('Y-m-d', strtotime('+1 month'))
+            : null;
+
+        return $stmt->execute([$titulo, $tipo, $conteudo, $expira]);
+    }
 
 }

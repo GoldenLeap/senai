@@ -2,7 +2,7 @@
 
     function aulasController()
     {
-        $modalidadeSelecionada = $_GET["modalidade"] ?? '';
+        $modalidadeSelecionada = $_GET["modalidade"] ?? 'todas';
         $aulas = Aulas::getAulas($modalidadeSelecionada);
         $data = [
             "modalidadeSelecionada" => $modalidadeSelecionada,
