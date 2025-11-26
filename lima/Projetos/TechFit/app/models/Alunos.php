@@ -14,4 +14,5 @@ class Aluno {
         $sql->execute([":user_id" => $user_id]);
         return $sql->fetch(PDO::FETCH_ASSOC);
     }
+
 }

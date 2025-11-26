@@ -13,7 +13,7 @@ class Usuario {
         return self::$pdo;
     }
 
-     public static function getUsuarioCompleto(int $id_usuario): ?array
+         public static function getUsuarioCompleto(int $id_usuario): ?array
     {
         $pdo = self::getPDO();
 
@@ -25,14 +25,22 @@ class Usuario {
 
         if (!$usuario) return null;
 
-        $nome = 'Usuário';
+        $nome          = 'Usuário';
+        $idFuncionario = null;
+
         switch ($usuario['tipo']) {
             case 'aluno':
-                $sqlNome = "SELECT nome_aluno AS nome FROM Alunos WHERE id_usuario = :id_usuario";
+                $sqlNome = "SELECT nome_aluno AS nome 
+                            FROM Alunos 
+                            WHERE id_usuario = :id_usuario";
                 break;
+
             case 'funcionario':
-                $sqlNome = "SELECT nome_funcionario AS nome FROM Funcionarios WHERE id_usuario = :id_usuario";
+                $sqlNome = "SELECT nome_funcionario AS nome, id_funcionario
+                            FROM Funcionarios 
+                            WHERE id_usuario = :id_usuario";
                 break;
+
             default:
                 $sqlNome = null;
         }
@@ -43,16 +51,21 @@ class Usuario {
             $stmt->execute();
             $dados = $stmt->fetch(PDO::FETCH_ASSOC);
             $nome = $dados['nome'] ?? $nome;
+
+            if ($usuario['tipo'] === 'funcionario' && isset($dados['id_funcionario'])) {
+                $idFuncionario = (int)$dados['id_funcionario'];
+            }
         }
 
         $avatarPath = $usuario['avatar'] ?: '/assets/images/upload/pfp/avatar.png';
 
         return [
-            'user_id'     => $usuario['id_usuario'],
-            'user_email'  => $usuario['email'],
-            'user_tipo'   => $usuario['tipo'],
-            'user_name'   => $nome,
-            'user_avatar' => $avatarPath
+            'user_id'        => $usuario['id_usuario'],
+            'user_email'     => $usuario['email'],
+            'user_tipo'      => $usuario['tipo'],
+            'user_name'      => $nome,
+            'user_avatar'    => $avatarPath,
+            'id_funcionario' => $idFuncionario, // chave nova
         ];
     }
 
