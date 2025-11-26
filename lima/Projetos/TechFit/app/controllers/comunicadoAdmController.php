@@ -72,9 +72,7 @@ function comunicadoAdmController()
     render("admin/comunicadoView", "Gerenciar comunicados", $data);
 }
 
-/**
- * Map de label dos tipos
- */
+
 function getTipoLabelsAvisos(): array
 {
     return [
@@ -124,7 +122,7 @@ function validarComunicado(array $input): array
         $erros[] = 'O conteúdo é obrigatório.';
     }
 
-    $tiposValidos = Aviso::getTipos();
+    $tiposValidos = getTipoLabelsAvisos();
     if (!in_array($input['tipo'], $tiposValidos, true)) {
         $erros[] = 'Tipo de aviso inválido.';
     }
@@ -182,7 +180,7 @@ function processarUploadAnexo(string $campo): array
         return compact('erros', 'caminho');
     }
 
-    // permitir apenas imagens por enquanto
+    // permitir apenas imagens
     $finfo = new finfo(FILEINFO_MIME_TYPE);
     $mime  = $finfo->file($file['tmp_name']);
     $permitidos = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/gif' => 'gif'];

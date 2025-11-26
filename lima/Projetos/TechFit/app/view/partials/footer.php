@@ -4,7 +4,7 @@
               <a
                   href="/"
                   class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none">
-                  <img src="assets/images/logo.png" width="50%" alt="Logo techfit" />
+                  <img src="/assets/images/logo.png" width="50%" alt="Logo techfit" />
                   <h3>TechFit</h3>
               </a>
               <p>

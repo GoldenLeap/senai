@@ -86,8 +86,7 @@
 
                         <form method="post" class="mt-3 space-y-3">
                             <input type="hidden" name="id_alerta"
-                                   value="<?php echo (int)$avisoSelecionado['id_alerta']; ?>">
-
+                                value="<?php echo (int)$avisoSelecionado['id_alerta']; ?>">
                             <div>
                                 <label class="block text-sm font-medium mb-1" for="titulo">
                                     Título
@@ -110,9 +109,11 @@
                                     name="tipo"
                                     class="w-full border border-gray-300 rounded-lg p-2 text-sm"
                                 >
-                                    <?php foreach ($nomeTipo as $valor => $label): ?>
+                                    <?php foreach ($nomeTipo as $label): ?>
+                                        <?= var_dump($nomeTipo) ?>
+                                                    
                                         <option value="<?php echo htmlspecialchars($valor); ?>"
-                                            <?php echo $avisoSelecionado['tipo'] === $valor ? 'selected' : ''; ?>>
+                                            <?php echo $avisoSelecionado['tipo'] === $label ? 'selected' : ''; ?>>
                                             <?php echo htmlspecialchars($label); ?>
                                         </option>
                                     <?php endforeach; ?>

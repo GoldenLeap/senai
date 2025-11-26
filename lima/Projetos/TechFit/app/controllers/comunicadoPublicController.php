@@ -8,9 +8,7 @@ function comunicadoPublicController()
     $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
     $avisoSelecionado = null;
 
-    // Se for POST, tratar ações de admin
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Só funcionário pode editar/excluir
         if (($_SESSION['user_tipo'] ?? null) !== 'funcionario') {
             http_response_code(403);
             echo "Acesso negado.";
@@ -26,7 +24,7 @@ function comunicadoPublicController()
                 $erros[] = 'ID inválido para exclusão.';
             } else {
                 if (Aviso::deleteAviso($id_alerta)) {
-                    // Redireciona para o feed sem id
+                   
                     header('Location: /comunicados');
                     exit;
                 } else {
@@ -51,7 +49,7 @@ function comunicadoPublicController()
                 $erros[] = 'O conteúdo é obrigatório.';
             }
 
-            $tiposValidos = Aviso::getTipos();
+            $tiposValidos = Aviso::getTipoLabelsAvisos();
             if (!in_array($tipo, $tiposValidos, true)) {
                 $erros[] = 'Tipo de aviso inválido.';
             }
@@ -82,7 +80,7 @@ function comunicadoPublicController()
 
     $avisos = Aviso::getAllForAdmin(); 
 
-    $tipoLabels = getTipoLabelsAvisos();
+    $tipoLabels = Aviso::getTipos();
 
     $data = [
         'avisos'           => $avisos,

@@ -10,19 +10,19 @@ class Aviso
         }
         return self::$pdo;
     }
-function getTipoLabelsAvisos(): array
-{
-    return [
-        'Comunicado'      => 'Comunicado',
-        'Promocao'        => 'Promoção',
-        'Evento'          => 'Evento',
-        'Manutencao'      => 'Manutenção',
-        'MudancaHorario'  => 'Mudança de Horário',
-        'Novidade'        => 'Novidade',
-        'DicaSaude'       => 'Dicas de Saúde',
-        'AvisoSeguranca'  => 'Aviso de Segurança',
-    ];
-}
+    public static function getTipoLabelsAvisos(): array
+    {
+        return [
+            'Comunicado'     => 'Comunicado',
+            'Promocao'       => 'Promoção',
+            'Evento'         => 'Evento',
+            'Manutencao'     => 'Manutenção',
+            'MudancaHorario' => 'Mudança de Horário',
+            'Novidade'       => 'Novidade',
+            'DicaSaude'      => 'Dicas de Saúde',
+            'AvisoSeguranca' => 'Aviso de Segurança',
+        ];
+    }
     public static function getTipos()
     {
         $pdo  = self::getPDO();
@@ -68,8 +68,8 @@ function getTipoLabelsAvisos(): array
 
     public static function getAllForAdmin(): array
     {
-        $pdo  = self::getPDO();
-        $sql  = "SELECT a.*, f.nome_funcionario
+        $pdo = self::getPDO();
+        $sql = "SELECT a.*, f.nome_funcionario
         FROM Avisos a
         JOIN Funcionarios f ON a.id_funcionario = f.id_funcionario
         ORDER BY a.data_criacao DESC";
