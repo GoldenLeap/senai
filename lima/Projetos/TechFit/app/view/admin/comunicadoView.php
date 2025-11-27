@@ -1,6 +1,7 @@
+<?php require_once __DIR__. "/../partials/nav.php"?>
 <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md border">
     <h2 class="text-xl font-semibold mb-6 text-gray-700">Criar Novo Comunicado</h2>
- <form action="" method="post" class="flex flex-col space-y-4" enctype="multipart/form-data">
+ <form action="/adm/comunicados" method="post" class="flex flex-col space-y-4" enctype="multipart/form-data">
     <div>
         <label for="titulo" class="block text-gray-700 font-medium mb-2">
             Título

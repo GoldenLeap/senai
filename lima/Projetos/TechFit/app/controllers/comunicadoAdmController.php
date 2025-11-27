@@ -7,8 +7,6 @@ function comunicadoAdmController()
     $tipoLabels = getTipoLabelsAvisos();
     $erros      = [];
     $sucesso    = null;
-
-    // valores antigos
     $old = [
         'titulo'   => '',
         'tipo'     => '',
@@ -18,15 +16,13 @@ function comunicadoAdmController()
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (isAcaoDelete()) {
-            // DELETE
             $resultado = processarExclusaoAviso();
             $erros     = array_merge($erros, $resultado['erros']);
             $sucesso   = $resultado['sucesso'];
 
         } else {
-            // CREATE
             $input = filtrarInputComunicado();
-            $old   = $input; // se der erro, mantemos no form
+            $old   = $input; 
 
             $validacao = validarComunicado($input);
             $erros     = array_merge($erros, $validacao);
@@ -122,9 +118,9 @@ function validarComunicado(array $input): array
         $erros[] = 'O conteúdo é obrigatório.';
     }
 
-    $tiposValidos = getTipoLabelsAvisos();
+    $tiposValidos = array_keys(getTipoLabelsAvisos());
     if (!in_array($input['tipo'], $tiposValidos, true)) {
-        $erros[] = 'Tipo de aviso inválido.';
+    $erros[] = 'Tipo de aviso inválido.';
     }
 
     return $erros;
@@ -154,9 +150,9 @@ function processarExclusaoAviso(): array
     return compact('erros', 'sucesso');
 }
 
-/**
- * Processa upload de anexo
- */
+
+
+
 function processarUploadAnexo(string $campo): array
 {
     $erros  = [];
@@ -180,7 +176,6 @@ function processarUploadAnexo(string $campo): array
         return compact('erros', 'caminho');
     }
 
-    // permitir apenas imagens
     $finfo = new finfo(FILEINFO_MIME_TYPE);
     $mime  = $finfo->file($file['tmp_name']);
     $permitidos = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/gif' => 'gif'];

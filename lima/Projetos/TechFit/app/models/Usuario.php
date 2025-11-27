@@ -1,74 +1,43 @@
 <?php
 
-class Usuario {
+class Usuario
+{
     private static ?PDO $pdo = null;
 
     /**
      * Inicializa a conexão com o banco de dados
      */
-    private static function getPDO(): PDO {
+    private static function getPDO(): PDO
+    {
         if (self::$pdo === null) {
             self::$pdo = Connect::conectar();
         }
         return self::$pdo;
     }
 
-         public static function getUsuarioCompleto(int $id_usuario): ?array
+    public static function getUsuarioCompleto(int $id_usuario): ?array
     {
         $pdo = self::getPDO();
 
-        $sql = "SELECT id_usuario, email, tipo, avatar FROM Usuarios WHERE id_usuario = :id_usuario";
+        $sql  = "SELECT id_usuario, nome, email, tipo, avatar FROM Usuarios WHERE id_usuario = :id_usuario";
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':id_usuario', $id_usuario, PDO::PARAM_INT);
         $stmt->execute();
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (!$usuario) return null;
-
-        $nome          = 'Usuário';
-        $idFuncionario = null;
-
-        switch ($usuario['tipo']) {
-            case 'aluno':
-                $sqlNome = "SELECT nome_aluno AS nome 
-                            FROM Alunos 
-                            WHERE id_usuario = :id_usuario";
-                break;
-
-            case 'funcionario':
-                $sqlNome = "SELECT nome_funcionario AS nome, id_funcionario
-                            FROM Funcionarios 
-                            WHERE id_usuario = :id_usuario";
-                break;
-
-            default:
-                $sqlNome = null;
+        if (! $usuario) {
+            return null;
         }
-
-        if ($sqlNome) {
-            $stmt = $pdo->prepare($sqlNome);
-            $stmt->bindValue(':id_usuario', $id_usuario, PDO::PARAM_INT);
-            $stmt->execute();
-            $dados = $stmt->fetch(PDO::FETCH_ASSOC);
-            $nome = $dados['nome'] ?? $nome;
-
-            if ($usuario['tipo'] === 'funcionario' && isset($dados['id_funcionario'])) {
-                $idFuncionario = (int)$dados['id_funcionario'];
-            }
-        }
-
-        $avatarPath = $usuario['avatar'] ?: '/assets/images/upload/pfp/avatar.png';
 
         return [
             'user_id'        => $usuario['id_usuario'],
+            'user_name'      => $usuario['nome'],
             'user_email'     => $usuario['email'],
             'user_tipo'      => $usuario['tipo'],
-            'user_name'      => $nome,
-            'user_avatar'    => $avatarPath,
-            'id_funcionario' => $idFuncionario, // chave nova
+            'user_avatar'    => $usuario['avatar'] ?: '/assets/images/upload/pfp/avatar.png',
+            'id_funcionario' => $usuario['tipo'] === 'funcionario' ? $usuario['id_usuario'] : null,
         ];
     }
-
 
     /**
      * Altera a senha do usuário
@@ -76,10 +45,11 @@ class Usuario {
      * @param string $newPass Nova senha (já deve estar com hash)
      * @throws PDOException Se ocorrer erro na atualização
      */
-    public static function changePass(int $id, string $newPass): void {
+    public static function changePass(int $id, string $newPass): void
+    {
         $pdo = self::getPDO();
         $sql = "UPDATE Usuarios SET senha_hash = :senha WHERE id_usuario = :id";
-        
+
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':senha', $newPass, PDO::PARAM_STR);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
@@ -92,10 +62,11 @@ class Usuario {
      * @param string $newEmail Novo email
      * @throws PDOException Se ocorrer erro na atualização
      */
-    public static function changeEmail(int $id, string $newEmail): void {
+    public static function changeEmail(int $id, string $newEmail): void
+    {
         $pdo = self::getPDO();
         $sql = "UPDATE Usuarios SET email = :email WHERE id_usuario = :id";
-        
+
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':email', $newEmail, PDO::PARAM_STR);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
@@ -107,14 +78,15 @@ class Usuario {
      * @param int $id ID do usuário
      * @return string|null Email do usuário ou null se não encontrado
      */
-    public static function getEmail(int $id): ?string {
+    public static function getEmail(int $id): ?string
+    {
         $pdo = self::getPDO();
         $sql = "SELECT email FROM Usuarios WHERE id_usuario = :id";
-        
+
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
-        
+
         $result = $stmt->fetch(PDO::FETCH_COLUMN);
         return $result ?: null;
     }
@@ -124,21 +96,22 @@ class Usuario {
      * @param int $id ID do usuário
      * @return array|null Dados do usuário ou null se não encontrado
      */
-    public static function getUsuarioById(int $id): ?array {
+    public static function getUsuarioById(int $id): ?array
+    {
         $pdo = self::getPDO();
-        $sql = "SELECT 
+        $sql = "SELECT
                     id_usuario,
                     nome,
                     email,
                     data_nascimento,
                     tipo_usuario
-                FROM Usuarios 
+                FROM Usuarios
                 WHERE id_usuario = :id";
-        
+
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
-        
+
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ?: null;
     }

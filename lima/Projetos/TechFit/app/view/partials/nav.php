@@ -27,7 +27,7 @@
       <?php else: ?>
         <div class="dropdown text-end col-lg-3 d-flex justify-content-end align-items-center">
           <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
-            <img src="<?= htmlspecialchars($_SESSION['user_avatar'] ?? 'images/upload/pfp/avatar.png') ?>"
+            <img src="<?= htmlspecialchars($_SESSION['user_avatar'] ?? __DIR__ .'images/upload/pfp/avatar.png') ?>"
                  alt="Foto" width="32" height="32" class="rounded-circle me-2">
             <span>Olá, <?= htmlspecialchars($_SESSION['user_name'] ?? 'Usuário') ?></span>
           </a>
