@@ -13,9 +13,9 @@
                 receba treinos personalizados e muito mais.
             </p>
             <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                <button class="btn cta btn-dark btn-lg px-4 me-md-2">
+                <a href="/aulas" class="btn cta btn-dark btn-lg px-4 me-md-2">
                     Agende Sua Aula
-                </button>
+</a>
                 <button class="btn btn-outline-secondary text-dark btn-lg px-4">
                     Cadastre-se Agora
                 </button>

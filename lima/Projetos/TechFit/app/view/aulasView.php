@@ -46,8 +46,8 @@
                     <form action="aulas/agendar" method="post" class="mt-4">
                         <input type="hidden" name="id_aula" value="<?php echo $aula['id_aula'] ?>">
                         <button type="submit"
-                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg shadow-sm transition duration-200">
-                            Agendar Aula
+                            class="w-full <?= $_SESSION['user_tipo'] !== 'usuario' ? 'bg-black hover:bg-black hover:cursor-not-allowed ' : 'bg-blue-600 hover:bg-blue-700 '?>text-white font-medium py-2.5 rounded-lg shadow-sm transition duration-200" <?= $_SESSION['user_tipo'] != 'aluno'|| $_SESSION['user_tipo'] != "usuario"? 'disabled' : '' ?>>
+                            Agendar Aula 
                         </button>
                     </form>
                 </div>

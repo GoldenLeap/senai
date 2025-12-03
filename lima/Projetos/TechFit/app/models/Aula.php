@@ -116,4 +116,13 @@ class Aulas
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public static function agendarAula($id_aula, $id_aluno){
+        $pdo = self::getPDO();
+        $sql = "INSERT INTO Aulas_Aluno values(:id_aula, :id_aluno)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$id_aula, $id_aluno]);
+        $sql = "INSERT INTO agendamentos(data_agendamento, status, id_aula, id_aluno) VALUES(CURDATE(), ativo,?, ?)";
+        $stmt = $pdo->prepare("sql");
+        $stmt->execute();
+    }
 }
