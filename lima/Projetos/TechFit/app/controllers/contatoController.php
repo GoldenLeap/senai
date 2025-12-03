@@ -41,24 +41,6 @@ function contatoSend(){
         render('contatoView', 'Contato', $data);
         return;
     }
-
-    $to = 'gbplinioq@gmail.com';
-    $subject = $assunto ?: 'Mensagem de contato - TechFit';
-    $body = "Nome: $nome\nEmail: $email\nTelefone: $telefone\n\nMensagem:\n$mensagem";
-    $headers = "From: $nome <$email>\r\n" .
-               "Reply-To: $email\r\n" .
-               "X-Mailer: PHP/" . phpversion();
-    $sent = false;
-    if (function_exists('mail')) {
-        $sent = mail($to, $subject, $body, $headers);
-    }
-
-    if ($sent) {
-        flash('Mensagem enviada com sucesso!', 'success');
-    } else {
-        flash('Recebemos sua mensagem. Em servidores sem mail configurado, ela não será enviada por email.', 'success');
-    }
-
     header('Location: /contato');
     exit;
 }
