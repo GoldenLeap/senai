@@ -186,8 +186,8 @@ function processarUploadAnexo(string $campo): array
     }
 
     $ext      = $permitidos[$mime];
-    $uploadDirFs     = __DIR__ . '/../../public/assets/images/upload/avisos/';
-    $uploadDirPublic = '/assets/images/upload/avisos/';
+    $uploadDirFs     = __DIR__ . '/../../public/images/upload/avisos/';
+    $uploadDirPublic = '/images/upload/avisos/';
 
     if (!is_dir($uploadDirFs)) {
         mkdir($uploadDirFs, 0777, true);

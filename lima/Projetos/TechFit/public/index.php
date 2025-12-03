@@ -29,6 +29,9 @@ $routes = [
     '/aulas' => '../app/controllers/aulasController.php',
     '/comunicados' => '../app/controllers/comunicadoPublicController.php',
     '/adm/comunicados' => '../app/controllers/comunicadoAdmController.php',
+    '/sobre' => '../app/controllers/sobreController.php',
+    '/contato' => '../app/controllers/contatoController.php',
+    '/contato/send' => '../app/controllers/contatoController.php'
 ];
 
 if (array_key_exists($uri, $routes)) {

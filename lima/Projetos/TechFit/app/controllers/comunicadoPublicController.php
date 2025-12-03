@@ -65,7 +65,7 @@ function comunicadoPublicController()
                 $arquivoTmp = $_FILES['anexo']['tmp_name'];
                 $arquivoNome = "aviso_" . uniqid() . "_" . basename($_FILES['anexo']['name']);
                 
-                $uploadDir = __DIR__ . '/../../public/assets/images/upload/avisos/';
+                $uploadDir = __DIR__ . '/../../public/images/upload/avisos/';
                 if (!is_dir($uploadDir)) {
                     mkdir($uploadDir, 0755, true);
                 }
@@ -73,7 +73,7 @@ function comunicadoPublicController()
                 $destino = $uploadDir . $arquivoNome;
 
                 if (move_uploaded_file($arquivoTmp, $destino)) {
-                    $novoAnexoPath = "/assets/images/upload/avisos/" . $arquivoNome;
+                    $novoAnexoPath = "/images/upload/avisos/" . $arquivoNome;
 
                     $avisoAtual = Aviso::getById($id_alerta);
                     if (!empty($avisoAtual['anexo_path'])) {

@@ -14,7 +14,7 @@ require_once __DIR__ . "/../partials/nav.php";
         <?php if(!empty($avisos)):?>
         <?php foreach ($avisos as $aviso): ?>
             <a href="/comunicados?id=<?php echo (int) $aviso['id_alerta']; ?>"
-               class="block border rounded-lg p-3 mb-3 hover:bg-gray-50 transition">
+               class="block text-decoration-none text-black border rounded-lg p-3 mb-3 hover:bg-gray-50 transition">
                 <h3 class="font-semibold text-gray-800">
                     <?php echo htmlspecialchars($aviso['titulo']); ?>
                 </h3>
@@ -24,6 +24,11 @@ require_once __DIR__ . "/../partials/nav.php";
                 </p>
             </a>
         <?php endforeach; ?>
+
+        <?php endif;?>
+        
+        <?php if($isFuncionario):?>
+            <a href="/adm/comunicados" class="text-center text-decoration-none text-black font-light italic block border rounded-lg p-3 mb-3 hover:bg-gray-50 transition">Criar novo comunicado</a>
         <?php endif;?>
     </div>
 

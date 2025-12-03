@@ -1,5 +1,5 @@
       <footer
-          class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
+          class="row mx-2 row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
           <div class="col mb-3">
               <a
                   href="/"
@@ -21,16 +21,16 @@
               <h5>Saiba Mais</h5>
               <ul class="nav flex-column">
                   <li class="nav-item mb-2">
-                      <a href="#" class="nav-link p-0 text-body-secondary">Modalidades</a>
+                      <a href="/modalidades" class="nav-link p-0 text-body-secondary">Modalidades</a>
                   </li>
                   <li class="nav-item mb-2">
-                      <a href="#" class="nav-link p-0 text-body-secondary">Planos</a>
+                      <a href="/planos" class="nav-link p-0 text-body-secondary">Planos</a>
                   </li>
                   <li class="nav-item mb-2">
-                      <a href="#" class="nav-link p-0 text-body-secondary">Sobre Nós</a>
+                      <a href="/sobre" class="nav-link p-0 text-body-secondary">Sobre Nós</a>
                   </li>
                   <li class="nav-item mb-2">
-                      <a href="#" class="nav-link p-0 text-body-secondary">Perguntas Frequentes</a>
+                      <a href="/faq" class="nav-link p-0 text-body-secondary">Perguntas Frequentes</a>
                   </li>
               </ul>
           </div>
@@ -39,10 +39,10 @@
               <h5>Suporte</h5>
               <ul class="nav flex-column">
                   <li class="nav-item mb-2">
-                      <a href="#" class="nav-link p-0 text-body-secondary">Contate-nos</a>
+                      <a href="/contato" class="nav-link p-0 text-body-secondary">Contate-nos</a>
                   </li>
                   <li class="nav-item mb-2">
-                      <a href="#" class="nav-link p-0 text-body-secondary">Suporte</a>
+                      <a href="/suporte" class="nav-link p-0 text-body-secondary">Suporte</a>
                   </li>
               </ul>
           </div>

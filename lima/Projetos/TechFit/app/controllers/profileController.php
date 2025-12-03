@@ -1,9 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../models/Usuario.php';
-require_once __DIR__ . '/../models/Aulas.php';
-require_once __DIR__ . '/../models/Modalidades.php';
-require_once __DIR__ . '/../models/Alunos.php';
 require_once __DIR__ . '/agendaController.php';
 function profileController(): void
 {
@@ -15,6 +11,7 @@ function profileController(): void
     $usuario = Usuario::getUsuarioCompleto($_SESSION['user_id']);
     if (!$usuario) {
         // Usuário não encontrado
+        flash("Usuario não encontrado", "error");
         session_destroy();
         header('Location: /');
         exit;
