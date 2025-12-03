@@ -1,8 +1,7 @@
 <?php 
-require_once __DIR__ . "/../models/Connect.php";
-require_once __DIR__ . "/../models/Aulas.php";
-require_once __DIR__ . "/../models/Alunos.php";
-require_once __DIR__ . "/../models/Avisos.php";
-require_once __DIR__ . "/../models/Modalidades.php";
-require_once __DIR__ . "/../models/Usuario.php";
-require_once __DIR__ . "/../models/Funcionario.php";
+spl_autoload_register(function ($class) {
+    $file = __DIR__ . '/../models/' . $class . '.php';
+    if (file_exists($file)) {
+        require_once $file;
+    }
+});

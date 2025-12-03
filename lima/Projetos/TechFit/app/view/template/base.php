@@ -15,7 +15,22 @@
 
     <?php echo $headExtras ?? ''?>
 </head>
-<body>
+    <body>
+        <?php  if (has_flash('success')): ?>
+        <div class="alert success">
+            <?php foreach (get_flash('success') as $msg): ?>
+                <p><?= htmlspecialchars($msg) ?></p>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (has_flash('error')): ?>
+        <div class="alert error">
+            <?php foreach (get_flash('error') as $msg): ?>
+                <p><?= htmlspecialchars($msg) ?></p>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
 
     <main>
         <?php echo $conteudo?>

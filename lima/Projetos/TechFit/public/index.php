@@ -3,6 +3,7 @@
 
 require_once __DIR__ . '/../app/helpers/viewHelper.php';
 require_once __DIR__ . '/../app/helpers/authHelper.php'; 
+require_once __DIR__ . '/../app/helpers/flash.php'; 
 require_once __DIR__ . '/../app/helpers/loadModels.php';
 session_start();
 
