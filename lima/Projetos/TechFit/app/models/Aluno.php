@@ -1,10 +1,11 @@
-<?php 
-class Aluno {
+<?php
+class Aluno
+{
     private static ?PDO $pdo = null;
 
     private static function getPDO(): PDO
     {
-        if(self::$pdo === null){
+        if (self::$pdo === null) {
             self::$pdo = Connect::conectar();
         }
         return self::$pdo;
@@ -17,8 +18,8 @@ class Aluno {
      */
     public static function getAlunoByUserID(int $user_id): ?array
     {
-        $pdo = self::getPDO();
-        $sql = "SELECT id_aluno, genero, endereco, telefone, codigo_acesso FROM Alunos WHERE id_usuario = :user_id";
+        $pdo  = self::getPDO();
+        $sql  = "SELECT id_aluno, genero, endereco, telefone, codigo_acesso FROM Alunos WHERE id_usuario = :user_id";
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
@@ -33,7 +34,7 @@ class Aluno {
     public static function getAlunoCompletoByUserID(int $user_id): ?array
     {
         $pdo = self::getPDO();
-        $sql = "SELECT 
+        $sql = "SELECT
                     a.id_aluno,
                     u.nome,
                     u.email,
@@ -63,22 +64,22 @@ class Aluno {
     public static function updateAluno(int $id_aluno, array $data): bool
     {
         $pdo = self::getPDO();
-        
+
         $updates = [];
-        $params = [':id_aluno' => $id_aluno];
+        $params  = [':id_aluno' => $id_aluno];
 
         if (isset($data['genero'])) {
-            $updates[] = "genero = :genero";
+            $updates[]         = "genero = :genero";
             $params[':genero'] = $data['genero'];
         }
 
         if (isset($data['endereco'])) {
-            $updates[] = "endereco = :endereco";
+            $updates[]           = "endereco = :endereco";
             $params[':endereco'] = $data['endereco'];
         }
 
         if (isset($data['telefone'])) {
-            $updates[] = "telefone = :telefone";
+            $updates[]           = "telefone = :telefone";
             $params[':telefone'] = $data['telefone'];
         }
 
@@ -86,7 +87,7 @@ class Aluno {
             return true;
         }
 
-        $sql = "UPDATE Alunos SET " . implode(", ", $updates) . " WHERE id_aluno = :id_aluno";
+        $sql  = "UPDATE Alunos SET " . implode(", ", $updates) . " WHERE id_aluno = :id_aluno";
         $stmt = $pdo->prepare($sql);
 
         foreach ($params as $key => $value) {
@@ -105,8 +106,8 @@ class Aluno {
     public static function criarAluno(array $dados): ?int
     {
         $pdo = self::getPDO();
-        
-        $sql = "INSERT INTO Alunos (id_usuario, genero, endereco, telefone) 
+
+        $sql = "INSERT INTO Alunos (id_usuario, genero, endereco, telefone)
                 VALUES (:id_usuario, :genero, :endereco, :telefone)";
 
         $stmt = $pdo->prepare($sql);
@@ -117,5 +118,25 @@ class Aluno {
 
         $stmt->execute();
         return (int) $pdo->lastInsertId();
+    }
+
+    public static function getTodosComUsuario(): array
+    {
+        $pdo = self::getPDO();
+
+        $sql = "
+        SELECT
+            a.id_aluno,
+            a.codigo_acesso,
+            u.nome
+        FROM Alunos a
+        JOIN Usuarios u ON a.id_usuario = u.id_usuario
+        ORDER BY u.nome
+    ";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

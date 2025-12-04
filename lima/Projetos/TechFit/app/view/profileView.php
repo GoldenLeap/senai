@@ -17,18 +17,32 @@
                     </a>
                     <a href="/profile?page=avaliacao" class="text-decoration-none text-black p-2 rounded-md flex items-center gap-2
                        <?php echo ($currPage === 'avaliacao') ? 'bg-blue-600 text-white' : 'hover:bg-[#cfcfcf]'?>">
-                       📊 Avaliação Física
+                       📊 Avaliações Físicas
                     </a>
                     <a href="/profile?page=frequencia" class="text-decoration-none text-black p-2 rounded-md flex items-center gap-2
                        <?php echo ($currPage === 'frequencia') ? 'bg-blue-600 text-white' : 'hover:bg-[#cfcfcf]'?>">
                        📈 Frequência
                     </a>
+                    <a href="/profile?page=suporte" class="text-decoration-none text-black p-2 rounded-md flex items-center gap-2
+                        <?php echo ($currPage === 'suporte') ? 'bg-blue-600 text-white' : 'hover:bg-[#cfcfcf]'?>">
+                        🎫 Suporte
+                    </a>
                     <a href="/comunicados" class="text-decoration-none text-black p-2 rounded-md flex items-center gap-2 hover:bg-[#cfcfcf]">
                        📢 Comunicados
                     </a>
+ 
                 <?php elseif (strtolower($user_tipo) === 'funcionario'): ?>
                     <a href="/adm/painel" class="text-decoration-none text-black p-2 rounded-md flex items-center gap-2 hover:bg-[#cfcfcf]">📋 Painel Administrativo</a>
                     <a href="/profile?page=relatorios" class="text-decoration-none text-black p-2 rounded-md flex items-center gap-2 hover:bg-[#cfcfcf]">📑 Relatórios</a>
+                    <a href="/profile?page=avaliacoes_alunos"
+                        class="text-decoration-none text-black p-2 rounded-md flex items-center gap-2
+                            <?php echo ($currPage === 'avaliacoes_alunos') ? 'bg-blue-600 text-white' : 'hover:bg-[#cfcfcf]'?>">
+                            🧑‍🎓 Avaliações de Alunos
+                    </a>
+                    <a href="/profile?page=suporte_admin" class="text-decoration-none text-black p-2 rounded-md flex items-center gap-2
+                        <?php echo ($currPage === 'suporte_admin') ? 'bg-blue-600 text-white' : 'hover:bg-[#cfcfcf]'?>">
+                        🎫 Suporte (Tickets)
+                    </a>
                 <?php endif; ?>
             </nav>
         </div>

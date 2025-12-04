@@ -52,6 +52,15 @@ function profileController(): void
             case 'change_avatar':
                 handleChangeAvatar($_SESSION['user_id']);
                 break;
+            case 'nova_avaliacao_aluno':
+                handleNovaAvaliacaoAluno($_SESSION['user_id']);
+                break;
+            case 'novo_ticket':
+                handleNovoTicket($_SESSION['user_id']);
+                break;
+            case 'atualizar_ticket':
+                handleAtualizarTicket();
+                break;
         }
 
         // Após qualquer ação POST, evita reprocessar ao recarregar
@@ -70,18 +79,45 @@ function profileController(): void
             break;
 
         case 'avaliacao':
+            // aluno visualiza as avaliações físicas que recebeu (não cria novas)
             $data['subView'] = 'avaliacaoView.php';
 
             $aluno    = Aluno::getAlunoByUserID($_SESSION['user_id']);
             $id_aluno = $aluno['id_aluno'] ?? null;
 
-            $data['avaliacoes']  = $id_aluno ? Avaliacao::getByAluno((int) $id_aluno) : [];
-            $data['instrutores'] = Funcionario::getTodosComUsuario();
+            $data['avaliacoes'] = $id_aluno ? Avaliacao::getByAluno((int) $id_aluno) : [];
+            break;
+        case 'suporte':
+            $data['subView'] = 'suporteView.php';
 
+            $aluno    = Aluno::getAlunoByUserID($_SESSION['user_id']);
+            $id_aluno = $aluno['id_aluno'] ?? null;
+
+            $data['tickets'] = $id_aluno ? Suporte::getByAluno((int) $id_aluno) : [];
             break;
 
-        case 'nova_avaliacao':
-            handleNovaAvaliacao($_SESSION['user_id']);
+        case 'avaliacoes_alunos':
+            if ($usuario['user_tipo'] !== 'funcionario') {
+                $data['subView'] = 'partials/placeholderView.php';
+                $data['message'] = 'Acesso restrito aos funcionários.';
+                break;
+            }
+
+            $data['subView'] = 'admin/avaliacoesAlunosView.php';
+
+            // lista de alunos para o select
+            $data['alunos'] = Aluno::getTodosComUsuario();
+
+            $id_aluno_selecionado = isset($_GET['id_aluno']) ? (int) $_GET['id_aluno'] : 0;
+
+            if ($id_aluno_selecionado > 0) {
+                $data['id_aluno_selecionado'] = $id_aluno_selecionado;
+                $data['avaliacoes']           = Avaliacao::getByAluno($id_aluno_selecionado);
+            } else {
+                $data['id_aluno_selecionado'] = null;
+                $data['avaliacoes']           = [];
+            }
+
             break;
 
         case 'frequencia':
@@ -106,6 +142,19 @@ function profileController(): void
         case 'relatorios':
             handleRelatorio($usuario, $data);
             break;
+        case 'suporte_admin':
+            if ($usuario['user_tipo'] !== 'funcionario') {
+                $data['subView'] = 'partials/placeholderView.php';
+                $data['message'] = 'Acesso restrito aos funcionários.';
+                break;
+            }
+
+            $data['subView'] = 'admin/suporteAdminView.php';
+
+            $statusFiltro         = $_GET['status'] ?? 'todos';
+            $data['tickets']      = Suporte::getTodos($statusFiltro);
+            $data['statusFiltro'] = $statusFiltro;
+            break;
 
         default:
             $data['subView'] = 'partials/placeholderView.php';
@@ -119,6 +168,7 @@ function profileController(): void
 // Funções auxiliares
 function loadAgendaData(int $id_usuario): array
 {
+    Aulas::fecharAulasPassadas();
     $aluno                 = Aluno::getAlunoByUserID($id_usuario);
     $id_aluno              = $aluno['id_aluno'] ?? null;
     $modalidadeSelecionada = $_GET['modalidade'] ?? 'todas';
@@ -146,28 +196,6 @@ function handleCancelarAgendamento(): void
 
     cancelarAgendamento((int) $ag_id, (int) $aluno['id_aluno']);
     flash("Agendamento cancelado com sucesso!", "success");
-}
-
-function handleNovaAvaliacao(int $id_usuario): void
-{
-    $aluno = Aluno::getAlunoByUserID($id_usuario);
-    if (! $aluno) {
-        flash("Aluno não encontrado.", "error");
-        return;
-    }
-
-    $id_aluno       = (int) $aluno['id_aluno'];
-    $id_funcionario = (int) ($_POST['id_funcionario'] ?? 0);
-    $nota           = (float) ($_POST['nota'] ?? 0);
-    $comentarios    = trim($_POST['comentarios'] ?? '');
-
-    if ($id_funcionario <= 0 || $nota <= 0 || $comentarios === '') {
-        flash("Preencha todos os campos da avaliação.", "error");
-        return;
-    }
-
-    Avaliacao::criar($id_aluno, $id_funcionario, $nota, $comentarios);
-    flash("Avaliação enviada com sucesso!", "success");
 }
 
 function handleRelatorio(array $usuario, array &$data): void
@@ -211,9 +239,70 @@ function handleRelatorio(array $usuario, array &$data): void
     ");
     $frequenciaPorFilial = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Joga tudo para a view 
+    // Joga tudo para a view
     $data['totalAlunos']         = $totalAlunos;
     $data['alunosAtivos']        = $alunosAtivos;
     $data['receitaTotal']        = $receitaTotal;
     $data['frequenciaPorFilial'] = $frequenciaPorFilial;
+}
+function handleNovaAvaliacaoAluno(int $id_usuario): void
+{
+    // garante que é funcionário
+    $usuario = Usuario::getUsuarioCompleto($id_usuario);
+    if (! $usuario || $usuario['user_tipo'] !== 'funcionario') {
+        flash("Acesso restrito aos funcionários.", "error");
+        return;
+    }
+
+    $id_funcionario = $_SESSION['id_funcionario'] ?? null;
+    if (! $id_funcionario) {
+        flash("Funcionário não identificado.", "error");
+        return;
+    }
+
+    $id_aluno    = (int) ($_POST['id_aluno'] ?? 0);
+    $nota        = (float) ($_POST['nota'] ?? 0);
+    $comentarios = trim($_POST['comentarios'] ?? '');
+
+    if ($id_aluno <= 0 || $nota <= 0 || $comentarios === '') {
+        flash("Preencha todos os campos da avaliação.", "error");
+        return;
+    }
+
+    Avaliacao::criar($id_aluno, $id_funcionario, $nota, $comentarios);
+    flash("Avaliação do aluno cadastrada com sucesso!", "success");
+}
+
+function handleNovoTicket(int $id_usuario): void
+{
+    $aluno = Aluno::getAlunoByUserID($id_usuario);
+    if (! $aluno) {
+        flash("Aluno não encontrado.", "error");
+        return;
+    }
+
+    $id_aluno  = (int) $aluno['id_aluno'];
+    $categoria = trim($_POST['categoria'] ?? '');
+    $descricao = trim($_POST['descricao'] ?? '');
+
+    if ($categoria === '' || $descricao === '') {
+        flash("Preencha todos os campos do ticket.", "error");
+        return;
+    }
+
+    $ticketID = Suporte::criar($id_aluno, $categoria, $descricao);
+    flash("Ticket #$ticketID criado com sucesso!", "success");
+}
+function handleAtualizarTicket(): void
+{
+    $ticket = trim($_POST['ticket'] ?? '');
+    $status = trim($_POST['status'] ?? '');
+
+    if ($ticket === '' || $status === '') {
+        flash("Dados inválidos.", "error");
+        return;
+    }
+
+    Suporte::atualizarStatus($ticket, $status);
+    flash("Ticket atualizado!", "success");
 }

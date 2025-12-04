@@ -42,7 +42,7 @@
                       <a href="/contato" class="nav-link p-0 text-body-secondary">Contate-nos</a>
                   </li>
                   <li class="nav-item mb-2">
-                      <a href="/suporte" class="nav-link p-0 text-body-secondary">Suporte</a>
+                      <a href="/profile?page=suporte" class="nav-link p-0 text-body-secondary">Suporte</a>
                   </li>
               </ul>
           </div>

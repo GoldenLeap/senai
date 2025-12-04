@@ -81,19 +81,26 @@
                         <input type="hidden" name="id_aula" value="<?= $aula['id_aula'] ?>">
 
                         <?php
-                            $bloqueado = ($_SESSION['user_tipo'] !== 'usuario' && $_SESSION['user_tipo'] !== 'aluno');
+                            // bloqueia quem não for aluno
+                            $bloqueado = !isset($_SESSION['user_tipo']) || $_SESSION['user_tipo'] !== 'aluno';
+
+                            // verifica se já está agendada para o aluno logado
+                            $jaAgendada = false;
+                            if (!$bloqueado && !empty($id_aluno)) {
+                                $jaAgendada = Aulas::checkAgendado((int)$id_aluno, (int)$aula['id_aula']);
+                            }
                         ?>
 
                         <button
                             type="submit"
-                            <?= $bloqueado ? 'disabled' : '' ?>
+                            <?= ($bloqueado || $jaAgendada) ? 'disabled' : '' ?>
                             class="w-full py-3 rounded-xl text-white font-semibold shadow
                                    transition-all duration-200
-                                   <?= $bloqueado
+                                   <?= ($bloqueado || $jaAgendada)
                                         ? 'bg-gray-400 cursor-not-allowed'
                                         : 'bg-blue-600 hover:bg-blue-700' ?>"
                         >
-                            Agendar Aula
+                            <?= $jaAgendada ? 'Já agendada' : 'Agendar Aula' ?>
                         </button>
                     </form>
                 </div>

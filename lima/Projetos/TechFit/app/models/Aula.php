@@ -33,6 +33,19 @@ class Aulas
         return (int) $stmt->fetchColumn();
     }
 
+    public static function fecharAulasPassadas(): void
+    {
+        $pdo = self::getPDO();
+        $sql = "
+        UPDATE agendamento Ag
+        JOIN Aulas A ON Ag.id_aula = A.id_aula
+        SET Ag.status = 'presente'
+        WHERE A.dia_aula <= NOW()
+          AND Ag.status = 'agendado'
+    ";
+
+        $pdo->exec($sql);
+    }
     public static function getAulas(?string $modalidade = null): array
     {
         $pdo = self::getPDO();
@@ -47,11 +60,15 @@ class Aulas
         INNER JOIN
             Modalidades AS M ON A.id_modalidade = M.id_modalidade
         INNER JOIN
-            Filiais AS F ON A.id_filial = F.id_filial ";
+            Filiais AS F ON A.id_filial = F.id_filial
+        WHERE
+            A.dia_aula > NOW()"; // somente aulas futuras
 
         if ($modalidade !== null && $modalidade !== 'todas') {
-            $sql .= " WHERE A.id_modalidade = :id_modalidade";
+            $sql .= " AND A.id_modalidade = :id_modalidade";
         }
+
+        $sql .= " ORDER BY A.dia_aula";
 
         $stmt = $pdo->prepare($sql);
 
@@ -129,7 +146,7 @@ class Aulas
 
         // Descobre o id_aluno a partir do id_usuario
         $aluno = Aluno::getAlunoByUserID($id_usuario);
-        if (!$aluno) {
+        if (! $aluno) {
             return false;
         }
         $id_aluno = (int) $aluno['id_aluno'];
