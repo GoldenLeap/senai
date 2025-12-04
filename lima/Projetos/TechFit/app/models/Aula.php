@@ -23,7 +23,8 @@ class Aulas
     public static function getInscritos(int $id_aula): int
     {
         $pdo = self::getPDO();
-        $sql = 'SELECT COUNT(*) FROM Agendamento WHERE id_aula = :id_aula';
+        // conta apenas agendamentos ativos
+        $sql = 'SELECT COUNT(*) FROM agendamento WHERE id_aula = :id_aula AND status = "agendado"';
 
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':id_aula', $id_aula, PDO::PARAM_INT);
@@ -65,7 +66,7 @@ class Aulas
     public static function checkAgendado(int $id_aluno, int $id_aula): bool
     {
         $pdo = self::getPDO();
-        $sql = "SELECT COUNT(*) FROM Aulas_Aluno WHERE id_aula = :id_aula AND id_aluno = :id_aluno";
+        $sql = "SELECT COUNT(*) FROM agendamento WHERE id_aula = :id_aula AND id_aluno = :id_aluno AND status = 'agendado'";
 
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':id_aula', $id_aula, PDO::PARAM_INT);
@@ -116,13 +117,67 @@ class Aulas
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    public static function agendarAula($id_aula, $id_aluno){
+    /**
+     * Agenda uma aula para o usuário logado
+     * @param int $id_aula
+     * @param int $id_usuario
+     * @return bool true se agendou, false se já estava agendado ou lotado
+     */
+    public static function agendarAula(int $id_aula, int $id_usuario): bool
+    {
         $pdo = self::getPDO();
-        $sql = "INSERT INTO Aulas_Aluno values(:id_aula, :id_aluno)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$id_aula, $id_aluno]);
-        $sql = "INSERT INTO agendamentos(data_agendamento, status, id_aula, id_aluno) VALUES(CURDATE(), ativo,?, ?)";
-        $stmt = $pdo->prepare("sql");
+
+        // Descobre o id_aluno a partir do id_usuario
+        $aluno = Aluno::getAlunoByUserID($id_usuario);
+        if (!$aluno) {
+            return false;
+        }
+        $id_aluno = (int) $aluno['id_aluno'];
+
+        // Verifica se já existe agendamento ativo
+        if (self::checkAgendado($id_aluno, $id_aula)) {
+            return false;
+        }
+
+        // Verifica capacidade da aula
+        $stmt = $pdo->prepare('SELECT quantidade_pessoas FROM Aulas WHERE id_aula = :id_aula');
+        $stmt->bindValue(':id_aula', $id_aula, PDO::PARAM_INT);
         $stmt->execute();
+        $capacidade = (int) $stmt->fetchColumn();
+
+        if ($capacidade > 0) {
+            $inscritos = self::getInscritos($id_aula);
+            if ($inscritos >= $capacidade) {
+                return false;
+            }
+        }
+
+        try {
+            $pdo->beginTransaction();
+
+            // Garante vínculo na tabela de relacionamento (evita erro se já existir)
+            $sql = 'INSERT INTO aulas_aluno (id_aula, id_aluno) VALUES (:id_aula, :id_aluno)
+                    ON DUPLICATE KEY UPDATE id_aula = VALUES(id_aula)';
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':id_aula', $id_aula, PDO::PARAM_INT);
+            $stmt->bindValue(':id_aluno', $id_aluno, PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Cria registro de agendamento
+            $sql = "INSERT INTO agendamento (data_agendamento, status, id_aula, id_aluno)
+                    VALUES (NOW(), 'agendado', :id_aula, :id_aluno)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':id_aula', $id_aula, PDO::PARAM_INT);
+            $stmt->bindValue(':id_aluno', $id_aluno, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $pdo->commit();
+            return true;
+        } catch (Exception $e) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            throw $e;
+        }
     }
 }

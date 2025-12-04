@@ -23,7 +23,7 @@
       <?php if (!isset($_SESSION['user_id'])): ?>
         <div class="d-lg-flex col-lg-3 gap-3 p-2 justify-content-lg-end">
           <a href="/login" class="btn btn-outline-dark">Entrar</a>
-          <a href="/register" class="btn btn-dark">Cadastrar-se</a>
+          <a href="/cadastro" class="btn btn-dark">Cadastrar-se</a>
         </div>
       <?php else: ?>
         <div class="dropdown text-end col-lg-3 d-flex justify-content-end align-items-center">

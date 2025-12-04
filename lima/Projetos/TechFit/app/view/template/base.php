@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="TechFit: Transforme sua saúde com treinos personalizados, aulas online e planos acessíveis. Junte-se à nossa academia hoje!">
     <meta name="keywords" content="academia, treinos personalizados, fitness, saúde, TechFit">
-    <title>TechFit -                                         <?php echo $titulo ?></title>
+    <title>TechFit -                                                             <?php echo $titulo ?></title>
     <link rel="shortcut icon" href="/assets/icons/favicon.ico" type="image/x-icon">
     <link
       rel="stylesheet"
@@ -47,13 +47,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const flashes = document.querySelectorAll("[id^='flash-']");
 
     flashes.forEach(flash => {
-        // espera 3 segundos antes de começar a sumir
         setTimeout(() => {
-            flash.classList.add("opacity-0"); // fade-out
+            flash.classList.add("opacity-0"); 
 
-            // remove do DOM após a animação
             setTimeout(() => flash.remove(), 700);
-        }, 3000);
+        }, 2000);
     });
 });
 </script>

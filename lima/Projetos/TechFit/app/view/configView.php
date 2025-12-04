@@ -206,17 +206,19 @@
 
                 <div>
                     <label class="block mb-2 text-gray-600 font-medium">Nova Senha:</label>
-                    <input type="password" name="senha_nova"
+                    <input type="password" id="senha_nova" name="senha_nova"
                            class="border border-gray-300 p-3 w-full rounded focus:outline-none focus:border-blue-500"
                            required>
-                    <small class="text-gray-500">Mínimo 6 caracteres</small>
+                    <small class="text-gray-500">Mínimo 8 caracteres. Deve conter maiúsculas, minúsculas e números.</small>
+                    <p id="senhaNovaErro" class="mt-1 text-xs text-red-500"></p>
                 </div>
 
                 <div>
                     <label class="block mb-2 text-gray-600 font-medium">Confirmar Nova Senha:</label>
-                    <input type="password" name="senha_confirmacao"
+                    <input type="password" id="senha_confirmacao" name="senha_confirmacao"
                            class="border border-gray-300 p-3 w-full rounded focus:outline-none focus:border-blue-500"
                            required>
+                    <p id="senhaConfirmErro" class="mt-1 text-xs text-red-500"></p>
                 </div>
             </div>
 
@@ -236,4 +238,73 @@
             <li>✓ Verifique se seu email está correto para receber notificações</li>
         </ul>
     </div>
+
+    <script>
+        // Validação em tempo real da senha na seção de Segurança
+        const changePassAction = document.querySelector('input[name="action"][value="change_password"]');
+        if (changePassAction) {
+            const formSenha = changePassAction.closest('form');
+            const senhaNovaInput = formSenha.querySelector('input[name="senha_nova"]');
+            const senhaConfirmInput = formSenha.querySelector('input[name="senha_confirmacao"]');
+            const senhaNovaErro = document.getElementById('senhaNovaErro');
+            const senhaConfirmErro = document.getElementById('senhaConfirmErro');
+
+            function validarForcaSenhaFront(senha) {
+                const temMaiuscula = /[A-Z]/.test(senha);
+                const temMinuscula = /[a-z]/.test(senha);
+                const temNumero = /[0-9]/.test(senha);
+                return temMaiuscula && temMinuscula && temNumero;
+            }
+
+            senhaNovaInput.addEventListener('input', function () {
+                senhaNovaErro.textContent = '';
+                senhaConfirmErro.textContent = '';
+
+                if (this.value.length > 0 && this.value.length < 8) {
+                    senhaNovaErro.textContent = 'Senha inválida: mínimo 8 caracteres.';
+                } else if (this.value.length >= 8 && !validarForcaSenhaFront(this.value)) {
+                    senhaNovaErro.textContent = 'Senha inválida: use letras maiúsculas, minúsculas e números.';
+                }
+
+                if (senhaConfirmInput.value.length > 0 && this.value !== senhaConfirmInput.value) {
+                    senhaConfirmErro.textContent = 'Senhas não são iguais.';
+                }
+            });
+
+            senhaConfirmInput.addEventListener('input', function () {
+                senhaConfirmErro.textContent = '';
+                if (this.value.length > 0 && this.value !== senhaNovaInput.value) {
+                    senhaConfirmErro.textContent = 'Senhas não são iguais.';
+                }
+            });
+
+            formSenha.addEventListener('submit', function (e) {
+                senhaNovaErro.textContent = '';
+                senhaConfirmErro.textContent = '';
+
+                const nova = senhaNovaInput.value;
+                const conf = senhaConfirmInput.value;
+
+                if (nova.length < 8) {
+                    e.preventDefault();
+                    senhaNovaErro.textContent = 'Senha inválida: mínimo 8 caracteres.';
+                    senhaNovaInput.focus();
+                    return;
+                }
+
+                if (!validarForcaSenhaFront(nova)) {
+                    e.preventDefault();
+                    senhaNovaErro.textContent = 'Senha inválida: use letras maiúsculas, minúsculas e números.';
+                    senhaNovaInput.focus();
+                    return;
+                }
+
+                if (nova !== conf) {
+                    e.preventDefault();
+                    senhaConfirmErro.textContent = 'Senhas não são iguais.';
+                    senhaConfirmInput.focus();
+                }
+            });
+        }
+    </script>
 </div>

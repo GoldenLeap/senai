@@ -89,18 +89,23 @@ function handleChangePassword(int $id_usuario): void
         return;
     }
 
-    if (strlen($nova) < 6) {
-        flash("A nova senha deve ter pelo menos 6 caracteres", "error");
+    if (strlen($nova) < 8) {
+        flash("A nova senha deve ter pelo menos 8 caracteres", "error");
+        return;
+    }
+
+    if (!validarForcaSenha($nova)) {
+        flash("Senha deve conter letras maiúsculas, minúsculas e números", "error");
         return;
     }
 
     $hashArmazenado = Usuario::getSenhaHash($id_usuario);
-    if (!password_verify($atual, $hashArmazenado)) {
+    if (md5($atual) !== $hashArmazenado) {
         flash("Senha atual incorreta", "error");
         return;
     }
 
-    $novoHash = password_hash($nova, PASSWORD_BCRYPT);
+    $novoHash = md5($nova);
     Usuario::changePass($id_usuario, $novoHash);
 
     flash("Senha alterada com sucesso!", "success");
@@ -199,4 +204,29 @@ function handleChangeAvatar(int $id_usuario): void
 
     header('Location: /profile?page=configuracao');
     exit;
+}
+
+/**
+ * Valida a força da senha
+ * @param string $senha Senha a validar
+ * @return bool True se válida, false caso contrário
+ */
+function validarForcaSenha(string $senha): bool
+{
+    // Verifica se tem pelo menos uma letra maiúscula
+    if (!preg_match('/[A-Z]/', $senha)) {
+        return false;
+    }
+
+    // Verifica se tem pelo menos uma letra minúscula
+    if (!preg_match('/[a-z]/', $senha)) {
+        return false;
+    }
+
+    // Verifica se tem pelo menos um número
+    if (!preg_match('/[0-9]/', $senha)) {
+        return false;
+    }
+
+    return true;
 }

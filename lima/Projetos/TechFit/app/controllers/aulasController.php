@@ -20,6 +20,20 @@
     }
 
     function agendarAula($id){
-        Aulas::agendarAula($id, $_SESSION["user_id"]);
+        try {
+            $sucesso = Aulas::agendarAula((int)$id, (int)$_SESSION["user_id"]);
 
+            if ($sucesso) {
+                flash('Aula agendada com sucesso!', 'success');
+                header('Location: /profile?page=agenda');
+            } else {
+                flash('Não foi possível agendar esta aula. Verifique se ela já está agendada ou se não há mais vagas.', 'error');
+                header('Location: /aulas');
+            }
+            exit;
+        } catch (Exception $e) {
+            flash('Erro ao agendar aula. Tente novamente mais tarde.', 'error');
+            header('Location: /aulas');
+            exit;
+        }
     }

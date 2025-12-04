@@ -10,6 +10,7 @@ $uri = rtrim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 $routes = [
     ''                      => ['controller' => 'homeController', 'auth' => false],
     '/login'                => ['controller' => 'loginController', 'auth' => false],
+    '/cadastro'             => ['controller' => 'loginController', 'auth' => false],
     '/logout'               => ['controller' => 'logoutController', 'auth' => true],
     '/sobre'                => ['controller' => 'sobreController', 'auth' => false],
     '/contato'              => ['controller' => 'contatoController', 'auth' => false],
@@ -20,8 +21,10 @@ $routes = [
     // Rotas protegidas (requerem autenticação)
     '/profile'              => ['controller' => 'profileController', 'auth' => true],
     '/aulas'                => ['controller' => 'aulasController', 'auth' => true],
+    '/aulas/agendar'        => ['controller' => 'aulasController', 'auth' => true],
     '/comunicados'          => ['controller' => 'comunicadoPublicController', 'auth' => true],
     '/adm/comunicados'      => ['controller' => 'comunicadoAdmController', 'auth' => 'funcionario'],
+    '/adm/relatorios' => ['controller' => 'adminRelatoriosController', 'auth' => 'funcionario']
 ];
 
 if (!array_key_exists($uri, $routes)) {

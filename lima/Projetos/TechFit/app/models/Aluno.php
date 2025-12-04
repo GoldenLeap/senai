@@ -95,4 +95,27 @@ class Aluno {
 
         return $stmt->execute();
     }
+
+    /**
+     * Cria um novo aluno
+     * @param array $dados Array com os dados do aluno (id_usuario, genero, endereco, telefone)
+     * @return int|null ID do aluno criado ou null se falhar
+     * @throws PDOException Se ocorrer erro na inserção
+     */
+    public static function criarAluno(array $dados): ?int
+    {
+        $pdo = self::getPDO();
+        
+        $sql = "INSERT INTO Alunos (id_usuario, genero, endereco, telefone) 
+                VALUES (:id_usuario, :genero, :endereco, :telefone)";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':id_usuario', $dados['id_usuario'], PDO::PARAM_INT);
+        $stmt->bindValue(':genero', $dados['genero'] ?? '', PDO::PARAM_STR);
+        $stmt->bindValue(':endereco', $dados['endereco'] ?? '', PDO::PARAM_STR);
+        $stmt->bindValue(':telefone', $dados['telefone'] ?? '', PDO::PARAM_STR);
+
+        $stmt->execute();
+        return (int) $pdo->lastInsertId();
+    }
 }

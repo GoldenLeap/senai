@@ -6,3 +6,5 @@
     require_once __DIR__ . "/../models/Funcionario.php";
     require_once __DIR__ . "/../models/Modalidade.php";
     require_once __DIR__ . "/../models/Usuario.php";
+    require_once __DIR__ . "/../models/Checkin.php";
+    require_once __DIR__ . "/../models/Avaliacao.php";

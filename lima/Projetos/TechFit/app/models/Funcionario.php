@@ -22,4 +22,22 @@ class Funcionario
 
         return $func ?: null;
     }
+    public static function getTodosComUsuario(): array
+{
+    $pdo = self::getPDO();
+
+    $sql = "
+        SELECT 
+            f.id_funcionario,
+            u.nome
+        FROM Funcionarios f
+        JOIN Usuarios u ON f.id_usuario = u.id_usuario
+        ORDER BY u.nome
+    ";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }
