@@ -1,8 +1,4 @@
-<body class="bg-light">
-
-<header>
-    <?php require (__DIR__ . "/partials/nav.php"); ?>
-</header>
+<?php require (__DIR__ . "/partials/nav.php"); ?>
 
 <section class="container py-5">
     <h1 class="text-center mb-5">Nossos Planos</h1>
@@ -11,59 +7,24 @@
     </p>
 
     <div class="row">
-        <!-- Plano Básico -->
+        <?php foreach ($planos ?? [] as $p):
+            $id = (int)$p['id_plano'];
+        ?>
         <div class="col-lg-4 mb-4">
             <div class="card shadow-sm h-100 d-flex flex-column p-4">
-                <h4 class="card-title">Plano Básico</h4>
-                <h5 class="card-subtitle mb-2 text-muted">Para iniciantes</h5>
+                <h4 class="card-title"><?php echo htmlspecialchars($p['nome_plano']); ?></h4>
+                <h5 class="card-subtitle mb-2 text-muted"><?php echo htmlspecialchars($p['descricao_plano'] ?? ''); ?></h5>
                 <div class="card-body text-center">
-                    <h2>R$99,99</h2>
-                    <span>/mês</span>
+                    <h2>R$<?php echo number_format((float)$p['preco'], 2, ',', '.'); ?></h2>
+                    <span>/<?php echo intval($p['duracao']) === 30 ? 'mês' : intval($p['duracao']) . ' dias'; ?></span>
                 </div>
                 <ul class="py-3">
-                    <li>Acesso a modalidades básicas</li>
-                    <li>Treino funcional</li>
-                    <li>Controle de frequência</li>
+                    <li>Acesso às modalidades inclusas</li>
                 </ul>
-                <button class="btn btn-outline-dark fw-bold mt-auto">Assinar</button>
+                <a href="/pagamentos?id_plano=<?php echo $id; ?>" class="btn btn-primary fw-bold mt-auto">Assinar</a>
             </div>
         </div>
-
-        <!-- Plano Intermediário -->
-        <div class="col-lg-4 mb-4">
-            <div class="card shadow-sm h-100 d-flex flex-column p-4 border-primary border-2">
-                <h4 class="card-title">Plano Intermediário</h4>
-                <h5 class="card-subtitle mb-2 text-muted">Para quem quer mais</h5>
-                <div class="card-body text-center">
-                    <h2>R$149,99</h2>
-                    <span>/mês</span>
-                </div>
-                <ul class="py-3">
-                    <li>Acesso a todas as modalidades</li>
-                    <li>Treino funcional + aulas coletivas</li>
-                    <li>Benefícios adicionais</li>
-                </ul>
-                <button class="btn btn-primary fw-bold mt-auto">Assinar</button>
-            </div>
-        </div>
-
-        <!-- Plano Premium -->
-        <div class="col-lg-4 mb-4">
-            <div class="card shadow-sm h-100 d-flex flex-column p-4">
-                <h4 class="card-title">Plano Premium</h4>
-                <h5 class="card-subtitle mb-2 text-muted">Para atletas e profissionais</h5>
-                <div class="card-body text-center">
-                    <h2>R$199,99</h2>
-                    <span>/mês</span>
-                </div>
-                <ul class="py-3">
-                    <li>Acesso ilimitado a todas as modalidades</li>
-                    <li>Treino personalizado</li>
-                    <li>Consultoria e suporte especializado</li>
-                </ul>
-                <button class="btn btn-outline-dark fw-bold mt-auto">Assinar</button>
-            </div>
-        </div>
+        <?php endforeach; ?>
     </div>
 </section>
 

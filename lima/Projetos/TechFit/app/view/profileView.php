@@ -32,7 +32,7 @@
                     </a>
  
                 <?php elseif (strtolower($user_tipo) === 'funcionario'): ?>
-                    <a href="/adm/painel" class="text-decoration-none text-black p-2 rounded-md flex items-center gap-2 hover:bg-[#cfcfcf]">📋 Painel Administrativo</a>
+                    <a href="/admin/painel" class="text-decoration-none text-black p-2 rounded-md flex items-center gap-2 hover:bg-[#cfcfcf]">📋 Painel Administrativo</a>
                     <a href="/profile?page=relatorios" class="text-decoration-none text-black p-2 rounded-md flex items-center gap-2 hover:bg-[#cfcfcf]">📑 Relatórios</a>
                     <a href="/profile?page=avaliacoes_alunos"
                         class="text-decoration-none text-black p-2 rounded-md flex items-center gap-2

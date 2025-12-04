@@ -8,10 +8,9 @@
                   <h3>TechFit</h3>
               </a>
               <p>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsum, hic
-                  nihil incidunt quia dolore quaerat error maxime at? Nobis laborum
-                  repellat eius numquam delectus necessitatibus distinctio
-                  praesentium! Iste, veritatis excepturi?
+                  A TechFit é uma academia digital focada em acompanhar sua rotina de treinos,
+                  frequência e avaliações físicas em tempo real. Gerencie aulas, planos e
+                  comunicados em um só lugar, de forma simples e organizada.
               </p>
           </div>
           <div class="col mb-3"></div>
@@ -20,9 +19,6 @@
           <div class="col mb-3">
               <h5>Saiba Mais</h5>
               <ul class="nav flex-column">
-                  <li class="nav-item mb-2">
-                      <a href="/modalidades" class="nav-link p-0 text-body-secondary">Modalidades</a>
-                  </li>
                   <li class="nav-item mb-2">
                       <a href="/planos" class="nav-link p-0 text-body-secondary">Planos</a>
                   </li>
