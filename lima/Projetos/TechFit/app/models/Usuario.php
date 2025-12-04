@@ -115,4 +115,75 @@ class Usuario
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ?: null;
     }
+
+    /**
+     * Obtém a senha hash do usuário
+     * @param int $id ID do usuário
+     * @return string|null Senha hash ou null se não encontrado
+     */
+    public static function getSenhaHash(int $id): ?string
+    {
+        $pdo = self::getPDO();
+        $sql = "SELECT senha_hash FROM Usuarios WHERE id_usuario = :id";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_COLUMN);
+        return $result ?: null;
+    }
+
+    /**
+     * Altera o nome do usuário
+     * @param int $id ID do usuário
+     * @param string $newName Novo nome
+     * @throws PDOException Se ocorrer erro na atualização
+     */
+    public static function changeName(int $id, string $newName): void
+    {
+        $pdo = self::getPDO();
+        $sql = "UPDATE Usuarios SET nome = :nome WHERE id_usuario = :id";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':nome', $newName, PDO::PARAM_STR);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    /**
+     * Altera o avatar do usuário
+     * @param int $id ID do usuário
+     * @param string $avatarPath Caminho do novo avatar
+     * @throws PDOException Se ocorrer erro na atualização
+     */
+    public static function changeAvatar(int $id, string $avatarPath): void
+    {
+        $pdo = self::getPDO();
+        $sql = "UPDATE Usuarios SET avatar = :avatar WHERE id_usuario = :id";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':avatar', $avatarPath, PDO::PARAM_STR);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    /**
+     * Verifica se um email já existe no banco (excluindo o usuário atual)
+     * @param string $email Email a verificar
+     * @param int $excludeId ID do usuário a excluir da verificação
+     * @return bool True se o email já existe, false caso contrário
+     */
+    public static function emailExists(string $email, int $excludeId): bool
+    {
+        $pdo = self::getPDO();
+        $sql = "SELECT COUNT(*) FROM Usuarios WHERE email = :email AND id_usuario != :id";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        $stmt->bindValue(':id', $excludeId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return (int) $stmt->fetchColumn() > 0;
+    }
 }

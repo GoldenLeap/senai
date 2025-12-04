@@ -34,6 +34,9 @@ class Aviso
 
         $avisosPath = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($avisosPath as $avisos) {
+            if(empty($avisos['anexo_path'])) {
+                continue;
+            }
             $filename = __DIR__ . "/../../public/" . $avisos['anexo_path'];
             if (file_exists($filename)) {
                 if (unlink($filename)) {
