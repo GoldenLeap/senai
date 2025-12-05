@@ -206,27 +206,4 @@ function handleChangeAvatar(int $id_usuario): void
     exit;
 }
 
-/**
- * Valida a força da senha
- * @param string $senha Senha a validar
- * @return bool True se válida, false caso contrário
- */
-function validarForcaSenha(string $senha): bool
-{
-    // Verifica se tem pelo menos uma letra maiúscula
-    if (!preg_match('/[A-Z]/', $senha)) {
-        return false;
-    }
-
-    // Verifica se tem pelo menos uma letra minúscula
-    if (!preg_match('/[a-z]/', $senha)) {
-        return false;
-    }
-
-    // Verifica se tem pelo menos um número
-    if (!preg_match('/[0-9]/', $senha)) {
-        return false;
-    }
-
-    return true;
-}
+    

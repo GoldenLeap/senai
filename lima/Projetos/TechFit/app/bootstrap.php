@@ -9,6 +9,7 @@ require_once __DIR__ . '/helpers/authHelper.php';
 require_once __DIR__ . '/helpers/flash.php';
 require_once __DIR__ . '/helpers/loadModels.php';
 require_once __DIR__ . '/helpers/authMiddleware.php';
+require_once __DIR__ . "/helpers/validators.php";
 
 /**
  * Carrega automaticamente dados do usuário logado (se existir)

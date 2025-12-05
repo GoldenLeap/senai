@@ -33,8 +33,8 @@
       <?php else: ?>
         <div class="dropdown text-end col-lg-3 d-flex justify-content-end align-items-center">
           <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
-            <img src="<?php echo htmlspecialchars($_SESSION['user_avatar'] ?? __DIR__ . 'images/upload/pfp/avatar.png')?>"
-                 alt="Foto" width="32" height="32" class="rounded-circle me-2">
+          <img src="<?php echo htmlspecialchars($_SESSION['user_avatar'] ?? __DIR__ . 'images/upload/pfp/avatar.png')?>"
+                 alt="Foto" width="32" style="min-width: 32px; max-width: 32px; min-height: 32px; max-height: 32px;" height="32" class="rounded-circle me-2">
             <span class="text-black">Olá, <?php echo htmlspecialchars($_SESSION['user_name'] ?? 'Usuário')?></span>
           </a>
           <ul class="dropdown-menu text-small shadow">

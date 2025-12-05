@@ -16,7 +16,7 @@ $routes = [
     '/contato'              => ['controller' => 'contatoController', 'auth' => false],
     '/contato/send'         => ['controller' => 'contatoController', 'auth' => false],
     '/planos'=> ['controller' => 'planosController', 'auth' => false],
-'faq' => ['controller' => 'faqController', 'auth'=> false],
+    '/faq' => ['controller' => 'faqController', 'auth'=> false],
     
     // páginas de pagamento (arquivos públicos que usam models internamente)
     '/pagamento'            => ['controller' => null, 'auth' => true],

@@ -51,18 +51,23 @@ class Aulas
         $pdo = self::getPDO();
 
         $sql = "
-         SELECT
-            A.*,
+         SELECT A.*,
             M.nome_modalidade,
-            F.nome_filial
+            F.nome_filial,
+            U.nome AS nome_funcionario
         FROM
             Aulas AS A
         INNER JOIN
             Modalidades AS M ON A.id_modalidade = M.id_modalidade
         INNER JOIN
             Filiais AS F ON A.id_filial = F.id_filial
+		INNER JOIN
+			Funcionarios AS FN ON FN.id_funcionario=A.id_funcionario
+        INNER JOIN
+            Usuarios AS U ON FN.id_usuario=U.id_usuario
         WHERE
-            A.dia_aula > NOW()"; // somente aulas futuras
+            A.dia_aula > NOW()
+        "; // somente aulas futuras
 
         if ($modalidade !== null && $modalidade !== 'todas') {
             $sql .= " AND A.id_modalidade = :id_modalidade";

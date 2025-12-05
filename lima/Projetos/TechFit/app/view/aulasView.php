@@ -57,19 +57,22 @@
 
                     <!-- INFORMAÇÕES -->
                     <div class="space-y-3 text-center">
-                        <h2 class="text-xl font-bold text-blue-700">
+                        <h2 class="text-xl  font-bold text-blue-700">
                             <?= htmlspecialchars($aula["nome_aula"]) ?>
                         </h2>
 
-                        <p class="text-md font-medium text-gray-900">
+                        <p class="text-md text-start font-medium text-gray-900">
                             <?= htmlspecialchars($aula["nome_modalidade"]) ?>
                         </p>
-
-                        <p class="text-gray-600 text-sm">
-                            <?= htmlspecialchars($aula["descricao"]) ?>
+                        <p class="text-md text-start font-small text-gray-900">
+                            <strong>Instrutor:</strong> <?= htmlspecialchars($aula["nome_funcionario"]) ?>
                         </p>
 
-                        <div class="text-sm text-gray-700 space-y-1">
+                        <p class="text-gray-600 text-start text-sm">
+                            <strong>Sobre a aula: </strong><br><?= htmlspecialchars($aula["descricao"]) ?>
+                        </p>
+
+                        <div class="text-sm text-start text-gray-700 space-y-1">
                             <p><strong>Filial:</strong> <?= htmlspecialchars($aula["nome_filial"]) ?></p>
                             <p><strong>Vagas:</strong> <?= Aulas::getInscritos($aula["id_aula"]) ?>/<?= $aula["quantidade_pessoas"] ?></p>
                             <p><strong>Data:</strong> <?= date('d/m/Y', strtotime($aula["dia_aula"])) ?></p>

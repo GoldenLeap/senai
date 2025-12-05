@@ -7,95 +7,154 @@ function adminController(): void
     requireFuncionario();
 
     $action = $_POST['action'] ?? '';
-    // messages per tab to avoid global flashes that force tab changes
-    $messages = [
-        'usuarios'     => ['errors' => [], 'success' => null],
-        'funcionarios' => ['errors' => [], 'success' => null],
-        'planos'       => ['errors' => [], 'success' => null],
-        'aulas'        => ['errors' => [], 'success' => null],
-        'comunicados'  => ['errors' => [], 'success' => null],
-    ];
-
-    // track which tab was active (default 'usuarios') so we can keep the UI on the same tab after POST
-    $tab = 'usuarios';
+    $tab    = $_GET['active_tab'] ?? 'usuarios';
 
     // CRUD simples de usuários
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         switch ($action) {
-            // (removed quick message saving - not needed)
             case 'add_user':
-                $tab   = 'usuarios';
-                $nome  = trim($_POST['nome'] ?? '');
-                $email = trim($_POST['email'] ?? '');
-                $cpf   = trim($_POST['cpf'] ?? '');
-                $tipo  = trim($_POST['tipo'] ?? 'aluno');
-                $senha = $_POST['senha'] ?? '';
+                $tab             = 'usuarios';
+                $nome            = trim($_POST['nome'] ?? '');
+                $email           = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
+                $cpf             = preg_replace('/[^0-9]/', '', $_POST['cpf'] ?? '');
+                $data_nascimento = $_POST['data_nascimento'] ?? '';
+                $tipo            = trim($_POST['tipo'] ?? 'aluno');
+                $senha           = $_POST['senha'] ?? '';
 
-                if ($nome === '' || $email === '' || $cpf === '' || $senha === '') {
-                    $messages[$tab]['errors'][] = 'Todos os campos são obrigatórios.';
+                // Campos específicos por tipo
+                $enderecoAluno    = trim($_POST['endereco_aluno'] ?? '');
+                $generoAluno      = trim($_POST['genero_aluno'] ?? '');
+                $telefoneAluno    = trim($_POST['telefone_aluno'] ?? '');
+                $salarioFunc      = isset($_POST['salario_func']) ? (float) $_POST['salario_func'] : 0;
+                $cargaHorariaFunc = isset($_POST['carga_horaria_func']) ? (int) $_POST['carga_horaria_func'] : 0;
+                $cargoFunc        = trim($_POST['cargo_func'] ?? '');
+
+                // Validações reutilizando a lógica do cadastro
+                $erros = [];
+
+                if (empty($nome)) {
+                    $erros[] = 'Nome é obrigatório.';
+                } elseif (strlen($nome) < 3) {
+                    $erros[] = 'Nome deve ter pelo menos 3 caracteres.';
+                }
+
+                if (empty($email)) {
+                    $erros[] = 'Email é obrigatório.';
                 } elseif (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    $messages[$tab]['errors'][] = 'Email inválido.';
-                } else {
-                    // Criar usuário diretamente com PDO
-                    $pdo  = Connect::conectar();
-                    $sql  = "INSERT INTO Usuarios (nome, email, cpf, data_nascimento, senha_hash, tipo, avatar) VALUES (:nome, :email, :cpf, NULL, :senha_hash, :tipo, '/assets/images/upload/pfp/avatar.png')";
-                    $stmt = $pdo->prepare($sql);
-                    $ok   = $stmt->execute([
-                        ':nome'       => $nome,
-                        ':email'      => $email,
-                        ':cpf'        => $cpf,
-                        ':senha_hash' => password_hash($senha, PASSWORD_DEFAULT),
-                        ':tipo'       => $tipo,
-                    ]);
+                    $erros[] = 'Email inválido.';
+                }
 
-                    if ($ok) {
-                        $messages[$tab]['success'] = 'Usuário criado com sucesso.';
+                if (empty($cpf)) {
+                    $erros[] = 'CPF é obrigatório.';
+                } elseif (strlen($cpf) !== 11) {
+                    $erros[] = 'CPF deve conter 11 dígitos.';
+                } elseif (! validarCPF($cpf)) {
+                    $erros[] = 'CPF inválido.';
+                }
+
+                if (empty($senha)) {
+                    $erros[] = 'Senha é obrigatória.';
+                } elseif (strlen($senha) < 8) {
+                    $erros[] = 'Senha deve ter pelo menos 8 caracteres.';
+                }
+
+                if (empty($data_nascimento)) {
+                    $erros[] = 'Data de nascimento é obrigatória.';
+                } else {
+                    $dataNasc = DateTime::createFromFormat('Y-m-d', $data_nascimento);
+                    if (! $dataNasc || $dataNasc->format('Y-m-d') !== $data_nascimento) {
+                        $erros[] = 'Data de nascimento inválida.';
                     } else {
-                        $messages[$tab]['errors'][] = 'Erro ao criar usuário.';
+                        $hoje  = new DateTime();
+                        $idade = $hoje->diff($dataNasc)->y;
+                        if ($idade < 13) {
+                            $erros[] = 'Usuário deve ter pelo menos 13 anos.';
+                        }
                     }
                 }
-                break;
 
-            // --- Funcionários (tabela Funcionarios) ---
-            case 'add_funcionario':
-                $tab     = 'funcionarios';
-                $nome    = trim($_POST['nome_func'] ?? '');
-                $cpf     = trim($_POST['cpf_func'] ?? '');
-                $salario = floatval($_POST['salario'] ?? 0);
-                $cargo   = trim($_POST['cargo'] ?? '');
-                $carga   = trim($_POST['carga_horaria'] ?? '');
-                // aceitarmos entradas como '40' ou '40h'
-                $carga_val  = intval(preg_replace('/[^0-9]/', '', $carga));
-                $id_usuario = intval($_POST['id_usuario_func'] ?? 0);
-                if ($nome === '' || $cpf === '' || $id_usuario <= 0) {
-                    $messages[$tab]['errors'][] = 'Dados de funcionário inválidos.';
-                } else {
-                    $pdo  = Connect::conectar();
-                    $stmt = $pdo->prepare('INSERT INTO Funcionarios (salario, carga_horaria, cargo, id_usuario) VALUES (:salario, :carga, :cargo, :id_usuario)');
-                    $ok   = $stmt->execute([':salario' => $salario, ':carga' => $carga_val, ':cargo' => $cargo, ':id_usuario' => $id_usuario]);
-                    if ($ok) {
-                        $messages[$tab]['success'] = 'Funcionário criado.';
-                    } else {
-                        $messages[$tab]['errors'][] = 'Erro ao criar funcionário';
+                // Verificações específicas por tipo
+                if ($tipo === 'aluno') {
+                    if (empty($generoAluno)) {
+                        $erros[] = 'Gênero do aluno é obrigatório.';
                     }
-
+                    if (empty($enderecoAluno)) {
+                        $erros[] = 'Endereço do aluno é obrigatório.';
+                    }
+                    if (empty($telefoneAluno)) {
+                        $erros[] = 'Telefone do aluno é obrigatório.';
+                    }
+                } elseif ($tipo === 'funcionario') {
+                    if ($salarioFunc <= 0) {
+                        $erros[] = 'Salário do funcionário deve ser maior que zero.';
+                    }
+                    if ($cargaHorariaFunc <= 0) {
+                        $erros[] = 'Carga horária do funcionário deve ser maior que zero.';
+                    }
+                    if (empty($cargoFunc)) {
+                        $erros[] = 'Cargo do funcionário é obrigatório.';
+                    }
                 }
-                break;
 
-            case 'delete_funcionario':
-                $tab = 'funcionarios';
-                $id  = intval($_POST['id_funcionario'] ?? 0);
-                if ($id <= 0) {
-                    $messages[$tab]['errors'][] = 'ID inválido';
-                } else {
-                    $pdo = Connect::conectar();
-                    $ok  = $pdo->prepare('DELETE FROM Funcionarios WHERE id_funcionario = :id')->execute([':id' => $id]);
-                    if ($ok) {
-                        $messages[$tab]['success'] = 'Funcionário removido.';
-                    } else {
-                        $messages[$tab]['errors'][] = 'Erro ao remover';
+                // Verificar se email ou CPF já existem
+                if (Usuario::emailJaExiste($email)) {
+                    $erros[] = 'Este email já está cadastrado.';
+                }
+
+                $cpf_formatted = substr($cpf, 0, 3) . '.' . substr($cpf, 3, 3) . '.' . substr($cpf, 6, 3) . '-' . substr($cpf, 9, 2);
+                if (Usuario::cpfJaExiste($cpf_formatted)) {
+                    $erros[] = 'Este CPF já está cadastrado.';
+                }
+
+                if (! empty($erros)) {
+                    foreach ($erros as $erro) {
+                        flash($erro, 'error');
                     }
+                } else {
+                    try {
+                        $pdo = Connect::conectar();
+                        $pdo->beginTransaction();
 
+                        $senhaHash = md5($senha);
+
+                        // Cria usuário principal
+                        $idUsuario = Usuario::criar([
+                            'nome'            => $nome,
+                            'email'           => $email,
+                            'cpf'             => $cpf_formatted,
+                            'data_nascimento' => $data_nascimento,
+                            'senha_hash'      => $senhaHash,
+                            'tipo'            => $tipo,
+                        ]);
+
+                        // Cria registro complementar conforme o tipo
+                        if ($tipo === 'aluno') {
+                            // Cria aluno vinculado ao usuário com todos os campos necessários
+                            Aluno::criarAluno([
+                                'id_usuario' => $idUsuario,
+                                'genero'     => $generoAluno,
+                                'endereco'   => $enderecoAluno,
+                                'telefone'   => $telefoneAluno,
+                            ]);
+                        } elseif ($tipo === 'funcionario') {
+                            // Cria funcionário com dados básicos vindos do formulário
+                            $stmtFunc = $pdo->prepare('INSERT INTO Funcionarios (salario, carga_horaria, cargo, id_usuario) VALUES (:salario, :carga, :cargo, :id_usuario)');
+                            $stmtFunc->execute([
+                                ':salario'    => $salarioFunc > 0 ? $salarioFunc : 0,
+                                ':carga'      => $cargaHorariaFunc > 0 ? $cargaHorariaFunc : 0,
+                                ':cargo'      => $cargoFunc !== '' ? $cargoFunc : 'Pendente',
+                                ':id_usuario' => $idUsuario,
+                            ]);
+                        }
+
+                        $pdo->commit();
+                        flash('Usuário criado com sucesso.', 'success');
+                    } catch (Exception $e) {
+                        if (isset($pdo) && $pdo->inTransaction()) {
+                            $pdo->rollBack();
+                        }
+                        flash('Erro ao criar usuário: ' . $e->getMessage(), 'error');
+                    }
                 }
                 break;
 
@@ -107,12 +166,13 @@ function adminController(): void
                 $preco     = floatval($_POST['preco'] ?? 0);
                 $duracao   = intval($_POST['duracao'] ?? 30);
                 if ($nome === '' || $preco <= 0) {
-                    $messages[$tab]['errors'][] = 'Dados inválidos para plano';
-                } else {if (Planos::create($nome, $descricao, $preco, $duracao)) {
-                    $messages[$tab]['success'] = 'Plano criado.';
+                    flash('Dados inválidos para plano', 'error');
                 } else {
-                    $messages[$tab]['errors'][] = 'Erro ao criar plano';
-                }
+                    if (Planos::create($nome, $descricao, $preco, $duracao)) {
+                        flash('Plano criado.', 'success');
+                    } else {
+                        flash('Erro ao criar plano', 'error');
+                    }
                 }
                 break;
 
@@ -122,17 +182,16 @@ function adminController(): void
                 $nome      = trim($_POST['nome_modalidade'] ?? '');
                 $descricao = trim($_POST['descricao_modalidade'] ?? '');
                 if ($nome === '') {
-                    $messages[$tab]['errors'][] = 'Nome da modalidade obrigatório';
+                    flash('Nome da modalidade obrigatório', 'error');
                 } else {
                     $pdo  = Connect::conectar();
                     $stmt = $pdo->prepare('INSERT INTO Modalidades (nome_modalidade, descricao) VALUES (:nome, :descricao)');
                     $ok   = $stmt->execute([':nome' => $nome, ':descricao' => $descricao]);
                     if ($ok) {
-                        $messages[$tab]['success'] = 'Modalidade criada.';
+                        flash('Modalidade criada.', 'success');
                     } else {
-                        $messages[$tab]['errors'][] = 'Erro ao criar modalidade';
+                        flash('Erro ao criar modalidade', 'error');
                     }
-
                 }
                 break;
 
@@ -142,17 +201,16 @@ function adminController(): void
                 $nome      = trim($_POST['nome_modalidade'] ?? '');
                 $descricao = trim($_POST['descricao_modalidade'] ?? '');
                 if ($id <= 0 || $nome === '') {
-                    $messages[$tab]['errors'][] = 'Dados inválidos para modalidade';
+                    flash('Dados inválidos para modalidade', 'error');
                 } else {
                     $pdo  = Connect::conectar();
                     $stmt = $pdo->prepare('UPDATE Modalidades SET nome_modalidade = :nome, descricao = :descricao WHERE id_modalidade = :id');
                     $ok   = $stmt->execute([':nome' => $nome, ':descricao' => $descricao, ':id' => $id]);
                     if ($ok) {
-                        $messages[$tab]['success'] = 'Modalidade atualizada.';
+                        flash('Modalidade atualizada.', 'success');
                     } else {
-                        $messages[$tab]['errors'][] = 'Erro ao atualizar modalidade';
+                        flash('Erro ao atualizar modalidade', 'error');
                     }
-
                 }
                 break;
 
@@ -160,12 +218,14 @@ function adminController(): void
                 $tab = 'modalidades';
                 $id  = intval($_POST['id_modalidade'] ?? 0);
                 if ($id <= 0) {
-                    $messages[$tab]['errors'][] = 'ID inválido';
-                } else { $ok = Connect::conectar()->prepare('DELETE FROM Modalidades WHERE id_modalidade = :id')->execute([':id' => $id]);if ($ok) {
-                    $messages[$tab]['success'] = 'Modalidade removida.';
+                    flash('ID inválido', 'error');
                 } else {
-                    $messages[$tab]['errors'][] = 'Erro ao remover modalidade';
-                }
+                    $ok = Connect::conectar()->prepare('DELETE FROM Modalidades WHERE id_modalidade = :id')->execute([':id' => $id]);
+                    if ($ok) {
+                        flash('Modalidade removida.', 'success');
+                    } else {
+                        flash('Erro ao remover modalidade', 'error');
+                    }
                 }
                 break;
 
@@ -176,17 +236,16 @@ function adminController(): void
                 $end  = trim($_POST['endereco_filial'] ?? '');
                 $tel  = trim($_POST['telefone_filial'] ?? '');
                 if ($nome === '') {
-                    $messages[$tab]['errors'][] = 'Nome da filial obrigatório';
+                    flash('Nome da filial obrigatório', 'error');
                 } else {
                     $pdo  = Connect::conectar();
                     $stmt = $pdo->prepare('INSERT INTO Filiais (nome_filial, endereco, telefone) VALUES (:nome, :endereco, :telefone)');
                     $ok   = $stmt->execute([':nome' => $nome, ':endereco' => $end, ':telefone' => $tel]);
                     if ($ok) {
-                        $messages[$tab]['success'] = 'Filial criada.';
+                        flash('Filial criada.', 'success');
                     } else {
-                        $messages[$tab]['errors'][] = 'Erro ao criar filial';
+                        flash('Erro ao criar filial', 'error');
                     }
-
                 }
                 break;
 
@@ -197,17 +256,16 @@ function adminController(): void
                 $end  = trim($_POST['endereco_filial'] ?? '');
                 $tel  = trim($_POST['telefone_filial'] ?? '');
                 if ($id <= 0 || $nome === '') {
-                    $messages[$tab]['errors'][] = 'Dados inválidos para filial';
+                    flash('Dados inválidos para filial', 'error');
                 } else {
                     $pdo  = Connect::conectar();
                     $stmt = $pdo->prepare('UPDATE Filiais SET nome_filial = :nome, endereco = :endereco, telefone = :telefone WHERE id_filial = :id');
                     $ok   = $stmt->execute([':nome' => $nome, ':endereco' => $end, ':telefone' => $tel, ':id' => $id]);
                     if ($ok) {
-                        $messages[$tab]['success'] = 'Filial atualizada.';
+                        flash('Filial atualizada.', 'success');
                     } else {
-                        $messages[$tab]['errors'][] = 'Erro ao atualizar filial';
+                        flash('Erro ao atualizar filial', 'error');
                     }
-
                 }
                 break;
 
@@ -215,12 +273,14 @@ function adminController(): void
                 $tab = 'filiais';
                 $id  = intval($_POST['id_filial'] ?? 0);
                 if ($id <= 0) {
-                    $messages[$tab]['errors'][] = 'ID inválido';
-                } else { $ok = Connect::conectar()->prepare('DELETE FROM Filiais WHERE id_filial = :id')->execute([':id' => $id]);if ($ok) {
-                    $messages[$tab]['success'] = 'Filial removida.';
+                    flash('ID inválido', 'error');
                 } else {
-                    $messages[$tab]['errors'][] = 'Erro ao remover filial';
-                }
+                    $ok = Connect::conectar()->prepare('DELETE FROM Filiais WHERE id_filial = :id')->execute([':id' => $id]);
+                    if ($ok) {
+                        flash('Filial removida.', 'success');
+                    } else {
+                        flash('Erro ao remover filial', 'error');
+                    }
                 }
                 break;
 
@@ -228,12 +288,13 @@ function adminController(): void
                 $tab = 'planos';
                 $id  = intval($_POST['id_plano'] ?? 0);
                 if ($id <= 0) {
-                    $messages[$tab]['errors'][] = 'ID inválido';
-                } else {if (Planos::delete($id)) {
-                    $messages[$tab]['success'] = 'Plano removido.';
+                    flash('ID inválido', 'error');
                 } else {
-                    $messages[$tab]['errors'][] = 'Erro ao remover plano';
-                }
+                    if (Planos::delete($id)) {
+                        flash('Plano removido.', 'success');
+                    } else {
+                        flash('Erro ao remover plano', 'error');
+                    }
                 }
                 break;
 
@@ -245,12 +306,13 @@ function adminController(): void
                 $preco     = floatval($_POST['preco'] ?? 0);
                 $duracao   = intval($_POST['duracao'] ?? 0);
                 if ($id <= 0 || $nome === '') {
-                    $messages[$tab]['errors'][] = 'Dados inválidos';
-                } else {if (Planos::update($id, $nome, $descricao, $preco, $duracao)) {
-                    $messages[$tab]['success'] = 'Plano atualizado.';
+                    flash('Dados inválidos', 'error');
                 } else {
-                    $messages[$tab]['errors'][] = 'Erro ao atualizar plano';
-                }
+                    if (Planos::update($id, $nome, $descricao, $preco, $duracao)) {
+                        flash('Plano atualizado.', 'success');
+                    } else {
+                        flash('Erro ao atualizar plano', 'error');
+                    }
                 }
                 break;
 
@@ -265,17 +327,16 @@ function adminController(): void
                 $id_modal  = intval($_POST['id_modalidade_aula'] ?? 0);
                 $id_filial = intval($_POST['id_filial_aula'] ?? 0);
                 if ($nomeA === '' || $dia === '') {
-                    $messages[$tab]['errors'][] = 'Dados inválidos para aula';
+                    flash('Dados inválidos para aula', 'error');
                 } else {
                     $pdo  = Connect::conectar();
                     $stmt = $pdo->prepare('INSERT INTO Aulas (nome_aula, dia_aula, quantidade_pessoas, descricao, id_funcionario, id_modalidade, id_filial) VALUES (:nome,:dia,:qtd,:desc,:idf,:idm,:idfili)');
                     $ok   = $stmt->execute([':nome' => $nomeA, ':dia' => $dia, ':qtd' => $qtd, ':desc' => $descricao, ':idf' => $id_func, ':idm' => $id_modal, ':idfili' => $id_filial]);
                     if ($ok) {
-                        $messages[$tab]['success'] = 'Aula criada.';
+                        flash('Aula criada.', 'success');
                     } else {
-                        $messages[$tab]['errors'][] = 'Erro ao criar aula';
+                        flash('Erro ao criar aula', 'error');
                     }
-
                 }
                 break;
 
@@ -283,12 +344,14 @@ function adminController(): void
                 $tab = 'aulas';
                 $id  = intval($_POST['id_aula'] ?? 0);
                 if ($id <= 0) {
-                    $messages[$tab]['errors'][] = 'ID inválido';
-                } else { $ok = Connect::conectar()->prepare('DELETE FROM Aulas WHERE id_aula = :id')->execute([':id' => $id]);if ($ok) {
-                    $messages[$tab]['success'] = 'Aula removida.';
+                    flash('ID inválido', 'error');
                 } else {
-                    $messages[$tab]['errors'][] = 'Erro ao remover aula';
-                }
+                    $ok = Connect::conectar()->prepare('DELETE FROM Aulas WHERE id_aula = :id')->execute([':id' => $id]);
+                    if ($ok) {
+                        flash('Aula removida.', 'success');
+                    } else {
+                        flash('Erro ao remover aula', 'error');
+                    }
                 }
                 break;
 
@@ -296,64 +359,181 @@ function adminController(): void
                 $tab = 'usuarios';
                 $id  = (int) ($_POST['id_usuario'] ?? 0);
                 if ($id <= 0) {
-                    $messages[$tab]['errors'][] = 'ID inválido.';
+                    flash('ID inválido.', 'error');
                 } else {
                     $pdo  = Connect::conectar();
                     $stmt = $pdo->prepare('DELETE FROM Usuarios WHERE id_usuario = :id');
                     $ok   = $stmt->execute([':id' => $id]);
                     if ($ok) {
-                        $messages[$tab]['success'] = 'Usuário removido.';
+                        flash('Usuário removido.', 'success');
                     } else {
-                        $messages[$tab]['errors'][] = 'Erro ao remover.';
+                        flash('Erro ao remover.', 'error');
                     }
-
                 }
                 break;
+
             case 'edit_user':
-                $tab   = 'usuarios';
-                $id    = (int) ($_POST['id_usuario'] ?? 0);
-                $nome  = trim($_POST['nome'] ?? '');
-                $email = trim($_POST['email'] ?? '');
-                $tipo  = trim($_POST['tipo'] ?? 'aluno');
+                $tab       = 'usuarios';
+                $id        = (int) ($_POST['id_usuario'] ?? 0);
+                $nome      = trim($_POST['nome'] ?? '');
+                $email     = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
+                $novaSenha = trim($_POST['senha_hash'] ?? '');
+                $pass      = '';
+                if ($novaSenha !== '') {
+                    $pass = md5($novaSenha);
+                }
+                $tipo = trim($_POST['tipo'] ?? 'aluno');
+
+                // Campos específicos recebidos do form de edição
+                $enderecoAlunoEdit = trim(string: $_POST['edit_endereco_aluno'] ?? '');
+                $generoAlunoEdit   = trim($_POST['edit_genero_aluno'] ?? '');
+                $telefoneAlunoEdit = trim($_POST['edit_telefone_aluno'] ?? '');
+                $salarioFunc       = isset($_POST['edit_salario_func']) ? (float) $_POST['edit_salario_func'] : 0;
+                $cargaHorariaFunc  = isset($_POST['edit_carga_horaria_func']) ? (int) $_POST['edit_carga_horaria_func'] : 0;
+                $cargoFunc         = trim($_POST['edit_cargo_func'] ?? '');
+
                 if ($id <= 0 || $nome === '' || $email === '') {
-                    $messages[$tab]['errors'][] = 'Dados inválidos.';
+                    flash('Dados inválidos.', 'error');
+                } elseif (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    flash('Email inválido.', 'error');
+                } elseif (Usuario::emailExists($email, $id)) {
+                    flash('Este email já está em uso por outro usuário.', 'error');
                 } else {
-                    $pdo  = Connect::conectar();
-                    $stmt = $pdo->prepare('UPDATE Usuarios SET nome = :nome, email = :email, tipo = :tipo WHERE id_usuario = :id');
-                    $ok   = $stmt->execute([':nome' => $nome, ':email' => $email, ':tipo' => $tipo, ':id' => $id]);
-                    if ($ok) {
-                        $messages[$tab]['success'] = 'Usuário atualizado.';
-                    } else {
-                        $messages[$tab]['errors'][] = 'Erro ao atualizar.';
-                    }
+                    $pdo = Connect::conectar();
 
+                    try {
+                        $pdo->beginTransaction();
+
+                        // Descobre o tipo atual do usuário antes da alteração
+                        $stmtTipo = $pdo->prepare('SELECT tipo FROM Usuarios WHERE id_usuario = :id');
+                        $stmtTipo->execute([':id' => $id]);
+                        $tipoAtual = $stmtTipo->fetchColumn();
+
+                        // Atualiza dados básicos do usuário (incluindo novo tipo)
+                        $sql    = 'UPDATE Usuarios SET nome = :nome, email = :email, tipo = :tipo ';
+                        $params = [
+                            ':nome'  => $nome,
+                            ':email' => $email,
+                            ':tipo'  => $tipo,
+                            ':id'    => $id,
+                        ];
+
+                        if (! empty($novaSenha)) {
+                            $sql .= ', senha_hash = :senha_hash';
+                            $params[':senha_hash'] = md5($novaSenha);
+                        }
+
+                        $sql .= ' WHERE id_usuario = :id';
+                        $stmt = $pdo->prepare($sql);
+
+                        $stmt->execute($params);
+
+                        $tipoAlterado = $tipoAtual !== false && $tipoAtual !== $tipo;
+
+                        if ($tipoAlterado) {
+                            // Se mudou de aluno para funcionário
+                            if ($tipoAtual === 'aluno' && $tipo === 'funcionario') {
+                                // Apaga registro de aluno antigo
+                                $stmtDelAluno = $pdo->prepare('DELETE FROM Alunos WHERE id_usuario = :id_usuario');
+                                $stmtDelAluno->execute([':id_usuario' => $id]);
+
+                                // Cria novo registro em Funcionarios
+                                $stmtFunc = $pdo->prepare('INSERT INTO Funcionarios (salario, carga_horaria, cargo, id_usuario) VALUES (:salario, :carga, :cargo, :id_usuario)');
+                                $stmtFunc->execute([
+                                    ':salario'    => $salarioFunc,
+                                    ':carga'      => $cargaHorariaFunc,
+                                    ':cargo'      => $cargoFunc !== '' ? $cargoFunc : 'Pendente',
+                                    ':id_usuario' => $id,
+                                ]);
+                            }
+                            // Se mudou de funcionario para aluno
+                            elseif ($tipoAtual === 'funcionario' && $tipo === 'aluno') {
+                                // Apaga registro de funcionário antigo
+                                $stmtDelFunc = $pdo->prepare('DELETE FROM Funcionarios WHERE id_usuario = :id_usuario');
+                                $stmtDelFunc->execute([':id_usuario' => $id]);
+
+                                // Cria novo registro em Alunos com os dados informados
+                                $stmtAluno = $pdo->prepare('INSERT INTO Alunos (genero, endereco, telefone, codigo_acesso, id_usuario) VALUES (:genero, :endereco, :telefone, NULL, :id_usuario)');
+                                $stmtAluno->execute([
+                                    ':genero'     => $generoAlunoEdit !== '' ? $generoAlunoEdit : 'N/D',
+                                    ':endereco'   => $enderecoAlunoEdit,
+                                    ':telefone'   => $telefoneAlunoEdit,
+                                    ':id_usuario' => $id,
+                                ]);
+                            }
+                        } else {
+                            if ($tipo === 'aluno') {
+                                if ($enderecoAlunoEdit !== '' || $generoAlunoEdit !== '' || $telefoneAlunoEdit !== '') {
+                                    // Verifica se já existe registro de aluno para este usuário
+                                    $stmtCheck = $pdo->prepare('SELECT id_aluno FROM Alunos WHERE id_usuario = :id_usuario');
+                                    $stmtCheck->execute([':id_usuario' => $id]);
+                                    $existeAluno = $stmtCheck->fetchColumn();
+
+                                    if ($existeAluno) {
+                                        // Atualiza dados do aluno existente
+                                        $stmtAluno = $pdo->prepare('UPDATE Alunos SET genero = :genero, endereco = :endereco, telefone = :telefone WHERE id_usuario = :id_usuario');
+                                        $stmtAluno->execute([
+                                            ':genero'     => $generoAlunoEdit !== '' ? $generoAlunoEdit : 'N/D',
+                                            ':endereco'   => $enderecoAlunoEdit,
+                                            ':telefone'   => $telefoneAlunoEdit,
+                                            ':id_usuario' => $id,
+                                        ]);
+                                    } else {
+                                        // Cria registro de aluno se ainda não existir (evita duplicar para o mesmo usuário)
+                                        $stmtAluno = $pdo->prepare('INSERT INTO Alunos (genero, endereco, telefone, codigo_acesso, id_usuario) VALUES (:genero, :endereco, :telefone, NULL, :id_usuario)');
+                                        $stmtAluno->execute([
+                                            ':genero'     => $generoAlunoEdit !== '' ? $generoAlunoEdit : 'N/D',
+                                            ':endereco'   => $enderecoAlunoEdit,
+                                            ':telefone'   => $telefoneAlunoEdit,
+                                            ':id_usuario' => $id,
+                                        ]);
+                                    }
+                                }
+                            } elseif ($tipo === 'funcionario') {
+                                $stmtCheck = $pdo->prepare('SELECT id_funcionario FROM Funcionarios WHERE id_usuario = :id_usuario');
+                                $stmtCheck->execute([':id_usuario' => $id]);
+                                $existeFuncionario = $stmtCheck->fetchColumn();
+
+                                if ($existeFuncionario) {
+                                    // UPDATE
+                                    $stmtFunc = $pdo->prepare('UPDATE Funcionarios
+                               SET salario = :salario, carga_horaria = :carga, cargo = :cargo
+                               WHERE id_usuario = :id_usuario');
+                                    $stmtFunc->execute([
+                                        ':salario'    => $salarioFunc,
+                                        ':carga'      => $cargaHorariaFunc,
+                                        ':cargo'      => $cargoFunc ?: 'Pendente',
+                                        ':id_usuario' => $id,
+                                    ]);
+                                } else {
+                                    // INSERT
+                                    $stmtFunc = $pdo->prepare('INSERT INTO Funcionarios
+                               (salario, carga_horaria, cargo, id_usuario)
+                               VALUES (:salario, :carga, :cargo, :id_usuario)');
+                                    $stmtFunc->execute([
+                                        ':salario'    => $salarioFunc,
+                                        ':carga'      => $cargaHorariaFunc,
+                                        ':cargo'      => $cargoFunc ?: 'Pendente',
+                                        ':id_usuario' => $id,
+                                    ]);
+                                }
+
+                            }
+                        }
+
+                        $pdo->commit();
+                        flash('Usuário atualizado.', 'success');
+                    } catch (Exception $e) {
+                        if ($pdo->inTransaction()) {
+                            $pdo->rollBack();
+                        }
+                        flash('Erro ao atualizar: ' . $e->getMessage(), 'error');
+                    }
                 }
                 break;
-            // --- editar funcionário ---
-            case 'edit_funcionario':
-                $tab        = 'funcionarios';
-                $id         = intval($_POST['id_funcionario'] ?? 0);
-                $salario    = floatval($_POST['salario'] ?? 0);
-                $cargo      = trim($_POST['cargo'] ?? '');
-                $carga      = trim($_POST['carga_horaria'] ?? '');
-                $carga_val  = intval(preg_replace('/[^0-9]/', '', $carga));
-                $id_usuario = intval($_POST['id_usuario_func'] ?? 0);
-                if ($id <= 0) {
-                    $messages[$tab]['errors'][] = 'ID inválido para edição.';
-                } else {
-                    $pdo  = Connect::conectar();
-                    $stmt = $pdo->prepare('UPDATE Funcionarios SET salario = :salario, carga_horaria = :carga, cargo = :cargo, id_usuario = :id_usuario WHERE id_funcionario = :id');
-                    $ok   = $stmt->execute([':salario' => $salario, ':carga' => $carga_val, ':cargo' => $cargo, ':id_usuario' => $id_usuario, ':id' => $id]);
-                    if ($ok) {
-                        $messages[$tab]['success'] = 'Funcionário atualizado.';
-                    } else {
-                        $messages[$tab]['errors'][] = 'Erro ao atualizar funcionário.';
-                    }
 
-                }
-                break;
         }
-        // After processing POST, redirect back to keep UI on the same tab and avoid resubmission
+
         if (! headers_sent()) {
             $redirect = '/admin/painel' . (! empty($tab) ? '?active_tab=' . urlencode($tab) : '');
             header('Location: ' . $redirect);
@@ -361,42 +541,129 @@ function adminController(): void
         }
     }
 
-    // buscar lista de usuários
-    $pdo      = Connect::conectar();
-    $stmt     = $pdo->query('SELECT id_usuario, nome, email, cpf, tipo FROM Usuarios ORDER BY id_usuario DESC');
+    // buscar lista de usuários (com filtros opcionais por nome e tipo)
+    $pdo = Connect::conectar();
+
+    // Filtros de usuários
+    $nomeFiltro = trim($_GET['f_nome'] ?? '');
+    $tipoFiltro = trim($_GET['f_tipo'] ?? '');
+
+    $sqlUsuarios = 'SELECT u.id_usuario, u.nome, u.email, u.cpf, u.tipo, u.senha_hash,
+                              a.genero        AS genero_aluno,
+                              a.endereco      AS endereco_aluno,
+                              a.telefone      AS telefone_aluno,
+                              f.salario       AS salario_func,
+                              f.carga_horaria AS carga_horaria_func,
+                              f.cargo         AS cargo_func
+                       FROM Usuarios u
+                       LEFT JOIN Alunos a ON a.id_usuario = u.id_usuario
+                       LEFT JOIN Funcionarios f ON f.id_usuario = u.id_usuario
+                       WHERE 1=1';
+    $paramsUsuarios = [];
+
+    if ($nomeFiltro !== '') {
+        $sqlUsuarios .= ' AND u.nome LIKE :nome';
+        $paramsUsuarios[':nome'] = '%' . $nomeFiltro . '%';
+    }
+
+    if ($tipoFiltro !== '') {
+        $sqlUsuarios .= ' AND u.tipo = :tipo';
+        $paramsUsuarios[':tipo'] = $tipoFiltro;
+    }
+
+    $sqlUsuarios .= ' ORDER BY u.id_usuario DESC';
+
+    $stmt = $pdo->prepare($sqlUsuarios);
+    $stmt->execute($paramsUsuarios);
     $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // buscar funcionarios
-    $stmtF        = $pdo->query('SELECT id_funcionario, salario, carga_horaria, cargo, id_usuario FROM Funcionarios ORDER BY id_funcionario DESC');
+    // buscar funcionarios (para seleção de professor nas aulas)
+    $stmtF = $pdo->query('SELECT f.id_funcionario, f.salario, f.carga_horaria, f.cargo, f.id_usuario, u.nome
+                          FROM Funcionarios f
+                          JOIN Usuarios u ON f.id_usuario = u.id_usuario
+                          ORDER BY u.nome');
     $funcionarios = $stmtF->fetchAll(PDO::FETCH_ASSOC);
 
-    // planos e aulas
-    $planos = class_exists('Planos') ? Planos::getAll() : [];
-    $stmtA  = $pdo->query('SELECT A.*, M.nome_modalidade, F.nome_filial FROM Aulas A LEFT JOIN Modalidades M ON A.id_modalidade = M.id_modalidade LEFT JOIN Filiais F ON A.id_filial = F.id_filial ORDER BY A.dia_aula DESC');
+    // Filtros de planos, modalidades, aulas e filiais
+    $planoNomeFiltro      = trim($_GET['f_plano_nome'] ?? '');
+    $modalidadeNomeFiltro = trim($_GET['f_modalidade_nome'] ?? '');
+    $aulaNomeFiltro       = trim($_GET['f_aula_nome'] ?? '');
+    $filialNomeFiltro     = trim($_GET['f_filial_nome'] ?? '');
+
+    // Planos
+    $sqlPlanos = 'SELECT id_plano, nome_plano, descricao_plano, preco, duracao FROM Planos WHERE 1=1';
+    $paramsPlanos = [];
+    if ($planoNomeFiltro !== '') {
+        $sqlPlanos .= ' AND nome_plano LIKE :nome_plano';
+        $paramsPlanos[':nome_plano'] = '%' . $planoNomeFiltro . '%';
+    }
+    $sqlPlanos .= ' ORDER BY id_plano DESC';
+    $stmtPlanos = $pdo->prepare($sqlPlanos);
+    $stmtPlanos->execute($paramsPlanos);
+    $planos = $stmtPlanos->fetchAll(PDO::FETCH_ASSOC);
+
+    // Aulas
+    $sqlAulas = 'SELECT A.*, M.nome_modalidade, F.nome_filial
+                 FROM Aulas A
+                 LEFT JOIN Modalidades M ON A.id_modalidade = M.id_modalidade
+                 LEFT JOIN Filiais F ON A.id_filial = F.id_filial
+                 WHERE 1=1';
+    $paramsAulas = [];
+    if ($aulaNomeFiltro !== '') {
+        $sqlAulas .= ' AND A.nome_aula LIKE :nome_aula';
+        $paramsAulas[':nome_aula'] = '%' . $aulaNomeFiltro . '%';
+    }
+    $sqlAulas .= ' ORDER BY A.dia_aula DESC';
+    $stmtA  = $pdo->prepare($sqlAulas);
+    $stmtA->execute($paramsAulas);
     $aulas  = $stmtA->fetchAll(PDO::FETCH_ASSOC);
-    // modalidades
-    $modalidades = method_exists('Modalidades', 'getModalidades') ? Modalidades::getModalidades() : [];
-    // filiais
+
+    // Modalidades
+    $sqlModalidades = 'SELECT id_modalidade, nome_modalidade, descricao FROM Modalidades WHERE 1=1';
+    $paramsModalidades = [];
+    if ($modalidadeNomeFiltro !== '') {
+        $sqlModalidades .= ' AND nome_modalidade LIKE :nome_modalidade';
+        $paramsModalidades[':nome_modalidade'] = '%' . $modalidadeNomeFiltro . '%';
+    }
+    $sqlModalidades .= ' ORDER BY nome_modalidade';
+    $stmtM = $pdo->prepare($sqlModalidades);
+    $stmtM->execute($paramsModalidades);
+    $modalidades = $stmtM->fetchAll(PDO::FETCH_ASSOC);
+
+    // Filiais
     $filiais = [];
     try {
-        $stmtF   = $pdo->query('SELECT id_filial, nome_filial, endereco, telefone FROM Filiais ORDER BY id_filial DESC');
+        $sqlFiliais = 'SELECT id_filial, nome_filial, endereco, telefone FROM Filiais WHERE 1=1';
+        $paramsFiliais = [];
+        if ($filialNomeFiltro !== '') {
+            $sqlFiliais .= ' AND nome_filial LIKE :nome_filial';
+            $paramsFiliais[':nome_filial'] = '%' . $filialNomeFiltro . '%';
+        }
+        $sqlFiliais .= ' ORDER BY id_filial DESC';
+
+        $stmtF   = $pdo->prepare($sqlFiliais);
+        $stmtF->execute($paramsFiliais);
         $filiais = $stmtF->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
-        // ignore if table missing
+        
     }
 
     $data = [
-        'usuarios'     => $usuarios,
-        'funcionarios' => $funcionarios,
-        'planos'       => $planos,
-        'aulas'        => $aulas,
-        'modalidades'  => $modalidades,
-        'filiais'      => $filiais,
-        // per-tab messages
-        'messages'     => $messages,
-        'avisos'       => method_exists('Aviso', 'getAllForAdmin') ? Aviso::getAllForAdmin() : [],
-        'nomeTipo'     => method_exists('Aviso', 'getTipoLabelsAvisos') ? Aviso::getTipoLabelsAvisos() : [],
-        'avisoTipos'   => method_exists('Aviso', 'getTipos') ? Aviso::getTipos() : [],
+        'usuarios'            => $usuarios,
+        'funcionarios'        => $funcionarios,
+        'planos'              => $planos,
+        'aulas'               => $aulas,
+        'modalidades'         => $modalidades,
+        'filiais'             => $filiais,
+        'avisos'              => method_exists('Aviso', 'getAllForAdmin') ? Aviso::getAllForAdmin() : [],
+        'nomeTipo'            => method_exists('Aviso', 'getTipoLabelsAvisos') ? Aviso::getTipoLabelsAvisos() : [],
+        'avisoTipos'          => method_exists('Aviso', 'getTipos') ? Aviso::getTipos() : [],
+        'f_nome'              => $nomeFiltro,
+        'f_tipo'              => $tipoFiltro,
+        'f_plano_nome'        => $planoNomeFiltro,
+        'f_modalidade_nome'   => $modalidadeNomeFiltro,
+        'f_aula_nome'         => $aulaNomeFiltro,
+        'f_filial_nome'       => $filialNomeFiltro,
     ];
 
     render('admin/painel', 'Painel Administrativo', $data);

@@ -177,7 +177,7 @@ function processCadastro()
     }
 
     try {
-        // Formata CPF para o padrão 000.000.000-00 antes de verificar/armazenar
+        // Formata CPF para o padrão 000.000.000-00 
         $cpf_formatted = substr($cpf, 0, 3) . '.' . substr($cpf, 3, 3) . '.' . substr($cpf, 6, 3) . '-' . substr($cpf, 9, 2);
 
         if (Usuario::emailJaExiste($email)) {
@@ -208,7 +208,6 @@ function processCadastro()
             exit;
         }
 
-        // Formata telefone para o padrão (XX) XXXXX-XXXX ou (XX) XXXX-XXXX
         $telefone_formatted = formatTelefone($telefone);
 
         if ($tipo === 'aluno') {
@@ -231,66 +230,8 @@ function processCadastro()
 }
 
 
-function validarCPF(string $cpf): bool
-{
-    $cpf = preg_replace('/[^0-9]/is', '', $cpf);
-
-    if (strlen($cpf) !== 11) {
-        return false;
-    }
-
-    if (preg_match('/(\d)\1{10}/', $cpf)) {
-        return false;
-    }
-
-    return true;
-}
-
-/**
- * Formata telefone para o padrão brasileiro com DDD e traço.
- * Aceita apenas números como entrada (ex: 11987654321 ou 1187654321)
- * Retorna '(11) 98765-4321' para 11 dígitos, '(11) 8765-4321' para 10 dígitos,
- * ou a string original caso não caiba nesses formatos.
- *
- * @param string $digits Apenas dígitos do telefone
- * @return string Telefone formatado
- */
-function formatTelefone(string $digits): string
-{
-    $d = preg_replace('/[^0-9]/', '', $digits);
-    $len = strlen($d);
-
-    if ($len === 11) {
-        // (XX) XXXXX-XXXX
-        return '(' . substr($d, 0, 2) . ') ' . substr($d, 2, 5) . '-' . substr($d, 7, 4);
-    }
-
-    if ($len === 10) {
-        // (XX) XXXX-XXXX
-        return '(' . substr($d, 0, 2) . ') ' . substr($d, 2, 4) . '-' . substr($d, 6, 4);
-    }
-
-    // Se não for 10 ou 11 dígitos, retorna os dígitos brutos
-    return $digits;
-}
 
 
-function validarForcaSenha(string $senha): bool
-{
-
-    if (!preg_match('/[A-Z]/', $senha)) {
-        return false;
-    }
 
 
-    if (!preg_match('/[a-z]/', $senha)) {
-        return false;
-    }
 
-
-    if (!preg_match('/[0-9]/', $senha)) {
-        return false;
-    }
-
-    return true;
-}
