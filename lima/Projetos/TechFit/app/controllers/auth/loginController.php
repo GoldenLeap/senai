@@ -154,6 +154,8 @@ function processCadastro()
             $idade = $hoje->diff($dataNasc)->y;
             if ($idade < 13) {
                 $erros[] = 'Você deve ter pelo menos 13 anos para se cadastrar.';
+            }elseif($idade > 120){
+                $erros[] = 'Idade invalida';
             }
         }
     }
