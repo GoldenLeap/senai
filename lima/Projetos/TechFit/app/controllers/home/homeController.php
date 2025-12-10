@@ -1,6 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../models/Planos.php';
 
 function homeController(): void
 {
@@ -18,5 +17,5 @@ function homeController(): void
         'planos' => $planos,
     ];
 
-    render('homeView', $data['titulo'], $data);
+    render('/home/homeView', $data['titulo'], $data);
 }

@@ -6,7 +6,7 @@ function contatoController(){
         return;
     }
 
-    render("contatoView", "Contato");
+    render("/home/contatoView", "Contato");
 }
 
 function contatoSend(){

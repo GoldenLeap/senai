@@ -1,4 +1,4 @@
-<?php require (__DIR__ . "/partials/nav.php"); ?>
+<?php require (__DIR__ . "/../partials/nav.php"); ?>
 
 <section class="container py-5">
     <h1 class="text-center mb-5">Nossos Planos</h1>

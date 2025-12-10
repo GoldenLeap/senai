@@ -1,6 +1,6 @@
 
 <header>
-        <?php require __DIR__ . "/partials/nav.php"; ?>
+        <?php require __DIR__ . "/../partials/nav.php"; ?>
 </header>
 
 <main class="min-h-screen bg-gray-50 py-12">

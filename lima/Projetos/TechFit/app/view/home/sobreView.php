@@ -1,5 +1,5 @@
 <header>
-    <?php require __dir__ . "/partials/nav.php"; ?>
+    <?php require __DIR__ . "/../partials/nav.php"; ?>
 </header>
 
 <div class="flex flex-col justify-between gap-20 p-20 align-center">

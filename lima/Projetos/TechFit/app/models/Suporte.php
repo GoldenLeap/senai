@@ -12,17 +12,12 @@ class Suporte
         return self::$pdo;
     }
 
-    /**
-     * Gera um ID único de ticket
-     */
+
     public static function gerarTicketID(): string
     {
         return 'TKT-' . date('Y') . '-' . strtoupper(bin2hex(random_bytes(4)));
     }
 
-    /**
-     * Cria um novo ticket de suporte
-     */
     public static function criar(int $id_aluno, string $categoria, string $descricao): string
     {
         $pdo = self::getPDO();
@@ -44,9 +39,6 @@ class Suporte
         return $ticket;
     }
 
-    /**
-     * Lista todos os tickets de um aluno
-     */
     public static function getByAluno(int $id_aluno): array
     {
         $pdo = self::getPDO();
@@ -65,9 +57,7 @@ class Suporte
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Lista todos os tickets
-     */
+
     public static function getTodos(?string $status = null): array
     {
         $pdo = self::getPDO();
@@ -100,9 +90,7 @@ class Suporte
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Atualiza o status de um ticket
-     */
+
     public static function atualizarStatus(string $ticket, string $novoStatus): bool
     {
         $pdo = self::getPDO();

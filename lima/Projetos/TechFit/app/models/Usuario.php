@@ -4,9 +4,7 @@ class Usuario
 {
     private static ?PDO $pdo = null;
 
-    /**
-     * Inicializa a conexão com o banco de dados
-     */
+
     private static function getPDO(): PDO
     {
         if (self::$pdo === null) {
@@ -39,12 +37,7 @@ class Usuario
         ];
     }
 
-    /**
-     * Altera a senha do usuário
-     * @param int $id ID do usuário
-     * @param string $newPass Nova senha (já deve estar com hash)
-     * @throws PDOException Se ocorrer erro na atualização
-     */
+
     public static function changePass(int $id, string $newPass): void
     {
         $pdo = self::getPDO();
@@ -56,12 +49,7 @@ class Usuario
         $stmt->execute();
     }
 
-    /**
-     * Altera o email do usuário
-     * @param int $id ID do usuário
-     * @param string $newEmail Novo email
-     * @throws PDOException Se ocorrer erro na atualização
-     */
+
     public static function changeEmail(int $id, string $newEmail): void
     {
         $pdo = self::getPDO();
@@ -73,11 +61,7 @@ class Usuario
         $stmt->execute();
     }
 
-    /**
-     * Obtém o email do usuário
-     * @param int $id ID do usuário
-     * @return string|null Email do usuário ou null se não encontrado
-     */
+
     public static function getEmail(int $id): ?string
     {
         $pdo = self::getPDO();
@@ -91,11 +75,7 @@ class Usuario
         return $result ?: null;
     }
 
-    /**
-     * Obtém todos os dados do usuário
-     * @param int $id ID do usuário
-     * @return array|null Dados do usuário ou null se não encontrado
-     */
+    
     public static function getUsuarioById(int $id): ?array
     {
         $pdo = self::getPDO();
@@ -116,11 +96,7 @@ class Usuario
         return $result ?: null;
     }
 
-    /**
-     * Obtém a senha hash do usuário
-     * @param int $id ID do usuário
-     * @return string|null Senha hash ou null se não encontrado
-     */
+    
     public static function getSenhaHash(int $id): ?string
     {
         $pdo = self::getPDO();

@@ -1,7 +1,5 @@
 <?php 
 
-require_once __DIR__ . '/../models/Planos.php';
-
 function planosController(): void
 {
     $planos = Planos::getAll();
@@ -12,5 +10,5 @@ function planosController(): void
         'headExtras' => '<link rel="stylesheet" href="/assets/css/Login_Cadastro.css">'
     ];
 
-    render('planosView', $data['titulo'], $data);
+    render('/home/planosView', $data['titulo'], $data);
 }

@@ -12,9 +12,7 @@ class Checkin
         return self::$pdo;
     }
 
-    /**
-     * Retorna todos os check-ins de um aluno, com o nome da filial.
-     */
+
     public static function getByAluno(int $id_aluno): array
     {
         $pdo = self::getPDO();

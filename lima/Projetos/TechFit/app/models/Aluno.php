@@ -11,11 +11,7 @@ class Aluno
         return self::$pdo;
     }
 
-    /**
-     * Obtém os dados completos de um aluno pelo ID do usuário
-     * @param int $user_id ID do usuário
-     * @return array|null Dados do aluno ou null
-     */
+
     public static function getAlunoByUserID(int $user_id): ?array
     {
         $pdo  = self::getPDO();
@@ -26,11 +22,7 @@ class Aluno
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Obtém os dados completos de um aluno incluindo informações do usuário
-     * @param int $user_id ID do usuário
-     * @return array|null Dados completos do aluno ou null
-     */
+
     public static function getAlunoCompletoByUserID(int $user_id): ?array
     {
         $pdo = self::getPDO();
@@ -54,13 +46,6 @@ class Aluno
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Atualiza os dados do aluno
-     * @param int $id_aluno ID do aluno
-     * @param array $data Array com os campos a atualizar (genero, endereco, telefone)
-     * @return bool True se atualização foi bem-sucedida
-     * @throws PDOException Se ocorrer erro na atualização
-     */
     public static function updateAluno(int $id_aluno, array $data): bool
     {
         $pdo = self::getPDO();
@@ -97,12 +82,7 @@ class Aluno
         return $stmt->execute();
     }
 
-    /**
-     * Cria um novo aluno
-     * @param array $dados Array com os dados do aluno (id_usuario, genero, endereco, telefone)
-     * @return int|null ID do aluno criado ou null se falhar
-     * @throws PDOException Se ocorrer erro na inserção
-     */
+
     public static function criarAluno(array $dados): ?int
     {
         $pdo = self::getPDO();

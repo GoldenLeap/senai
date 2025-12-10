@@ -13,14 +13,14 @@ function loginController()
             processLogin();
         } else {
             // GET - exibe formulário de login
-            render('loginView', 'Entrar');
+            render('/auth/loginView', 'Entrar');
         }
     } elseif ($uri === '/cadastro') {
         // Verifica se é POST
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             processCadastro();
         } else {
-            render('cadastroView', 'Cadastre-se');
+            render('/auth/cadastroView', 'Cadastre-se');
         }
     }
 }

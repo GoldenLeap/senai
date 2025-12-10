@@ -74,13 +74,13 @@ function profileController(): void
     // Carregamento da sub-view e dados específicos
     switch ($currPage) {
         case 'agenda':
-            $data['subView'] = 'agendaView.php';
+            $data['subView'] = '/../profile/agendaView.php';
             $data += loadAgendaData($_SESSION['user_id']);
             break;
 
         case 'avaliacao':
             // aluno visualiza as avaliações físicas que recebeu (não cria novas)
-            $data['subView'] = 'avaliacaoView.php';
+            $data['subView'] = '/../profile/avaliacaoView.php';
 
             $aluno    = Aluno::getAlunoByUserID($_SESSION['user_id']);
             $id_aluno = $aluno['id_aluno'] ?? null;
@@ -88,7 +88,7 @@ function profileController(): void
             $data['avaliacoes'] = $id_aluno ? Avaliacao::getByAluno((int) $id_aluno) : [];
             break;
         case 'suporte':
-            $data['subView'] = 'suporteView.php';
+            $data['subView'] = '/../profile/suporteView.php';
 
             $aluno    = Aluno::getAlunoByUserID($_SESSION['user_id']);
             $id_aluno = $aluno['id_aluno'] ?? null;
@@ -103,7 +103,7 @@ function profileController(): void
                 break;
             }
 
-            $data['subView'] = 'admin/avaliacoesAlunosView.php';
+            $data['subView'] = '/../admin/avaliacoesAlunosView.php';
 
             // lista de alunos para o select
             $data['alunos'] = Aluno::getTodosComUsuario();
@@ -121,7 +121,7 @@ function profileController(): void
             break;
 
         case 'frequencia':
-            $data['subView'] = 'frequenciaView.php';
+            $data['subView'] = '/../profile/frequenciaView.php';
 
             // Descobre o id_aluno a partir do usuário logado
             $aluno    = Aluno::getAlunoByUserID($_SESSION['user_id']);
@@ -135,7 +135,7 @@ function profileController(): void
             break;
 
         case 'configuracao':
-            $data['subView'] = 'configView.php';
+            $data['subView'] = '/../profile/configView.php';
             $data += loadConfigData($_SESSION['user_id'], $usuario['user_tipo']);
             break;
 
@@ -149,7 +149,7 @@ function profileController(): void
                 break;
             }
 
-            $data['subView'] = 'admin/suporteAdminView.php';
+            $data['subView'] = '/../admin/suporteAdminView.php';
 
             $statusFiltro         = $_GET['status'] ?? 'todos';
             $data['tickets']      = Suporte::getTodos($statusFiltro);
@@ -162,7 +162,7 @@ function profileController(): void
             break;
     }
 
-    render('profileView', 'Perfil', $data);
+    render('/profile/profileView', 'Perfil', $data);
 }
 
 // Funções auxiliares
@@ -206,7 +206,7 @@ function handleRelatorio(array $usuario, array &$data): void
         return;
     }
 
-    $data['subView'] = 'admin/relatoriosView.php';
+    $data['subView'] = '/../admin/relatoriosView.php';
 
     $pdo = Connect::conectar();
 

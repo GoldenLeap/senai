@@ -42,10 +42,7 @@ class Modalidades
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Busca TODAS as modalidades oferecidas pela academia.
-     * @return array
-     */
+
     public static function getModalidades(): array
     {
         $pdo = self::getPDO();
@@ -61,11 +58,7 @@ class Modalidades
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Busca uma modalidade específica pelo ID.
-     * @param int $id_modalidade
-     * @return ?array
-     */
+
     public static function getModalidadeById(int $id_modalidade): ?array
     {
         $pdo = self::getPDO();

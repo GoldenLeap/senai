@@ -4,9 +4,7 @@ class Aulas
 {
     private static ?PDO $pdo = null;
 
-    /**
-     * Inicializa a conexão com o banco de dados
-     */
+
     private static function getPDO(): PDO
     {
         if (self::$pdo === null) {
@@ -15,11 +13,7 @@ class Aulas
         return self::$pdo;
     }
 
-    /**
-     * Retorna o número de alunos inscritos em uma aula específica
-     * @param int $id_aula ID da aula
-     * @return int Número de alunos inscritos
-     */
+  
     public static function getInscritos(int $id_aula): int
     {
         $pdo = self::getPDO();
@@ -98,12 +92,7 @@ class Aulas
         return (bool) $stmt->fetchColumn();
     }
 
-    /**
-     * Retorna as aulas de um aluno com filtro opcional por modalidade
-     * @param int $id_aluno ID do aluno
-     * @param string|null $id_modalidade ID da modalidade ou 'todas'
-     * @return array Lista de aulas do aluno
-     */
+
     public static function getAulasByAluno(int $id_aluno, ?string $id_modalidade = null): array
     {
         $pdo = self::getPDO();

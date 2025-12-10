@@ -1,9 +1,5 @@
 <?php
-/**
- * CadastroModel.php - estilo do outro desenvolvedor (app/models)
- * Responsável por registrar usuário em `Usuarios` e em `Alunos` ou `Funcionarios`.
- */
-require_once __DIR__ . '/Connect.php';
+
 
 class CadastroModel {
     private static function getPDO() {

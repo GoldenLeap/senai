@@ -26,7 +26,7 @@
             "modalidades" => Modalidades::getModalidades(),
             "id_aluno" => $id_aluno,
         ];
-        render("aulasView", $data["titulo"], $data);
+        render("/profile/aulasView", $data["titulo"], $data);
     
     }
 

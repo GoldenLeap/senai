@@ -1,8 +1,4 @@
 <?php
-/**
- * RecuperacaoModel.php - gerenciamento de tokens de recuperação (app/models)
- */
-require_once __DIR__ . '/Connect.php';
 
 class RecuperacaoModel {
     private static function getPDO() {
@@ -15,7 +11,7 @@ class RecuperacaoModel {
 
     public static function criarToken(int $usuarioId, string $token, string $expiracao): int {
         $pdo = self::getPDO();
-        // garantir que a tabela exista (ajuda em ambientes de dev onde o script SQL não foi executado)
+
         self::ensureTableExists();
         $sql = "INSERT INTO recuperacao_senha (usuario_id, token, expiracao, utilizado) VALUES (:usuario_id, :token, :expiracao, 0)";
         $stmt = $pdo->prepare($sql);

@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../models/Planos.php';
-
 function adminController(): void
 {
     requireFuncionario();

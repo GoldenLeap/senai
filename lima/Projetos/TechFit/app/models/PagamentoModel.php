@@ -1,10 +1,8 @@
 <?php
-/**
- * PagamentoModel.php - operações de pagamento integradas ao esquema existente (Pagamentos)
- */
-require_once __DIR__ . '/Connect.php';
+
 
 class PagamentoModel {
+
     private static function getPDO() {
         return Connect::conectar();
     }
@@ -12,7 +10,6 @@ class PagamentoModel {
     public static function criarPagamentoPorUsuario(int $usuarioId, string $plano, float $preco, string $metodo = 'plano') : array {
         $pdo = self::getPDO();
 
-        // Obter id_aluno relacionado ao usuário
         $sql = "SELECT id_aluno FROM Alunos WHERE id_usuario = :id_usuario LIMIT 1";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':id_usuario' => $usuarioId]);
@@ -26,12 +23,10 @@ class PagamentoModel {
             return ['sucesso' => false, 'erro' => 'Aluno não encontrado. Complete seu cadastro no perfil antes de pagar.'];
         }
 
-        // se não foi possível obter/crear um id_aluno válido, abortar e retornar erro
         if ($idAluno === null) {
             return ['sucesso' => false, 'erro' => 'Aluno não encontrado e não foi possível criar registro de aluno. Complete seu cadastro no perfil antes de pagar.'];
         }
 
-        // Inserir registro em Pagamentos
         $sqlIns = "INSERT INTO Pagamentos (status, data_pagamento, valor, metodo_pagamento, id_aluno) VALUES (:status, :data_pagamento, :valor, :metodo, :id_aluno)";
         try {
             $stmtIns = $pdo->prepare($sqlIns);
